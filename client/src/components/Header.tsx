@@ -18,9 +18,9 @@ export function Header() {
             </div>
           </div>
           <div>
-            <h1 className="text-xl font-bold dark:text-white text-dark-900">
+            <div className="text-xl font-bold dark:text-white text-dark-900">
               Snap<span className="gradient-text">Load</span>
-            </h1>
+            </div>
             <p className="text-[10px] font-medium tracking-widest uppercase 
                           dark:text-white/40 text-dark-500">
               Universal Video Downloader

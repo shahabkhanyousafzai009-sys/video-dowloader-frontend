@@ -66,11 +66,11 @@ function App() {
       <main className="relative z-10 max-w-3xl mx-auto px-4 pb-8">
         {/* Hero Section */}
         <div className="text-center mt-8 mb-10 animate-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
             Download Videos
             <br />
             <span className="gradient-text">From Anywhere</span>
-          </h2>
+          </h1>
           <p className="mt-4 text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
             Paste a link from YouTube, TikTok, or Instagram.
             Choose your quality and download instantly — no signup required.
