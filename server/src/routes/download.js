@@ -67,13 +67,24 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
         contentDisposition: `attachment; filename="${asciiTitle}.mp3"; filename*=UTF-8''${encodedTitle}.mp3`,
       }, res);
     } else if (audioFormatId && formatId) {
-      // Use specific video format + best available AAC audio
-      // This avoids failures when the exact audio format ID is unavailable
-      const formatSpec = `${formatId}+bestaudio[ext=m4a]`;
-      processes = streamMerged(url, formatSpec, {
-        contentType: 'video/mp4',
-        contentDisposition: `attachment; filename="${asciiTitle}.mp4"; filename*=UTF-8''${encodedTitle}.mp4`,
-      }, res, req);
+      // Detect platform to decide merge strategy
+      const { detectPlatform } = require('../utils/platforms');
+      const platform = detectPlatform(url);
+      
+      if (platform === 'instagram') {
+        // Instagram doesn't support format merging — use best combined format
+        processes = streamDirect(url, 'best[ext=mp4]/best', {
+          contentType: 'video/mp4',
+          contentDisposition: `attachment; filename="${asciiTitle}.mp4"; filename*=UTF-8''${encodedTitle}.mp4`,
+        }, res);
+      } else {
+        // YouTube and others: merge specific video format + best audio
+        const formatSpec = `${formatId}+bestaudio[ext=m4a]`;
+        processes = streamMerged(url, formatSpec, {
+          contentType: 'video/mp4',
+          contentDisposition: `attachment; filename="${asciiTitle}.mp4"; filename*=UTF-8''${encodedTitle}.mp4`,
+        }, res, req);
+      }
     } else {
       processes = streamDirect(url, formatId || 'best', {
         contentType: 'video/mp4',
