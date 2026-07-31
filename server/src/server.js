@@ -14,10 +14,12 @@ const { configureCors } = require('./middleware/cors');
 // ===== Write cookies from env on startup =====
 if (process.env.COOKIES_CONTENT) {
   try {
-    fs.writeFileSync(path.join(process.cwd(), 'cookies.txt'), process.env.COOKIES_CONTENT);
-    console.log('[STARTUP] cookies.txt successfully written from environment variable.');
+    const cookiesPath = path.join(process.cwd(), 'server/tmp/cookies.txt');
+    fs.writeFileSync(cookiesPath, process.env.COOKIES_CONTENT);
+    process.env.COOKIES_FILE = cookiesPath;
+    console.log('[STARTUP] cookies.txt successfully written to writable directory.');
   } catch (e) {
-    console.error('[STARTUP] Failed to write cookies.txt from environment variable:', e.message);
+    console.error('[STARTUP] Failed to write cookies.txt:', e.message);
   }
 }
 
