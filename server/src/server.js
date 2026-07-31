@@ -14,14 +14,25 @@ const { configureCors } = require('./middleware/cors');
 // ===== Write cookies from env on startup =====
 if (process.env.COOKIES_CONTENT) {
   try {
-    const cookiesPath = path.join(process.cwd(), 'server/tmp/cookies.txt');
-    fs.writeFileSync(cookiesPath, process.env.COOKIES_CONTENT);
+    const cookiesPath = '/tmp/cookies.txt';
+    const content = process.env.COOKIES_CONTENT;
+    fs.writeFileSync(cookiesPath, content, 'utf8');
     process.env.COOKIES_FILE = cookiesPath;
-    console.log('[STARTUP] cookies.txt successfully written to writable directory.');
+    const lineCount = content.split('\n').filter(l => l.trim()).length;
+    console.log(`[STARTUP] cookies.txt written to ${cookiesPath} (${lineCount} lines, ${content.length} bytes)`);
+    // Log first line to verify format
+    const firstDataLine = content.split('\n').find(l => l.trim() && !l.startsWith('#'));
+    if (firstDataLine) {
+      const parts = firstDataLine.split('\t');
+      console.log(`[STARTUP] Cookie format check: ${parts.length} columns (expected 7), domain: ${parts[0] || 'N/A'}`);
+    }
   } catch (e) {
     console.error('[STARTUP] Failed to write cookies.txt:', e.message);
   }
+} else {
+  console.log('[STARTUP] No COOKIES_CONTENT env var found. YouTube may block requests.');
 }
+
 
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3001;
