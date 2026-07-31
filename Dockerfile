@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     curl \
+    unzip \
     ca-certificates \
     && pip3 install --no-cache-dir --break-system-packages "yt-dlp[default,curl-cffi]" \
     && yt-dlp --version \
