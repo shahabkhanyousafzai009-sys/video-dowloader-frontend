@@ -79,8 +79,8 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder="Paste a video link from YouTube, TikTok, or Instagram..."
-              className={`flex-1 px-4 py-4 bg-transparent border-none outline-none
-                         text-base font-medium
+              className={`flex-1 min-w-0 px-2 sm:px-4 py-3 sm:py-4 bg-transparent border-none outline-none
+                         text-sm sm:text-base font-medium
                          dark:text-white text-dark-900
                          dark:placeholder-white/30 placeholder-dark-400
                          ${platform ? 'pl-1' : ''}`}
@@ -90,7 +90,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
             />
 
             {/* Action buttons */}
-            <div className="flex items-center gap-1.5 pr-1.5">
+            <div className="flex items-center gap-1 sm:gap-1.5 pr-1 sm:pr-1.5">
               {url && (
                 <button
                   type="button"
@@ -111,27 +111,27 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
               <button
                 type="button"
                 onClick={handlePaste}
-                className="px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider
+                className="px-2.5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider
                            dark:text-white/50 text-dark-500
                            dark:hover:text-white hover:text-dark-900
                            hover:bg-white/10 transition-all"
                 disabled={loading}
                 aria-label="Paste from clipboard"
               >
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1 sm:gap-1.5">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                        stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
                     <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
                   </svg>
-                  Paste
+                  <span className="hidden sm:inline">Paste</span>
                 </span>
               </button>
 
               <button
                 type="submit"
                 disabled={!isValid || loading}
-                className="btn-primary flex items-center gap-2 !px-5 !py-2.5 !rounded-xl text-sm"
+                className="btn-primary flex items-center justify-center gap-1.5 sm:gap-2 !px-3.5 sm:!px-5 !py-2 sm:!py-2.5 !rounded-xl text-sm"
               >
                 {loading ? (
                   <div className="spinner !w-4 !h-4 !border-2" />
@@ -142,7 +142,9 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
                     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                   </svg>
                 )}
-                {loading ? 'Fetching...' : 'Fetch'}
+                <span className={loading ? "" : "hidden sm:inline"}>
+                  {loading ? 'Fetching...' : 'Fetch'}
+                </span>
               </button>
             </div>
           </div>
