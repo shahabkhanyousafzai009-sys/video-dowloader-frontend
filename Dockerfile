@@ -25,11 +25,6 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir --break-system-packages "yt-dlp[default,curl-cffi]" \
     && yt-dlp --version
 
-# Install Deno (required JS runtime for yt-dlp YouTube extraction)
-RUN curl -fsSL https://deno.land/install.sh | sh \
-    && mv /root/.deno/bin/deno /usr/local/bin/deno \
-    && chmod +x /usr/local/bin/deno \
-    && rm -rf /root/.deno
 
 WORKDIR /app
 

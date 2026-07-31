@@ -75,6 +75,7 @@ function buildInfoArgs(url, platform) {
     '--skip-download',
     '--socket-timeout', '15',
     '--extractor-retries', '5',
+    '--js-routines', 'node',
     ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : []),
   ];
 
@@ -114,6 +115,7 @@ function buildInfoArgs(url, platform) {
  */
 function buildDownloadArgs(url, platform, formatId, type = 'video') {
   const args = ['-q', '--no-playlist', '--extractor-retries', '5',
+    '--js-routines', 'node',
     ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : [])];
 
   if (platform === 'youtube') {
