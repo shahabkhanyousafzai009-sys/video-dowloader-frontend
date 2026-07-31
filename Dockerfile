@@ -12,24 +12,27 @@ RUN npm ci
 COPY client/ ./
 RUN npm run build
 
-# Stage 2: Production server
-FROM node:20-alpine AS production
+# Stage 2: Production server (Debian-slim for full glibc compatibility)
+FROM node:20-slim AS production
 
 # Install system dependencies: FFmpeg, Python3 (for yt-dlp), curl
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     python3 \
-    py3-pip \
+    python3-pip \
     curl \
     ca-certificates \
     && pip3 install --no-cache-dir --break-system-packages "yt-dlp[default,curl-cffi]" \
-    && yt-dlp --version
+    && yt-dlp --version \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Ensure Node.js is discoverable by yt-dlp for YouTube signature solving
-RUN ln -sf $(which node) /usr/bin/node 2>/dev/null || true \
-    && echo "Node.js path: $(which node)" \
-    && node --version
-
+# Install Deno (recommended JS runtime for yt-dlp YouTube signature solving)
+RUN curl -fsSL https://deno.land/install.sh | sh \
+    && mv /root/.deno/bin/deno /usr/local/bin/deno \
+    && chmod +x /usr/local/bin/deno \
+    && rm -rf /root/.deno \
+    && deno --version
 
 WORKDIR /app
 
@@ -54,8 +57,8 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 EXPOSE 3001
 
 # Run as non-root user for security
-RUN addgroup -g 1001 -S snapload && \
-    adduser -S snapload -u 1001 -G snapload
+RUN groupadd -g 1001 snapload && \
+    useradd -u 1001 -g snapload -m snapload
 
 # Create tmp directory for merged downloads (writable by snapload)
 RUN mkdir -p /app/server/tmp && chown snapload:snapload /app/server/tmp
