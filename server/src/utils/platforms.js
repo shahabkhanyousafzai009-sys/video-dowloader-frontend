@@ -76,12 +76,10 @@ function buildInfoArgs(url, platform) {
     '--socket-timeout', '15',
     '--extractor-retries', '5',
     '--js-runtimes', 'node',
-    ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : []),
+    ...(platform === 'tiktok' ? ['--impersonate', 'Chrome'] : []),
   ];
 
-  if (platform === 'youtube') {
-    args.push('--extractor-args', 'youtube:player_client=tv,web_embedded,mweb,web');
-  }
+  // For YouTube: use default client with cookies (no impersonation — it conflicts with cookie sessions)
 
   // Platform-specific flags
   // Note: No --format flag for info mode — --dump-json already dumps all formats.
@@ -116,11 +114,7 @@ function buildInfoArgs(url, platform) {
 function buildDownloadArgs(url, platform, formatId, type = 'video') {
   const args = ['-q', '--no-playlist', '--extractor-retries', '5',
     '--js-runtimes', 'node',
-    ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : [])];
-
-  if (platform === 'youtube') {
-    args.push('--extractor-args', 'youtube:player_client=tv,web_embedded,mweb,web');
-  }
+    ...(platform === 'tiktok' ? ['--impersonate', 'Chrome'] : [])];
 
   if (type === 'audio') {
     // Audio extraction mode
