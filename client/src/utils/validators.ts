@@ -12,7 +12,7 @@ export const PLATFORM_PATTERNS: Record<string, RegExp[]> = {
   ],
   tiktok: [
     /^https?:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+/i,
-    /^https?:\/\/vm\.tiktok\.com\/[\w-]+/i,
+    /^https?:\/\/(vm|vt|v)\.tiktok\.com\/[\w-]+/i,
     /^https?:\/\/(www\.)?tiktok\.com\/t\/[\w-]+/i,
   ],
   instagram: [
