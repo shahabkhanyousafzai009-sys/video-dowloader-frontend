@@ -80,7 +80,7 @@ function buildInfoArgs(url, platform) {
   ];
 
   if (platform === 'youtube') {
-    args.push('--extractor-args', 'youtube:player_client=android,web');
+    args.push('--extractor-args', 'youtube:player_client=tvhtml5,embed');
   }
 
   // Platform-specific flags
@@ -119,7 +119,7 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
     ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : [])];
 
   if (platform === 'youtube') {
-    args.push('--extractor-args', 'youtube:player_client=android,web');
+    args.push('--extractor-args', 'youtube:player_client=tvhtml5,embed');
   }
 
   if (type === 'audio') {
