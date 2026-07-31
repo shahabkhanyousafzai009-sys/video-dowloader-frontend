@@ -15,16 +15,33 @@ const { configureCors } = require('./middleware/cors');
 if (process.env.COOKIES_CONTENT) {
   try {
     const cookiesPath = '/tmp/cookies.txt';
-    const content = process.env.COOKIES_CONTENT;
+    let content = process.env.COOKIES_CONTENT;
+    
+    // Fix newline encoding issues from environment variable pasting
+    // Render may convert real newlines to literal \n or \r\n strings
+    content = content.replace(/\\r\\n/g, '\n');
+    content = content.replace(/\\n/g, '\n');
+    content = content.replace(/\\t/g, '\t');
+    content = content.replace(/\r\n/g, '\n');
+    
     fs.writeFileSync(cookiesPath, content, 'utf8');
     process.env.COOKIES_FILE = cookiesPath;
-    const lineCount = content.split('\n').filter(l => l.trim()).length;
-    console.log(`[STARTUP] cookies.txt written to ${cookiesPath} (${lineCount} lines, ${content.length} bytes)`);
-    // Log first line to verify format
-    const firstDataLine = content.split('\n').find(l => l.trim() && !l.startsWith('#'));
-    if (firstDataLine) {
-      const parts = firstDataLine.split('\t');
-      console.log(`[STARTUP] Cookie format check: ${parts.length} columns (expected 7), domain: ${parts[0] || 'N/A'}`);
+    
+    const lines = content.split('\n').filter(l => l.trim());
+    const dataLines = lines.filter(l => !l.startsWith('#'));
+    console.log(`[STARTUP] cookies.txt written to ${cookiesPath} (${lines.length} total lines, ${dataLines.length} data lines, ${content.length} bytes)`);
+    
+    // Validate format
+    if (dataLines.length > 0) {
+      const firstLine = dataLines[0];
+      const cols = firstLine.split('\t');
+      console.log(`[STARTUP] First cookie: ${cols.length} columns (need 7), domain: ${cols[0]}`);
+      if (cols.length !== 7) {
+        console.error('[STARTUP] WARNING: Cookie format looks WRONG. Expected 7 tab-separated columns per line.');
+        console.error('[STARTUP] First data line preview:', firstLine.substring(0, 120));
+      }
+    } else {
+      console.error('[STARTUP] WARNING: No data lines found in cookies (only comments/empty lines).');
     }
   } catch (e) {
     console.error('[STARTUP] Failed to write cookies.txt:', e.message);
@@ -78,21 +95,28 @@ app.get('/api/health', (req, res) => {
   const cookiesFileEnv = process.env.COOKIES_FILE || null;
   let cookiesFileExists = false;
   let cookiesFileSize = 0;
+  let cookiesLineCount = 0;
+  let cookiesDataLineCount = 0;
+  let firstCookieCols = 0;
+  let firstCookieDomain = 'N/A';
+  
   if (cookiesFileEnv) {
     try {
       const stat = fs.statSync(cookiesFileEnv);
       cookiesFileExists = true;
       cookiesFileSize = stat.size;
+      const content = fs.readFileSync(cookiesFileEnv, 'utf8');
+      const lines = content.split('\n').filter(l => l.trim());
+      cookiesLineCount = lines.length;
+      const dataLines = lines.filter(l => !l.startsWith('#'));
+      cookiesDataLineCount = dataLines.length;
+      if (dataLines.length > 0) {
+        const cols = dataLines[0].split('\t');
+        firstCookieCols = cols.length;
+        firstCookieDomain = cols[0] || 'empty';
+      }
     } catch (e) { /* file doesn't exist */ }
   }
-  // Also check /tmp/cookies.txt directly
-  let tmpCookiesExists = false;
-  let tmpCookiesSize = 0;
-  try {
-    const stat = fs.statSync('/tmp/cookies.txt');
-    tmpCookiesExists = true;
-    tmpCookiesSize = stat.size;
-  } catch (e) { /* not found */ }
 
   res.json({
     status: 'ok',
@@ -104,8 +128,10 @@ app.get('/api/health', (req, res) => {
       cookiesFilePath: cookiesFileEnv,
       cookiesFileExists,
       cookiesFileSize,
-      tmpCookiesExists,
-      tmpCookiesSize,
+      cookiesLineCount,
+      cookiesDataLineCount,
+      firstCookieCols_expected7: firstCookieCols,
+      firstCookieDomain,
     }
   });
 });
