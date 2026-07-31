@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  snapload:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: snapload-app
+    ports:
+      - "${PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3001}
+      - RATE_LIMIT_INFO_MAX=${RATE_LIMIT_INFO_MAX:-30}
+      - RATE_LIMIT_DOWNLOAD_MAX=${RATE_LIMIT_DOWNLOAD_MAX:-10}
+      - RATE_LIMIT_WINDOW_MIN=${RATE_LIMIT_WINDOW_MIN:-15}
+      - DOWNLOAD_TIMEOUT_MS=${DOWNLOAD_TIMEOUT_MS:-600000}
+      - DISABLE_RATE_LIMIT=${DISABLE_RATE_LIMIT:-true}
+      # Optional: Proxy for avoiding IP rate-limiting
+      # - PROXY_URL=socks5://user:pass@host:port
+      # Optional: Path to cookies file inside container
+      # - COOKIES_FILE=/app/cookies.txt
+    volumes:
+      # Mount cookies file if needed (uncomment below)
+      # - ./cookies.txt:/app/cookies.txt:ro
+      []
+    restart: unless-stopped
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 256M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

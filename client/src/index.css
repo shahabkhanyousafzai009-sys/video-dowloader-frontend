@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Base Styles ===== */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Dark mode defaults */
+  .dark body {
+    background-color: #05050C;
+    color: #F8FAFC;
+  }
+
+  .light body {
+    background-color: #FAF9FE;
+    color: #0F172A;
+  }
+}
+
+/* ===== Glassmorphism Utilities ===== */
+@layer components {
+  .glass {
+    @apply bg-white/[0.04] dark:bg-white/[0.04] 
+           backdrop-blur-xl 
+           border border-white/[0.08] 
+           shadow-xl;
+  }
+
+  .glass-strong {
+    @apply bg-white/[0.08] dark:bg-white/[0.08]
+           backdrop-blur-2xl 
+           border border-white/[0.14] 
+           shadow-2xl;
+  }
+
+  .glass-subtle {
+    @apply bg-white/[0.02] dark:bg-white/[0.02]
+           backdrop-blur-lg 
+           border border-white/[0.05] 
+           shadow-lg;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent 
+           bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden rounded-xl px-8 py-3.5 
+           font-semibold text-white 
+           bg-gradient-to-r from-primary-500 to-accent-500
+           hover:from-primary-400 hover:to-accent-400
+           transition-all duration-300 ease-out
+           shadow-lg hover:shadow-glow
+           active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg;
+  }
+
+  .input-glass {
+    @apply w-full px-5 py-4 rounded-xl 
+           bg-white/[0.05] dark:bg-white/[0.05]
+           border border-white/[0.1] dark:border-white/[0.1]
+           text-white dark:text-white
+           placeholder-white/30 dark:placeholder-white/30
+           backdrop-blur-lg
+           outline-none
+           transition-all duration-300
+           focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20
+           focus:bg-white/[0.08];
+  }
+}
+
+/* ===== Light mode overrides ===== */
+.light .glass {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(229, 231, 235, 0.8);
+}
+
+.light .glass-strong {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(229, 231, 235, 1);
+}
+
+.light .glass-subtle {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(229, 231, 235, 0.5);
+}
+
+.light .input-glass {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(209, 213, 219, 1);
+  color: #0F172A;
+}
+
+.light .input-glass::placeholder {
+  color: rgba(71, 85, 105, 0.6);
+}
+
+.light .input-glass:focus {
+  background: rgba(255, 255, 255, 1);
+  border-color: #f43f5e;
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 63, 94, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(244, 63, 94, 0.5);
+}
