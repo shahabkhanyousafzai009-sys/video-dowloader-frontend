@@ -25,6 +25,11 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir --break-system-packages "yt-dlp[default,curl-cffi]" \
     && yt-dlp --version
 
+# Ensure Node.js is discoverable by yt-dlp for YouTube signature solving
+RUN ln -sf $(which node) /usr/bin/node 2>/dev/null || true \
+    && echo "Node.js path: $(which node)" \
+    && node --version
+
 
 WORKDIR /app
 
