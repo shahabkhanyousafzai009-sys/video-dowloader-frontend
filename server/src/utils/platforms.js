@@ -78,6 +78,10 @@ function buildInfoArgs(url, platform) {
     ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : []),
   ];
 
+  if (platform === 'youtube') {
+    args.push('--extractor-args', 'youtube:player_client=ios,web');
+  }
+
   // Platform-specific flags
   // Note: No --format flag for info mode — --dump-json already dumps all formats.
   // Adding --format here can trigger extraction issues with some platforms (e.g. TikTok).
@@ -111,6 +115,10 @@ function buildInfoArgs(url, platform) {
 function buildDownloadArgs(url, platform, formatId, type = 'video') {
   const args = ['-q', '--no-playlist', '--extractor-retries', '5',
     ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : [])];
+
+  if (platform === 'youtube') {
+    args.push('--extractor-args', 'youtube:player_client=ios,web');
+  }
 
   if (type === 'audio') {
     // Audio extraction mode

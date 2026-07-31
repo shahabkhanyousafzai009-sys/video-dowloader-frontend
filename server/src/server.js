@@ -8,7 +8,18 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
+const fs = require('fs');
 const { configureCors } = require('./middleware/cors');
+
+// ===== Write cookies from env on startup =====
+if (process.env.COOKIES_CONTENT) {
+  try {
+    fs.writeFileSync(path.join(process.cwd(), 'cookies.txt'), process.env.COOKIES_CONTENT);
+    console.log('[STARTUP] cookies.txt successfully written from environment variable.');
+  } catch (e) {
+    console.error('[STARTUP] Failed to write cookies.txt from environment variable:', e.message);
+  }
+}
 
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3001;
