@@ -75,7 +75,7 @@ function buildInfoArgs(url, platform) {
     '--skip-download',
     '--socket-timeout', '15',
     '--extractor-retries', '5',
-    ...(platform === 'tiktok' ? ['--impersonate', 'Chrome'] : []),
+    ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : []),
   ];
 
   // Platform-specific flags
@@ -96,8 +96,8 @@ function buildInfoArgs(url, platform) {
   // Strip query parameters from TikTok URLs — they cause yt-dlp extraction failures
   const cleanUrl = platform === 'tiktok' ? url.split('?')[0] : url;
 
-  // Dynamic User-Agent to reduce blocking (except on TikTok where we use --impersonate)
-  if (platform !== 'tiktok') {
+  // Dynamic User-Agent to reduce blocking (except on TikTok/YouTube where we use --impersonate)
+  if (!['tiktok', 'youtube'].includes(platform)) {
     args.push('--user-agent', getRandomUserAgent());
   }
 
@@ -110,7 +110,7 @@ function buildInfoArgs(url, platform) {
  */
 function buildDownloadArgs(url, platform, formatId, type = 'video') {
   const args = ['-q', '--no-playlist', '--extractor-retries', '5',
-    ...(platform === 'tiktok' ? ['--impersonate', 'Chrome'] : [])];
+    ...(['tiktok', 'youtube'].includes(platform) ? ['--impersonate', 'Chrome'] : [])];
 
   if (type === 'audio') {
     // Audio extraction mode
@@ -152,8 +152,8 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
     args.push('--cookies', cookiesPath);
   }
 
-  // Dynamic User-Agent (except on TikTok where we use --impersonate)
-  if (platform !== 'tiktok') {
+  // Dynamic User-Agent (except on TikTok/YouTube where we use --impersonate)
+  if (!['tiktok', 'youtube'].includes(platform)) {
     args.push('--user-agent', getRandomUserAgent());
   }
   args.push(platform === 'tiktok' ? url.split('?')[0] : url);
