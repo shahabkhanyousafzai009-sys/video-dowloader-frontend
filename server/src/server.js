@@ -74,10 +74,39 @@ app.use('/api/download', downloadRouter);
 
 // ===== Health Check =====
 app.get('/api/health', (req, res) => {
+  const cookiesEnvSet = !!process.env.COOKIES_CONTENT;
+  const cookiesFileEnv = process.env.COOKIES_FILE || null;
+  let cookiesFileExists = false;
+  let cookiesFileSize = 0;
+  if (cookiesFileEnv) {
+    try {
+      const stat = fs.statSync(cookiesFileEnv);
+      cookiesFileExists = true;
+      cookiesFileSize = stat.size;
+    } catch (e) { /* file doesn't exist */ }
+  }
+  // Also check /tmp/cookies.txt directly
+  let tmpCookiesExists = false;
+  let tmpCookiesSize = 0;
+  try {
+    const stat = fs.statSync('/tmp/cookies.txt');
+    tmpCookiesExists = true;
+    tmpCookiesSize = stat.size;
+  } catch (e) { /* not found */ }
+
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
+    cookies: {
+      envVarSet: cookiesEnvSet,
+      envVarLength: cookiesEnvSet ? process.env.COOKIES_CONTENT.length : 0,
+      cookiesFilePath: cookiesFileEnv,
+      cookiesFileExists,
+      cookiesFileSize,
+      tmpCookiesExists,
+      tmpCookiesSize,
+    }
   });
 });
 
