@@ -134,7 +134,17 @@ function streamDirect(url, formatId, headers, res) {
 
   proc.on('close', (code) => {
     if (code !== 0) {
+      if (fs.existsSync(tmpFile)) {
+        try { fs.unlinkSync(tmpFile); } catch (e) { }
+      }
       console.error(`[yt-dlp stream] Failed with code ${code}`);
+
+      // If we used a specific format, retry with default format first!
+      if (formatId && formatId !== 'best') {
+        console.log(`[yt-dlp stream] Retrying download with default format for: ${url}`);
+        return streamDirect(url, null, headers, res);
+      }
+
       if (platform === 'tiktok') {
         console.log(`[yt-dlp stream] Attempting TikTok download fallback for: ${url}`);
         return handleTikTokDownloadFallback(url, formatId, headers, res);
@@ -209,6 +219,7 @@ function streamMerged(url, formatSpec, headers, res, req) {
   }, 30000);
 
   const tiktokArgs = platform === 'tiktok' ? ['--impersonate', 'Chrome', '--extractor-retries', '5'] : [];
+  const youtubeArgs = platform === 'youtube' ? ['--extractor-args', 'youtube:player-client=ios,android'] : [];
   const proc = spawn(YTDLP_BIN, [
     '-q',
     '--no-playlist',
@@ -217,6 +228,7 @@ function streamMerged(url, formatSpec, headers, res, req) {
     '--ffmpeg-location', FFMPEG_BIN,
     '-o', tmpFile,
     ...tiktokArgs,
+    ...youtubeArgs,
     ...(process.env.PROXY_URL ? ['--proxy', process.env.PROXY_URL] : []),
     ...(getCookiesPath() ? ['--cookies', getCookiesPath()] : []),
     url,
@@ -242,11 +254,9 @@ function streamMerged(url, formatSpec, headers, res, req) {
   proc.on('close', (code) => {
     if (code !== 0) {
       console.error(`[yt-dlp merge] Exited with code ${code}`);
-      if (!res.headersSent) {
-        res.status(500).json({ success: false, error: 'Download failed. The video may be unavailable or restricted.' });
-      }
       clean();
-      return;
+      console.log(`[yt-dlp merge] Retrying with default best combined stream for: ${url}`);
+      return streamDirect(url, null, headers, res);
     }
 
     if (!fs.existsSync(tmpFile)) {
@@ -308,11 +318,13 @@ function streamAudio(url, quality = '192', headers, res) {
   const audioBitrate = quality === '320' ? '320k' : '192k';
 
   const tiktokArgs = platform === 'tiktok' ? ['--impersonate', 'Chrome', '--extractor-retries', '5'] : [];
+  const youtubeArgs = platform === 'youtube' ? ['--extractor-args', 'youtube:player-client=ios,android'] : [];
   const ytdlp = spawn(YTDLP_BIN, [
     '--no-playlist',
     '-f', 'ba/b',
     '-o', '-',
     ...tiktokArgs,
+    ...youtubeArgs,
     ...(process.env.PROXY_URL ? ['--proxy', process.env.PROXY_URL] : []),
     ...(getCookiesPath() ? ['--cookies', getCookiesPath()] : []),
     url,
