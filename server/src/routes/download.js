@@ -86,7 +86,15 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
         }, res, req);
       }
     } else {
-      processes = streamDirect(url, formatId || 'best', {
+      const { detectPlatform } = require('../utils/platforms');
+      const platform = detectPlatform(url);
+      
+      let targetFormatId = formatId;
+      if (['instagram', 'tiktok'].includes(platform)) {
+        targetFormatId = null;
+      }
+
+      processes = streamDirect(url, targetFormatId || 'best', {
         contentType: 'video/mp4',
         contentDisposition: `attachment; filename="${asciiTitle}.mp4"; filename*=UTF-8''${encodedTitle}.mp4`,
       }, res);
