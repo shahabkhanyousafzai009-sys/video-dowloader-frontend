@@ -12,7 +12,7 @@ To deploy SnapLoad in production, we decouple the application into two parts:
 graph LR
     User([User's Browser]) -->|Loads Frontend| Vercel[Vercel CDN]
     User -->|API Requests & Downloads| Backend[Railway / Render]
-    Backend -->|Spawns Deno / yt-dlp / FFmpeg| Platforms[(YouTube / TikTok / Instagram)]
+    Backend -->|Spawns Deno / yt-dlp / FFmpeg| Platforms[(TikTok / Instagram)]
 ```
 
 ---

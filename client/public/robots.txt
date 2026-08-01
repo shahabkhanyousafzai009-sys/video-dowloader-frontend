@@ -1,2 +1,31 @@
+# SnapLoad Robots Policy & Sitemap
 User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://snapload.app/sitemap.xml
+
+# AI & Search Engine Agents
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
 Allow: /

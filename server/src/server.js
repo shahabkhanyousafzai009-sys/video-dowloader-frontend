@@ -47,7 +47,7 @@ if (process.env.COOKIES_CONTENT) {
     console.error('[STARTUP] Failed to write cookies.txt:', e.message);
   }
 } else {
-  console.log('[STARTUP] No COOKIES_CONTENT env var found. YouTube may block requests.');
+  console.log('[STARTUP] No COOKIES_CONTENT env var found.');
 }
 
 

@@ -1,0 +1,21 @@
+# SnapLoad — Universal Video Downloader
+
+> SnapLoad is a fast, privacy-focused online web application for downloading videos from TikTok and Instagram in 1080p HD or 4K quality, as well as extracting MP3 audio tracks directly without requiring registration or account setup.
+
+## Key Capabilities & Features
+- **TikTok Downloader**: Download TikTok videos without watermark in HD MP4 format.
+- **Instagram Downloader**: Download Instagram Reels, video posts, and IGTV clips.
+- **MP3 Audio Converter**: Extract high-bitrate MP3 audio tracks directly from video links.
+- **Lightning Fast Direct Stream**: Direct video streaming with zero server-side storage.
+- **100% Free & Private**: No registration, no cookies, no personal data collection.
+
+## Supported URL Patterns
+- TikTok: `https://www.tiktok.com/@username/video/123456789...` or `https://vm.tiktok.com/...`
+- Instagram: `https://www.instagram.com/reel/...`, `https://www.instagram.com/p/...`
+
+## Technical Details
+- Frontend Framework: React + TypeScript + Vite + TailwindCSS.
+- API Endpoints: REST API for video metadata extraction (`/api/info`) and direct media stream (`/api/download`).
+
+## Terms & Usage Guidelines
+SnapLoad is built for personal archival and fair-use content downloads. Users are responsible for complying with content copyright regulations.

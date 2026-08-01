@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Deno (recommended JS runtime for yt-dlp YouTube signature solving)
+# Install Deno (recommended JS runtime for yt-dlp extractor solving)
 RUN curl -fsSL https://deno.land/install.sh | sh \
     && mv /root/.deno/bin/deno /usr/local/bin/deno \
     && chmod +x /usr/local/bin/deno \

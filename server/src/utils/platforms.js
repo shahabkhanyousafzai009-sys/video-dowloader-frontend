@@ -19,13 +19,6 @@ function getCookiesPath() {
 
 // Supported platform patterns
 const PLATFORM_PATTERNS = {
-  youtube: [
-    /^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]+/i,
-    /^https?:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+/i,
-    /^https?:\/\/youtu\.be\/[\w-]+/i,
-    /^https?:\/\/(www\.)?youtube\.com\/embed\/[\w-]+/i,
-    /^https?:\/\/(music\.)?youtube\.com\/watch\?v=[\w-]+/i,
-  ],
   tiktok: [
     /^https?:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+/i,
     /^https?:\/\/(vm|vt|v)\.tiktok\.com\/[\w-]+/i,
@@ -39,7 +32,6 @@ const PLATFORM_PATTERNS = {
 
 // Platform display metadata
 const PLATFORM_META = {
-  youtube: { name: 'YouTube', color: '#FF0000', icon: '▶' },
   tiktok: { name: 'TikTok', color: '#00F2EA', icon: '♪' },
   instagram: { name: 'Instagram', color: '#E4405F', icon: '📷' },
 };
@@ -80,12 +72,6 @@ function buildInfoArgs(url, platform) {
     ...(platform === 'youtube' ? ['--extractor-args', 'youtube:player-client=ios,android'] : []),
   ];
 
-  // For YouTube: use default client with cookies (no impersonation — it conflicts with cookie sessions)
-
-  // Platform-specific flags
-  // Note: No --format flag for info mode — --dump-json already dumps all formats.
-  // Adding --format here can trigger extraction issues with some platforms (e.g. TikTok).
-
   // Add proxy if configured
   if (process.env.PROXY_URL) {
     args.push('--proxy', process.env.PROXY_URL);
@@ -100,8 +86,8 @@ function buildInfoArgs(url, platform) {
   // Strip query parameters from TikTok and Instagram URLs — they cause yt-dlp extraction failures
   const cleanUrl = ['tiktok', 'instagram'].includes(platform) ? url.split('?')[0] : url;
 
-  // Dynamic User-Agent to reduce blocking (except on TikTok/YouTube where we use --impersonate)
-  if (!['tiktok', 'youtube'].includes(platform)) {
+  // Dynamic User-Agent to reduce blocking (except on TikTok where we use --impersonate)
+  if (platform !== 'tiktok') {
     args.push('--user-agent', getRandomUserAgent());
   }
 
@@ -129,9 +115,6 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
     } else {
       // Platform-specific format selection
       switch (platform) {
-        case 'youtube':
-          args.push('-f', 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b');
-          break;
         case 'tiktok':
           // Remove TikTok watermark and prefer MP4
           args.push('--tiktok-no-watermark');
@@ -158,8 +141,8 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
     args.push('--cookies', cookiesPath);
   }
 
-  // Dynamic User-Agent (except on TikTok/YouTube where we use --impersonate)
-  if (!['tiktok', 'youtube'].includes(platform)) {
+  // Dynamic User-Agent (except on TikTok where we use --impersonate)
+  if (platform !== 'tiktok') {
     args.push('--user-agent', getRandomUserAgent());
   }
   args.push(['tiktok', 'instagram'].includes(platform) ? url.split('?')[0] : url);
@@ -214,9 +197,9 @@ function parseFormats(info, platform) {
     const hasVideo = f.vcodec && f.vcodec !== 'none';
     const hasAudio = f.acodec && f.acodec !== 'none';
 
-    // For YouTube, TikTok, and Instagram, include both merged and split formats
+    // For TikTok and Instagram, include both merged and split formats
     // For other platforms, prefer merged formats
-    if (!['youtube', 'tiktok', 'instagram'].includes(platform) && !hasVideo) continue;
+    if (!['tiktok', 'instagram'].includes(platform) && !hasVideo) continue;
 
     const qualityLabel = guessQualityLabel(height);
     const key = `${height}-${hasVideo}-${hasAudio}-${f.ext}`;

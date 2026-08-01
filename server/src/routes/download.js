@@ -78,7 +78,7 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
           contentDisposition: `attachment; filename="${asciiTitle}.mp4"; filename*=UTF-8''${encodedTitle}.mp4`,
         }, res);
       } else {
-        // YouTube and others: merge specific video format + best audio
+        // Merge specific video format + best audio
         const formatSpec = `${formatId}+bestaudio[ext=m4a]`;
         processes = streamMerged(url, formatSpec, {
           contentType: 'video/mp4',

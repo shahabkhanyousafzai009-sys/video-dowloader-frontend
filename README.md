@@ -1,6 +1,6 @@
 # 🎬 SnapLoad — Universal Video Downloader
 
-A production-ready web application for downloading videos from **YouTube**, **TikTok** (watermark-free), and **Instagram** (Reels & Posts). Built with streaming architecture — no files stored on the server.
+A production-ready web application for downloading videos from **TikTok** (watermark-free) and **Instagram** (Reels & Posts). Built with streaming architecture — no files stored on the server.
 
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
@@ -11,8 +11,8 @@ A production-ready web application for downloading videos from **YouTube**, **Ti
 
 ## ✨ Features
 
-- 📥 **Multi-platform**: YouTube, TikTok, Instagram
-- 🎬 **Up to 4K quality** with format merging (video + audio via FFmpeg)
+- 📥 **Multi-platform**: TikTok, Instagram
+- 🎬 **HD quality** video downloading
 - 🎵 **MP3 audio extraction** at 320kbps / 192kbps
 - 🌊 **Direct streaming** — chunked transfer encoding, zero server storage
 - 🌙 **Dark/Light mode** with glassmorphism UI
@@ -32,7 +32,7 @@ A production-ready web application for downloading videos from **YouTube**, **Ti
 | **npm** | 9+ | ✅ |
 | **yt-dlp** | 2025.11.12+ | ✅ |
 | **FFmpeg** | 6+ | ✅ |
-| **Deno** | 1.40+ | ✅ (for YouTube) |
+| **Deno** | 1.40+ | ✅ |
 
 ### Install Prerequisites (Windows)
 

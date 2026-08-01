@@ -34,7 +34,7 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-6">
-            {['YouTube', 'TikTok', 'Instagram'].map((platform) => (
+            {['TikTok', 'Instagram'].map((platform) => (
               <span key={platform} className="text-[10px] font-medium uppercase tracking-wider
                                               dark:text-white/20 text-dark-300">
                 {platform}

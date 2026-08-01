@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: snapload-video-downloader
+    runtime: docker
+    repo: https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME # Replace with your GitHub repo URL
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: ALLOWED_ORIGINS
+        value: "*"

@@ -78,7 +78,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
               onChange={(e) => setUrl(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder="Paste a video link from YouTube, TikTok, or Instagram..."
+              placeholder="Paste a video link from TikTok or Instagram..."
               className={`flex-1 min-w-0 px-2 sm:px-4 py-3 sm:py-4 bg-transparent border-none outline-none
                          text-sm sm:text-base font-medium
                          dark:text-white text-dark-900
@@ -167,7 +167,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
         {!url.trim() && (
           <div className="mt-3 flex items-center justify-center gap-3 animate-fade-in">
             <span className="text-xs dark:text-white/30 text-dark-400">Supports:</span>
-            {['YouTube', 'TikTok', 'Instagram'].map((name) => (
+            {['TikTok', 'Instagram'].map((name) => (
               <span key={name} className="text-xs dark:text-white/40 text-dark-500 
                                           dark:bg-white/5 bg-dark-200/50
                                           px-2.5 py-1 rounded-full font-medium">

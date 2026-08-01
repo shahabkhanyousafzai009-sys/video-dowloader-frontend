@@ -13,13 +13,6 @@ export interface PlatformInfo {
 }
 
 const PLATFORM_META: Record<string, PlatformInfo> = {
-  youtube: {
-    id: 'youtube',
-    name: 'YouTube',
-    color: '#FF0000',
-    gradient: 'linear-gradient(135deg, #FF0000, #CC0000)',
-    icon: '▶️',
-  },
   tiktok: {
     id: 'tiktok',
     name: 'TikTok',

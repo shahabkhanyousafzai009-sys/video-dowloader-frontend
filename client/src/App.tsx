@@ -72,7 +72,7 @@ function App() {
             <span className="gradient-text">From Anywhere</span>
           </h1>
           <p className="mt-4 text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
-            Paste a link from YouTube, TikTok, or Instagram.
+            Paste a link from TikTok or Instagram.
             Choose your quality and download instantly — no signup required.
           </p>
         </div>
@@ -158,51 +158,149 @@ function App() {
 
         {/* Features Section (when idle) */}
         {!videoInfo && !loading && !error && (
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in"
-               style={{ animationDelay: '0.3s' }}>
-            {[
-              {
-                icon: (
-                  <svg className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                ),
-                title: 'Lightning Fast',
-                desc: 'Direct streaming — no waiting for server-side processing',
-              },
-              {
-                icon: (
-                  <svg className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                ),
-                title: 'Secure & Private',
-                desc: 'No files stored on our servers. Downloads stream directly to you',
-              },
-              {
-                icon: (
-                  <svg className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                ),
-                title: 'Up to 4K Quality',
-                desc: 'Download in the highest available quality including 4K & 1080p',
-              },
-            ].map((feature) => (
-              <div key={feature.title} className="glass-subtle rounded-2xl p-5 text-center
-                                                   hover:bg-white/[0.08] transition-all duration-300
-                                                   group cursor-default">
-                <div className="mb-3 group-hover:scale-110 transition-transform duration-300">
-                  {feature.icon}
+          <div className="space-y-12">
+            {/* Features Grid */}
+            <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in"
+                 style={{ animationDelay: '0.3s' }}>
+              {[
+                {
+                  icon: (
+                    <svg className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  ),
+                  title: 'Lightning Fast',
+                  desc: 'Direct streaming — no waiting for server-side processing',
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  ),
+                  title: 'Secure & Private',
+                  desc: 'No files stored on our servers. Downloads stream directly to you',
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  ),
+                  title: 'Up to 4K Quality',
+                  desc: 'Download in the highest available quality including 4K & 1080p',
+                },
+              ].map((feature) => (
+                <div key={feature.title} className="glass-subtle rounded-2xl p-5 text-center
+                                                     hover:bg-white/[0.08] transition-all duration-300
+                                                     group cursor-default">
+                  <div className="mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-sm font-bold dark:text-white text-dark-900 mb-1.5">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs dark:text-white/35 text-dark-400 leading-relaxed">
+                    {feature.desc}
+                  </p>
                 </div>
-                <h3 className="text-sm font-bold dark:text-white text-dark-900 mb-1.5">
-                  {feature.title}
-                </h3>
-                <p className="text-xs dark:text-white/35 text-dark-400 leading-relaxed">
-                  {feature.desc}
-                </p>
+              ))}
+            </div>
+
+            {/* SEO Content Section: Supported Platforms & Features */}
+            <section className="glass rounded-2xl p-6 sm:p-8 space-y-6 text-left border border-white/10 dark:border-white/5">
+              <h2 className="text-2xl font-bold dark:text-white text-dark-900 tracking-tight">
+                Universal HD Video & MP3 Downloader
+              </h2>
+              <p className="text-sm dark:text-white/70 text-dark-600 leading-relaxed">
+                SnapLoad is a free, high-speed online video downloader designed to help you save HD videos and extract audio tracks effortlessly from leading social video platforms like TikTok and Instagram.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                <article className="space-y-2">
+                  <h3 className="text-base font-semibold text-primary-400 dark:text-primary-300">
+                    TikTok Downloader (No Watermark)
+                  </h3>
+                  <p className="text-xs dark:text-white/50 text-dark-500 leading-relaxed">
+                    Download full HD TikTok videos without logo watermarks. Save trending clips, dances, and tutorials directly to your device.
+                  </p>
+                </article>
+
+                <article className="space-y-2">
+                  <h3 className="text-base font-semibold text-accent-400 dark:text-accent-300">
+                    Instagram Reels & Posts
+                  </h3>
+                  <p className="text-xs dark:text-white/50 text-dark-500 leading-relaxed">
+                    Save Instagram Reels, video posts, and IGTV clips in original crisp 1080p high definition with audio included.
+                  </p>
+                </article>
+
+                <article className="space-y-2">
+                  <h3 className="text-base font-semibold text-emerald-400 dark:text-emerald-300">
+                    MP3 Audio Extraction
+                  </h3>
+                  <p className="text-xs dark:text-white/50 text-dark-500 leading-relaxed">
+                    Convert any video link into high-bitrate MP3 audio. Ideal for saving background songs, voiceovers, and podcasts.
+                  </p>
+                </article>
               </div>
-            ))}
+
+              {/* How It Works Steps */}
+              <div className="pt-6 border-t border-white/10 dark:border-white/5 space-y-4">
+                <h3 className="text-lg font-bold dark:text-white text-dark-900">
+                  How to Download Videos Online
+                </h3>
+                <ol className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs dark:text-white/60 text-dark-600">
+                  <li className="glass-subtle p-4 rounded-xl space-y-1">
+                    <span className="font-bold text-primary-400 text-sm">1. Copy Link</span>
+                    <p>Copy the video URL from TikTok or Instagram.</p>
+                  </li>
+                  <li className="glass-subtle p-4 rounded-xl space-y-1">
+                    <span className="font-bold text-primary-400 text-sm">2. Paste URL</span>
+                    <p>Paste the link into the search box above and click Download.</p>
+                  </li>
+                  <li className="glass-subtle p-4 rounded-xl space-y-1">
+                    <span className="font-bold text-primary-400 text-sm">3. Choose Quality</span>
+                    <p>Select video resolution (1080p, 720p) or MP3 format.</p>
+                  </li>
+                </ol>
+              </div>
+
+              {/* Frequently Asked Questions */}
+              <div className="pt-6 border-t border-white/10 dark:border-white/5 space-y-4">
+                <h3 className="text-lg font-bold dark:text-white text-dark-900">
+                  Frequently Asked Questions (FAQ)
+                </h3>
+                <div className="space-y-3 text-xs">
+                  <details className="glass-subtle p-4 rounded-xl cursor-pointer group">
+                    <summary className="font-semibold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors">
+                      Is SnapLoad free to use?
+                    </summary>
+                    <p className="mt-2 dark:text-white/50 text-dark-500 leading-relaxed">
+                      Yes, SnapLoad is 100% free. There are no download limits, subscription fees, or account registration requirements.
+                    </p>
+                  </details>
+
+                  <details className="glass-subtle p-4 rounded-xl cursor-pointer group">
+                    <summary className="font-semibold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors">
+                      Can I download TikTok videos without watermark?
+                    </summary>
+                    <p className="mt-2 dark:text-white/50 text-dark-500 leading-relaxed">
+                      Yes, SnapLoad automatically parses and strips TikTok watermarks so you get clean, high-definition video files.
+                    </p>
+                  </details>
+
+                  <details className="glass-subtle p-4 rounded-xl cursor-pointer group">
+                    <summary className="font-semibold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors">
+                      Are downloaded files stored on your servers?
+                    </summary>
+                    <p className="mt-2 dark:text-white/50 text-dark-500 leading-relaxed">
+                      No. All media transfers are streamed directly to your browser without saving copies or user logs on our servers.
+                    </p>
+                  </details>
+                </div>
+              </div>
+            </section>
           </div>
         )}
       </main>

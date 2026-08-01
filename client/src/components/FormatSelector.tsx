@@ -130,7 +130,7 @@ export function FormatSelector({ suggestions, selectedIndex, onSelect }: FormatS
                     {suggestion.ext && ` · ${suggestion.ext.toUpperCase()}`}
                   </span>
 
-                  {/* Merge indicator for YouTube */}
+                  {/* Merge indicator */}
                   {suggestion.needsMerge && (
                     <span className="inline-block mt-1 text-[9px] px-1.5 py-0.5 rounded 
                                      dark:bg-white/5 bg-dark-200/50

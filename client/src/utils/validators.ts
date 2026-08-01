@@ -3,13 +3,6 @@
  */
 
 export const PLATFORM_PATTERNS: Record<string, RegExp[]> = {
-  youtube: [
-    /^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]+/i,
-    /^https?:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+/i,
-    /^https?:\/\/youtu\.be\/[\w-]+/i,
-    /^https?:\/\/(www\.)?youtube\.com\/embed\/[\w-]+/i,
-    /^https?:\/\/(music\.)?youtube\.com\/watch\?v=[\w-]+/i,
-  ],
   tiktok: [
     /^https?:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+/i,
     /^https?:\/\/(vm|vt|v)\.tiktok\.com\/[\w-]+/i,
@@ -44,6 +37,6 @@ export function isSupportedUrl(url: string): boolean {
 export function getValidationMessage(url: string): string | null {
   if (!url.trim()) return null;
   if (!isValidUrl(url)) return 'Please enter a valid URL';
-  if (!isSupportedUrl(url)) return 'Only YouTube, TikTok, and Instagram URLs are supported';
+  if (!isSupportedUrl(url)) return 'Only TikTok and Instagram URLs are supported';
   return null;
 }
