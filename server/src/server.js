@@ -57,8 +57,13 @@ const PORT = parseInt(process.env.PORT, 10) || 3001;
 // ===== Security Middleware =====
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
-  contentSecurityPolicy: false, // We serve static frontend files
+  contentSecurityPolicy: false, // Served as SPA frontend
 }));
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
 
 // ===== CORS =====
 app.use(configureCors());

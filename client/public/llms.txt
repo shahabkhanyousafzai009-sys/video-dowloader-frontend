@@ -2,6 +2,12 @@
 
 > SnapLoad is a fast, privacy-focused online web application for downloading videos from TikTok and Instagram in 1080p HD or 4K quality, as well as extracting MP3 audio tracks directly without requiring registration or account setup.
 
+## Key Links
+- [SnapLoad Web App](https://snaploaddownload.com/): Official SnapLoad Universal Video Downloader.
+- [TikTok No Watermark Downloader](https://snaploaddownload.com/): Download TikTok videos in HD without watermark.
+- [Instagram Reels Downloader](https://snaploaddownload.com/): Download Instagram Reels & video clips.
+
+
 ## Key Capabilities & Features
 - **TikTok Downloader**: Download TikTok videos without watermark in HD MP4 format.
 - **Instagram Downloader**: Download Instagram Reels, video posts, and IGTV clips.

@@ -5,7 +5,7 @@
 const cors = require('cors');
 
 function configureCors() {
-  const allowedOriginsEnv = process.env.ALLOWED_ORIGINS || 'http://localhost:5173';
+  const allowedOriginsEnv = process.env.ALLOWED_ORIGINS || 'http://localhost:5173,https://snaploaddownload.com,https://www.snaploaddownload.com,https://video-dowloader-frontend.onrender.com';
   const allowedOrigins = allowedOriginsEnv.split(',').map((o) => o.trim());
 
   return cors({

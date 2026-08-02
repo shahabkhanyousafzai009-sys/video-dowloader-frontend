@@ -32,3 +32,8 @@ server/tmp/
 # Misc
 cookies.txt
 *.tmp
+__pycache__/
+*.pyc
+page.html
+parsed_html.json
+
