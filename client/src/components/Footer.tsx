@@ -1,17 +1,55 @@
-export function Footer() {
+import React from 'react';
+import { LegalTab } from './LegalModal';
+
+interface FooterProps {
+  onOpenLegal: (tab: LegalTab) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
   return (
     <footer className="w-full mt-16 pb-8 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Disclaimer */}
+        {/* Legal & Policy Navigation Links for Google AdSense Compliance */}
+        <div className="glass-subtle rounded-xl p-4 mb-6 flex flex-wrap items-center justify-center gap-4 text-xs font-medium dark:text-white/70 text-dark-600">
+          <button
+            onClick={() => onOpenLegal('privacy')}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Privacy Policy
+          </button>
+          <span className="text-white/20">•</span>
+          <button
+            onClick={() => onOpenLegal('terms')}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Terms of Service
+          </button>
+          <span className="text-white/20">•</span>
+          <button
+            onClick={() => onOpenLegal('disclaimer')}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Disclaimer
+          </button>
+          <span className="text-white/20">•</span>
+          <button
+            onClick={() => onOpenLegal('contact')}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Contact Us
+          </button>
+        </div>
+
+        {/* Disclaimer Note */}
         <div className="glass-subtle rounded-xl p-4 mb-6">
-          <p className="text-xs dark:text-white/30 text-dark-400 text-center leading-relaxed">
+          <p className="text-xs dark:text-white/40 text-dark-500 text-center leading-relaxed">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="inline-block text-amber-500 mr-1.5 align-text-bottom">
               <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
               <line x1="12" y1="9" x2="12" y2="13"/>
               <line x1="12" y1="17" x2="12.01" y2="17"/>
             </svg>
             <strong>Disclaimer:</strong> SnapLoad is intended for downloading content you have rights to access.
-            Downloading copyrighted material without permission may violate the terms of service of the respective platforms.
+            Downloading copyrighted material without permission may violate the terms of service of respective platforms.
             We do not store any videos on our servers — all files are streamed directly to your device.
           </p>
         </div>
@@ -29,7 +67,7 @@ export function Footer() {
               </svg>
             </div>
             <span className="text-xs font-semibold dark:text-white/40 text-dark-400">
-              SnapLoad v1.0
+              SnapLoad © 2026
             </span>
           </div>
 
@@ -49,4 +87,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

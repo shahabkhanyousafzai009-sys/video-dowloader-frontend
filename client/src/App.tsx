@@ -7,6 +7,7 @@ import { DownloadButton } from './components/DownloadButton';
 import { ProgressBar } from './components/ProgressBar';
 import { ErrorMessage } from './components/ErrorMessage';
 import { Footer } from './components/Footer';
+import { LegalModal, LegalTab } from './components/LegalModal';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
@@ -15,6 +16,13 @@ function App() {
   const { videoInfo, loading, error, fetchInfo, reset: resetInfo } = useVideoInfo();
   const { downloading, progress, error: downloadError, startDownload, reset: resetDownload } = useDownload();
   const [selectedFormatIndex, setSelectedFormatIndex] = useState<number | null>(null);
+  const [isLegalOpen, setIsLegalOpen] = useState<boolean>(false);
+  const [legalTab, setLegalTab] = useState<LegalTab>('privacy');
+
+  const handleOpenLegal = useCallback((tab: LegalTab) => {
+    setLegalTab(tab);
+    setIsLegalOpen(true);
+  }, []);
 
   const handleFetchInfo = useCallback(async (url: string) => {
     setSelectedFormatIndex(null);
@@ -306,7 +314,15 @@ function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenLegal={handleOpenLegal} />
+
+      {/* Legal Modal (AdSense Policies) */}
+      <LegalModal
+        isOpen={isLegalOpen}
+        activeTab={legalTab}
+        onClose={() => setIsLegalOpen(false)}
+        onTabChange={setLegalTab}
+      />
     </div>
   );
 }
