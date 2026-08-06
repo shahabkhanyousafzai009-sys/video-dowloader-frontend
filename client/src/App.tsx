@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Header } from './components/Header';
 import { UrlInput } from './components/UrlInput';
 import { VideoPreview } from './components/VideoPreview';
@@ -12,12 +12,112 @@ import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
 
+type Platform = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'youtube';
+
+interface PlatformSEO {
+  path: string;
+  label: string;
+  title: string;
+  description: string;
+  heroHeading: string;
+  heroHighlight: string;
+  heroSub: string;
+}
+
+const PLATFORMS: Record<Platform, PlatformSEO> = {
+  all: {
+    path: '/',
+    label: 'All Platforms',
+    title: 'SnapLoad — Universal Video Downloader | TikTok, Instagram & MP3',
+    description: 'Download videos from TikTok without watermark and Instagram Reels in 1080p HD or 4K. Extract MP3 audio. Free, fast, private, and no signup required.',
+    heroHeading: 'Download Videos',
+    heroHighlight: 'From Anywhere',
+    heroSub: 'Paste a link from TikTok, Instagram, or YouTube. Choose your quality and download instantly — no signup required.',
+  },
+  tiktok: {
+    path: '/tiktok-downloader',
+    label: 'TikTok No Watermark',
+    title: 'TikTok Downloader Without Watermark HD — Free MP4 Saver | SnapLoad',
+    description: 'Download TikTok videos without watermark in full HD 1080p quality for free. Fast online TikTok video downloader, no app or account required.',
+    heroHeading: 'TikTok Downloader',
+    heroHighlight: 'Without Watermark',
+    heroSub: 'Paste your TikTok video link below to save clean, watermark-free HD videos directly to your device.',
+  },
+  instagram: {
+    path: '/instagram-downloader',
+    label: 'Instagram Reels',
+    title: 'Instagram Reels Downloader 1080p HD — Free Video Saver | SnapLoad',
+    description: 'Download Instagram Reels, videos, IGTV clips & photos in original high definition. Free online Instagram downloader for mobile and desktop.',
+    heroHeading: 'Instagram Reels & Video',
+    heroHighlight: 'Downloader HD',
+    heroSub: 'Save high-definition Instagram Reels, clips, and video posts directly to your phone or computer.',
+  },
+  mp3: {
+    path: '/mp3-downloader',
+    label: 'MP3 Converter',
+    title: 'Video to MP3 Converter Online — High Quality Audio Extraction | SnapLoad',
+    description: 'Convert video links from TikTok, Instagram & YouTube into 320kbps MP3 audio files. Free, fast audio extractor with no registration required.',
+    heroHeading: 'Video to MP3',
+    heroHighlight: 'Audio Converter',
+    heroSub: 'Extract high-bitrate MP3 audio tracks directly from TikTok, Instagram, or YouTube video links.',
+  },
+  youtube: {
+    path: '/youtube-downloader',
+    label: 'YouTube Shorts',
+    title: 'YouTube Shorts & Video Downloader 1080p HD — Free Saver | SnapLoad',
+    description: 'Download YouTube Shorts and full videos in 1080p HD, 4K or extract MP3 audio. Fast online YouTube video downloader, free and unlimited.',
+    heroHeading: 'YouTube Video & Shorts',
+    heroHighlight: 'Downloader',
+    heroSub: 'Save YouTube Shorts and full length HD videos directly to your device for offline viewing.',
+  },
+};
+
 function App() {
   const { videoInfo, loading, error, fetchInfo, reset: resetInfo } = useVideoInfo();
   const { downloading, progress, error: downloadError, startDownload, reset: resetDownload } = useDownload();
   const [selectedFormatIndex, setSelectedFormatIndex] = useState<number | null>(null);
   const [isLegalOpen, setIsLegalOpen] = useState<boolean>(false);
   const [legalTab, setLegalTab] = useState<LegalTab>('privacy');
+  const [currentPlatform, setCurrentPlatform] = useState<Platform>('all');
+
+  // Detect route path on initial mount and browser back/forward buttons
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const pathname = window.location.pathname;
+      const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
+        (key) => PLATFORMS[key].path === pathname
+      ) || 'all';
+      setCurrentPlatform(matchedKey);
+    };
+
+    handleLocationChange();
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
+
+  // Update dynamic document title, meta tags, and canonical link for SEO
+  useEffect(() => {
+    const seo = PLATFORMS[currentPlatform];
+    document.title = seo.title;
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', seo.description);
+    }
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', `https://snaploaddownload.com${seo.path === '/' ? '' : seo.path}`);
+    }
+  }, [currentPlatform]);
+
+  const handlePlatformChange = (key: Platform) => {
+    setCurrentPlatform(key);
+    const targetPath = PLATFORMS[key].path;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+  };
 
   const handleOpenLegal = useCallback((tab: LegalTab) => {
     setLegalTab(tab);
@@ -58,6 +158,8 @@ function App() {
     ? videoInfo?.suggestions[selectedFormatIndex]
     : null;
 
+  const currentSEO = PLATFORMS[currentPlatform];
+
   return (
     <div className="min-h-screen relative">
       {/* Animated background */}
@@ -72,16 +174,35 @@ function App() {
 
       {/* Main Content */}
       <main className="relative z-10 max-w-3xl mx-auto px-4 pb-8">
-        {/* Hero Section */}
-        <div className="text-center mt-8 mb-10 animate-fade-in">
-          <h1 className="text-4xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
-            Download Videos
+        {/* Platform Quick Switcher Pills for SEO Routing */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-4 mb-6 animate-fade-in">
+          {(Object.keys(PLATFORMS) as Platform[]).map((key) => {
+            const isSelected = currentPlatform === key;
+            return (
+              <button
+                key={key}
+                onClick={() => handlePlatformChange(key)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow scale-105'
+                    : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
+                }`}
+              >
+                {PLATFORMS[key].label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Dynamic SEO Hero Section */}
+        <div className="text-center mb-8 animate-fade-in">
+          <h1 className="text-3xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
+            {currentSEO.heroHeading}
             <br />
-            <span className="gradient-text">From Anywhere</span>
+            <span className="gradient-text">{currentSEO.heroHighlight}</span>
           </h1>
-          <p className="mt-4 text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
-            Paste a link from TikTok or Instagram.
-            Choose your quality and download instantly — no signup required.
+          <p className="mt-4 text-sm sm:text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
+            {currentSEO.heroSub}
           </p>
         </div>
 
@@ -168,8 +289,7 @@ function App() {
         {!videoInfo && !loading && !error && (
           <div className="space-y-12">
             {/* Features Grid */}
-            <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in"
-                 style={{ animationDelay: '0.3s' }}>
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in">
               {[
                 {
                   icon: (
@@ -215,13 +335,13 @@ function App() {
               ))}
             </div>
 
-            {/* SEO Content Section: Supported Platforms & Features */}
+            {/* SEO Keyword & Guide Content Section */}
             <section className="glass rounded-2xl p-6 sm:p-8 space-y-6 text-left border border-white/10 dark:border-white/5">
               <h2 className="text-2xl font-bold dark:text-white text-dark-900 tracking-tight">
-                Universal HD Video & MP3 Downloader
+                Universal HD Video &amp; MP3 Downloader
               </h2>
               <p className="text-sm dark:text-white/70 text-dark-600 leading-relaxed">
-                SnapLoad is a free, high-speed online video downloader designed to help you save HD videos and extract audio tracks effortlessly from leading social video platforms like TikTok and Instagram.
+                SnapLoad is a free, high-speed online video downloader designed to help you save HD videos and extract audio tracks effortlessly from leading social video platforms like TikTok, Instagram, and YouTube.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
@@ -236,7 +356,7 @@ function App() {
 
                 <article className="space-y-2">
                   <h3 className="text-base font-semibold text-accent-400 dark:text-accent-300">
-                    Instagram Reels & Posts
+                    Instagram Reels &amp; Posts
                   </h3>
                   <p className="text-xs dark:text-white/50 text-dark-500 leading-relaxed">
                     Save Instagram Reels, video posts, and IGTV clips in original crisp 1080p high definition with audio included.
@@ -261,7 +381,7 @@ function App() {
                 <ol className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs dark:text-white/60 text-dark-600">
                   <li className="glass-subtle p-4 rounded-xl space-y-1">
                     <span className="font-bold text-primary-400 text-sm">1. Copy Link</span>
-                    <p>Copy the video URL from TikTok or Instagram.</p>
+                    <p>Copy the video URL from TikTok, Instagram, or YouTube.</p>
                   </li>
                   <li className="glass-subtle p-4 rounded-xl space-y-1">
                     <span className="font-bold text-primary-400 text-sm">2. Paste URL</span>
@@ -269,7 +389,7 @@ function App() {
                   </li>
                   <li className="glass-subtle p-4 rounded-xl space-y-1">
                     <span className="font-bold text-primary-400 text-sm">3. Choose Quality</span>
-                    <p>Select video resolution (1080p, 720p) or MP3 format.</p>
+                    <p>Select video resolution (1080p HD, 720p) or MP3 audio format.</p>
                   </li>
                 </ol>
               </div>
@@ -280,7 +400,7 @@ function App() {
                   Frequently Asked Questions (FAQ)
                 </h3>
                 <div className="space-y-3 text-xs">
-                  <details className="glass-subtle p-4 rounded-xl cursor-pointer group">
+                  <details className="glass-subtle p-4 rounded-xl cursor-pointer group" open>
                     <summary className="font-semibold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors">
                       Is SnapLoad free to use?
                     </summary>
@@ -295,6 +415,15 @@ function App() {
                     </summary>
                     <p className="mt-2 dark:text-white/50 text-dark-500 leading-relaxed">
                       Yes, SnapLoad automatically parses and strips TikTok watermarks so you get clean, high-definition video files.
+                    </p>
+                  </details>
+
+                  <details className="glass-subtle p-4 rounded-xl cursor-pointer group">
+                    <summary className="font-semibold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors">
+                      Can I convert videos to MP3 audio files?
+                    </summary>
+                    <p className="mt-2 dark:text-white/50 text-dark-500 leading-relaxed">
+                      Yes! Select the MP3 format option after pasting your video link to extract crisp audio tracks directly.
                     </p>
                   </details>
 
