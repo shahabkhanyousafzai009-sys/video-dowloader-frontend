@@ -1,0 +1,50 @@
+{
+  "name": "SnapLoad — Universal Video Downloader",
+  "short_name": "SnapLoad",
+  "description": "Download TikTok videos without watermark, Instagram Reels in HD 1080p, and convert videos to MP3 audio files.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F0F23",
+  "theme_color": "#0F0F23",
+  "lang": "en",
+  "categories": ["utilities", "multimedia", "entertainment"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "100x100 192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "TikTok Downloader",
+      "short_name": "TikTok",
+      "description": "Download TikTok videos without watermark",
+      "url": "/tiktok-downloader",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Instagram Reels",
+      "short_name": "Instagram",
+      "description": "Download Instagram Reels & Clips in HD",
+      "url": "/instagram-downloader",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "MP3 Converter",
+      "short_name": "MP3",
+      "description": "Convert video links to MP3 audio",
+      "url": "/mp3-downloader",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    }
+  ]
+}

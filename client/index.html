@@ -48,6 +48,13 @@
     <meta name="twitter:image" content="https://snaploaddownload.com/og-image.png" />
     <meta name="twitter:site" content="@SnapLoadApp" />
 
+    <!-- Progressive Web App (PWA) -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SnapLoad" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
     <!-- Theme Color -->
     <meta name="theme-color" content="#0F0F23" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f8f9fa" media="(prefers-color-scheme: light)" />
@@ -150,5 +157,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((reg) => console.log('[PWA] Service Worker registered:', reg.scope))
+            .catch((err) => console.log('[PWA] Service Worker registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>

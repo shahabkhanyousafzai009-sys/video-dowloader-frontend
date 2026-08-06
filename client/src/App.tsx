@@ -8,6 +8,7 @@ import { ProgressBar } from './components/ProgressBar';
 import { ErrorMessage } from './components/ErrorMessage';
 import { Footer } from './components/Footer';
 import { LegalModal, LegalTab } from './components/LegalModal';
+import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
@@ -452,6 +453,9 @@ function App() {
         onClose={() => setIsLegalOpen(false)}
         onTabChange={setLegalTab}
       />
+
+      {/* PWA Install Banner */}
+      <InstallPwaBanner />
     </div>
   );
 }
