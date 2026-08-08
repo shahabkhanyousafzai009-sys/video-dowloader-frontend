@@ -2,14 +2,17 @@ import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { isValidUrl, isSupportedUrl, getValidationMessage } from '../utils/validators';
 import { detectPlatform } from '../utils/platforms';
 import { PlatformBadge } from './PlatformBadge';
+import { Language, TRANSLATIONS } from '../utils/i18n';
 
 interface UrlInputProps {
   onSubmit: (url: string) => void;
   loading: boolean;
   onReset: () => void;
+  currentLanguage?: Language;
 }
 
-export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
+export function UrlInput({ onSubmit, loading, onReset, currentLanguage = 'en' }: UrlInputProps) {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
   const [url, setUrl] = useState('');
   const [validationMsg, setValidationMsg] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -78,7 +81,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
               onChange={(e) => setUrl(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder="Paste a video link from TikTok or Instagram..."
+              placeholder={t.input.placeholder}
               className={`flex-1 min-w-0 px-2 sm:px-4 py-3 sm:py-4 bg-transparent border-none outline-none
                          text-sm sm:text-base font-medium
                          dark:text-white text-dark-900
@@ -124,7 +127,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
                     <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
                   </svg>
-                  <span className="hidden sm:inline">Paste</span>
+                  <span className="hidden sm:inline">{t.input.paste}</span>
                 </span>
               </button>
 
@@ -143,7 +146,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
                   </svg>
                 )}
                 <span className={loading ? "" : "hidden sm:inline"}>
-                  {loading ? 'Fetching...' : 'Fetch'}
+                  {loading ? t.input.fetching : t.input.fetch}
                 </span>
               </button>
             </div>
@@ -166,7 +169,7 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
         {/* Supported platforms hint & Quick Sample Chips */}
         {!url.trim() && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 animate-fade-in">
-            <span className="text-xs dark:text-white/40 text-dark-500 font-medium">Try Sample:</span>
+            <span className="text-xs dark:text-white/40 text-dark-500 font-medium">{t.input.trySample}</span>
             <button
               type="button"
               onClick={() => {

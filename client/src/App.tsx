@@ -259,6 +259,14 @@ function App() {
         <div className="flex flex-wrap items-center justify-center gap-2 mt-4 mb-6 animate-fade-in">
           {(Object.keys(PLATFORMS) as Platform[]).map((key) => {
             const isSelected = currentPlatform === key;
+            const labelText =
+              key === 'all'
+                ? t.nav.home
+                : key === 'tiktok'
+                ? t.nav.tiktok
+                : key === 'instagram'
+                ? t.nav.instagram
+                : t.nav.mp3;
             return (
               <button
                 key={key}
@@ -269,7 +277,7 @@ function App() {
                     : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
                 }`}
               >
-                {PLATFORMS[key].label}
+                {labelText}
               </button>
             );
           })}
@@ -278,21 +286,18 @@ function App() {
         {/* Dynamic SEO Hero Section */}
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
-            {currentSEO.heroHeading}
+            {t.hero.heading}
             <br />
-            <span className="gradient-text">{currentSEO.heroHighlight}</span>
+            <span className="gradient-text">{t.hero.highlight}</span>
           </h1>
           <p className="mt-4 text-sm sm:text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
-            {currentSEO.heroSub}
+            {t.hero.sub}
           </p>
         </div>
 
-        {/* Top Ad Banner Container (AdSense Slot 1) */}
-        <AdBanner slot="top-banner-slot" label="Advertisement" />
-
         {/* URL Input */}
         <div className="mb-8">
-          <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} />
+          <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
         </div>
 
         {/* Recent Downloads History */}
