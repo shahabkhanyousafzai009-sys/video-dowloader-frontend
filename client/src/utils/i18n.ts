@@ -1,17 +1,20 @@
 export type Language = 'en' | 'de' | 'fr' | 'es';
+export type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3';
+
+export interface HeroTranslation {
+  heading: string;
+  highlight: string;
+  sub: string;
+}
 
 export interface TranslationSchema {
   nav: {
-    home: string;
+    all: string;
     tiktok: string;
     instagram: string;
     mp3: string;
   };
-  hero: {
-    heading: string;
-    highlight: string;
-    sub: string;
-  };
+  hero: Record<PlatformKey, HeroTranslation>;
   input: {
     placeholder: string;
     paste: string;
@@ -33,15 +36,32 @@ export interface TranslationSchema {
 export const TRANSLATIONS: Record<Language, TranslationSchema> = {
   en: {
     nav: {
-      home: 'All Platforms',
+      all: 'All Platforms',
       tiktok: 'TikTok No Watermark',
       instagram: 'Instagram Reels',
       mp3: 'MP3 Converter',
     },
     hero: {
-      heading: 'Download Videos',
-      highlight: 'From Anywhere',
-      sub: 'Paste a link from TikTok or Instagram. Choose your quality and download instantly — no signup required.',
+      all: {
+        heading: 'Download Videos',
+        highlight: 'From Anywhere',
+        sub: 'Paste a link from TikTok or Instagram. Choose your quality and download instantly — no signup required.',
+      },
+      tiktok: {
+        heading: 'TikTok Downloader',
+        highlight: 'Without Watermark',
+        sub: 'Paste your TikTok video link below to save clean, watermark-free HD videos directly to your device.',
+      },
+      instagram: {
+        heading: 'Instagram Reels & Video',
+        highlight: 'Downloader HD',
+        sub: 'Save high-definition Instagram Reels, clips, and video posts directly to your phone or computer.',
+      },
+      mp3: {
+        heading: 'Video to MP3',
+        highlight: 'Audio Converter',
+        sub: 'Extract high-bitrate MP3 audio tracks directly from TikTok or Instagram video links.',
+      },
     },
     input: {
       placeholder: 'Paste a video link from TikTok or Instagram...',
@@ -62,15 +82,32 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
   },
   de: {
     nav: {
-      home: 'Alle Plattformen',
+      all: 'Alle Plattformen',
       tiktok: 'TikTok Ohne Wasserzeichen',
       instagram: 'Instagram Reels',
       mp3: 'MP3 Konverter',
     },
     hero: {
-      heading: 'Videos Herunterladen',
-      highlight: 'Von Überall',
-      sub: 'Fügen Sie einen Link von TikTok oder Instagram ein. Wählen Sie die Qualität und laden Sie sofort herunter.',
+      all: {
+        heading: 'Videos Herunterladen',
+        highlight: 'Von Überall',
+        sub: 'Fügen Sie einen Link von TikTok oder Instagram ein. Wählen Sie die Qualität und laden Sie sofort herunter.',
+      },
+      tiktok: {
+        heading: 'TikTok Downloader',
+        highlight: 'Ohne Wasserzeichen',
+        sub: 'Fügen Sie Ihren TikTok-Videolink unten ein, um saubere, wasserzeichenfreie HD-Videos direkt auf Ihrem Gerät zu speichern.',
+      },
+      instagram: {
+        heading: 'Instagram Reels & Video',
+        highlight: 'Downloader HD',
+        sub: 'Speichern Sie hochauflösende Instagram Reels, Clips und Videobeiträge direkt auf Ihrem Telefon oder Computer.',
+      },
+      mp3: {
+        heading: 'Video zu MP3',
+        highlight: 'Audio Konverter',
+        sub: 'Extrahierten Sie erstklassige MP3-Audiospuren direkt aus TikTok- oder Instagram-Videolinks.',
+      },
     },
     input: {
       placeholder: 'Videolink von TikTok oder Instagram einfügen...',
@@ -91,15 +128,32 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
   },
   fr: {
     nav: {
-      home: 'Toutes les Plateformes',
+      all: 'Toutes les Plateformes',
       tiktok: 'TikTok Sans Filigrane',
       instagram: 'Instagram Reels',
       mp3: 'Convertisseur MP3',
     },
     hero: {
-      heading: 'Télécharger des Vidéos',
-      highlight: 'N\'importe Où',
-      sub: 'Collez un lien TikTok ou Instagram. Choisissez la qualité et téléchargez instantanément.',
+      all: {
+        heading: 'Télécharger des Vidéos',
+        highlight: 'N\'importe Où',
+        sub: 'Collez un lien TikTok ou Instagram. Choisissez la qualité et téléchargez instantanément.',
+      },
+      tiktok: {
+        heading: 'Téléchargeur TikTok',
+        highlight: 'Sans Filigrane',
+        sub: 'Collez votre lien vidéo TikTok ci-dessous pour enregistrer des vidéos HD propres sans filigrane.',
+      },
+      instagram: {
+        heading: 'Instagram Reels & Vidéo',
+        highlight: 'Téléchargeur HD',
+        sub: 'Enregistrez des Reels, clips et vidéos Instagram haute définition directement sur votre téléphone ou ordinateur.',
+      },
+      mp3: {
+        heading: 'Vidéo en MP3',
+        highlight: 'Convertisseur Audio',
+        sub: 'Extrayez des pistes audio MP3 haute qualité directement à partir de liens vidéo TikTok ou Instagram.',
+      },
     },
     input: {
       placeholder: 'Collez un lien vidéo de TikTok ou Instagram...',
@@ -120,15 +174,32 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
   },
   es: {
     nav: {
-      home: 'Todas las Plataformas',
+      all: 'Todas las Plataformas',
       tiktok: 'TikTok Sin Marca de Agua',
       instagram: 'Instagram Reels',
       mp3: 'Convertidor MP3',
     },
     hero: {
-      heading: 'Descargar Videos',
-      highlight: 'Desde Cualquier Lugar',
-      sub: 'Pega un enlace de TikTok o Instagram. Elige la calidad y descarga al instante.',
+      all: {
+        heading: 'Descargar Videos',
+        highlight: 'Desde Cualquier Lugar',
+        sub: 'Pega un enlace de TikTok o Instagram. Elige la calidad y descarga al instante.',
+      },
+      tiktok: {
+        heading: 'Descargador de TikTok',
+        highlight: 'Sin Marca de Agua',
+        sub: 'Pega tu enlace de video de TikTok a continuación para guardar videos HD limpios sin marca de agua.',
+      },
+      instagram: {
+        heading: 'Instagram Reels y Video',
+        highlight: 'Descargador HD',
+        sub: 'Guarda Reels, clips y publicaciones de video de Instagram en alta definición directamente en tu teléfono o computadora.',
+      },
+      mp3: {
+        heading: 'Video a MP3',
+        highlight: 'Convertidor de Audio',
+        sub: 'Extrae pistas de audio MP3 de alta calidad directamente desde enlaces de video de TikTok o Instagram.',
+      },
     },
     input: {
       placeholder: 'Pega un enlace de video de TikTok o Instagram...',

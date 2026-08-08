@@ -259,14 +259,7 @@ function App() {
         <div className="flex flex-wrap items-center justify-center gap-2 mt-4 mb-6 animate-fade-in">
           {(Object.keys(PLATFORMS) as Platform[]).map((key) => {
             const isSelected = currentPlatform === key;
-            const labelText =
-              key === 'all'
-                ? t.nav.home
-                : key === 'tiktok'
-                ? t.nav.tiktok
-                : key === 'instagram'
-                ? t.nav.instagram
-                : t.nav.mp3;
+            const labelText = t.nav[key] || PLATFORMS[key].label;
             return (
               <button
                 key={key}
@@ -286,12 +279,12 @@ function App() {
         {/* Dynamic SEO Hero Section */}
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
-            {t.hero.heading}
+            {(t.hero[currentPlatform] || t.hero.all).heading}
             <br />
-            <span className="gradient-text">{t.hero.highlight}</span>
+            <span className="gradient-text">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
           </h1>
           <p className="mt-4 text-sm sm:text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
-            {t.hero.sub}
+            {(t.hero[currentPlatform] || t.hero.all).sub}
           </p>
         </div>
 
