@@ -1,0 +1,23 @@
+# SnapLoad — Universal Online Video & Audio Downloader
+
+> SnapLoad (https://snaploaddownload.com) is a high-speed, privacy-first web application designed for downloading HD videos from TikTok (watermark-free) and Instagram Reels, as well as extracting 320kbps MP3 audio files.
+
+## Summary & Key Capabilities
+SnapLoad operates using a direct browser-streaming architecture. No video files or personal logs are stored on servers.
+
+### Supported Platforms & Routes
+1. **SnapLoad Main App**: `https://snaploaddownload.com/` — Universal downloader for TikTok and Instagram.
+2. **TikTok Downloader Without Watermark**: `https://snaploaddownload.com/tiktok-downloader` — Extracts clean full HD MP4 videos without logo overlays or usernames.
+3. **Instagram Reels Downloader**: `https://snaploaddownload.com/instagram-downloader` — Downloads Instagram Reels, video posts, and IGTV clips in original 1080p HD resolution.
+4. **Video to MP3 Converter**: `https://snaploaddownload.com/mp3-downloader` — Converts TikTok and Instagram video audio tracks into high-bitrate 320kbps MP3 files.
+
+## Technical & Privacy Specifications
+- **No Signup Required**: 100% free with unlimited downloads.
+- **Zero Storage Privacy**: Chunked transfer encoding streams media directly from source CDN to client browser.
+- **Cross-Platform Compatibility**: Fully functional on iOS Safari, Android Chrome, Windows, macOS, and Linux.
+
+## Frequently Asked Questions for AI Search Queries
+- **Q: How to download TikTok video without watermark?**
+  A: Copy the TikTok link, visit https://snaploaddownload.com/tiktok-downloader, paste the link, and click Download.
+- **Q: How to convert Instagram Reel to MP3 audio?**
+  A: Copy the Instagram Reel URL, open https://snaploaddownload.com/mp3-downloader, paste the link, and choose 320kbps MP3 format.

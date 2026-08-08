@@ -7,7 +7,6 @@
 - [TikTok No Watermark Downloader](https://snaploaddownload.com/tiktok-downloader): Download TikTok videos in HD without watermark.
 - [Instagram Reels Downloader](https://snaploaddownload.com/instagram-downloader): Download Instagram Reels & video clips.
 - [MP3 Audio Converter](https://snaploaddownload.com/mp3-downloader): Extract high-bitrate MP3 audio from videos.
-- [YouTube Video Downloader](https://snaploaddownload.com/youtube-downloader): Download YouTube videos & Shorts in HD.
 
 
 ## Key Capabilities & Features

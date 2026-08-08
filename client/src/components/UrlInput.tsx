@@ -163,17 +163,36 @@ export function UrlInput({ onSubmit, loading, onReset }: UrlInputProps) {
           </p>
         )}
 
-        {/* Supported platforms hint */}
+        {/* Supported platforms hint & Quick Sample Chips */}
         {!url.trim() && (
-          <div className="mt-3 flex items-center justify-center gap-3 animate-fade-in">
-            <span className="text-xs dark:text-white/30 text-dark-400">Supports:</span>
-            {['TikTok', 'Instagram'].map((name) => (
-              <span key={name} className="text-xs dark:text-white/40 text-dark-500 
-                                          dark:bg-white/5 bg-dark-200/50
-                                          px-2.5 py-1 rounded-full font-medium">
-                {name}
-              </span>
-            ))}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 animate-fade-in">
+            <span className="text-xs dark:text-white/40 text-dark-500 font-medium">Try Sample:</span>
+            <button
+              type="button"
+              onClick={() => {
+                const sample = 'https://www.tiktok.com/@scout2015/video/6718335390841097478';
+                setUrl(sample);
+                if (isValidUrl(sample)) onSubmit(sample);
+              }}
+              className="text-xs dark:text-primary-300 text-primary-600 
+                         dark:bg-primary-500/10 bg-primary-50
+                         hover:bg-primary-500/20 px-3 py-1 rounded-full font-semibold transition-all border border-primary-500/20"
+            >
+              🎵 TikTok Video
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const sample = 'https://www.instagram.com/reel/C8_12345678/';
+                setUrl(sample);
+                if (isValidUrl(sample)) onSubmit(sample);
+              }}
+              className="text-xs dark:text-primary-300 text-primary-600 
+                         dark:bg-primary-500/10 bg-primary-50
+                         hover:bg-primary-500/20 px-3 py-1 rounded-full font-semibold transition-all border border-primary-500/20"
+            >
+              📸 Instagram Reel
+            </button>
           </div>
         )}
       </form>

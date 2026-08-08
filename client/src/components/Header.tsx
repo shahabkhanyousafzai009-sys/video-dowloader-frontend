@@ -1,6 +1,13 @@
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageSelector } from './LanguageSelector';
+import { Language } from '../utils/i18n';
 
-export function Header() {
+interface HeaderProps {
+  currentLanguage: Language;
+  onLanguageChange: (lang: Language) => void;
+}
+
+export function Header({ currentLanguage, onLanguageChange }: HeaderProps) {
   return (
     <header className="w-full animate-fade-in">
       <div className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
@@ -29,7 +36,8 @@ export function Header() {
         </div>
 
         {/* Right side controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <LanguageSelector currentLanguage={currentLanguage} onLanguageChange={onLanguageChange} />
           <ThemeToggle />
         </div>
       </div>
