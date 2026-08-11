@@ -229,7 +229,11 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                   </div>
                   <div>
                     <h4 className="font-bold dark:text-white text-dark-900">General Support &amp; Privacy Queries</h4>
-                    <p className="text-xs dark:text-white/60 text-dark-500">support@snaploaddownload.com</p>
+                    <p className="text-xs text-primary-400 font-medium font-mono">
+                      <a href="mailto:shahabkhanyousafzai009@gmail.com" className="hover:underline">
+                        shahabkhanyousafzai009@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </div>
 
@@ -239,7 +243,11 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                   </div>
                   <div>
                     <h4 className="font-bold dark:text-white text-dark-900">Copyright &amp; DMCA Agent</h4>
-                    <p className="text-xs dark:text-white/60 text-dark-500">dmca@snaploaddownload.com</p>
+                    <p className="text-xs text-accent-400 font-medium font-mono">
+                      <a href="mailto:shahabkhanyousafzai009@gmail.com" className="hover:underline">
+                        shahabkhanyousafzai009@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </div>
               </div>
