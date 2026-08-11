@@ -456,8 +456,16 @@ function getTikWMInfo(url) {
           const formats = [];
           const videoData = json.data;
 
+          // TikWM POST API returns relative paths like /video/media/play/123.mp4
+          // Prepend base URL so download route can resolve them
+          const tikwmUrl = (path) => {
+            if (!path) return path;
+            if (path.startsWith('http')) return path;
+            return `https://www.tikwm.com${path.startsWith('/') ? '' : '/'}${path}`;
+          };
+
           if (videoData.play) {
-            const base64Url = Buffer.from(videoData.play).toString('base64url');
+            const base64Url = Buffer.from(tikwmUrl(videoData.play)).toString('base64url');
             formats.push({
               formatId: `fb_${base64Url}`,
               ext: 'mp4',
@@ -474,7 +482,7 @@ function getTikWMInfo(url) {
           }
 
           if (videoData.hdplay) {
-            const base64Url = Buffer.from(videoData.hdplay).toString('base64url');
+            const base64Url = Buffer.from(tikwmUrl(videoData.hdplay)).toString('base64url');
             formats.push({
               formatId: `fb_${base64Url}`,
               ext: 'mp4',
@@ -491,7 +499,7 @@ function getTikWMInfo(url) {
           }
 
           if (videoData.wmplay) {
-            const base64Url = Buffer.from(videoData.wmplay).toString('base64url');
+            const base64Url = Buffer.from(tikwmUrl(videoData.wmplay)).toString('base64url');
             formats.push({
               formatId: `fb_${base64Url}`,
               ext: 'mp4',
@@ -508,7 +516,7 @@ function getTikWMInfo(url) {
           }
 
           if (videoData.music) {
-            const base64Url = Buffer.from(videoData.music).toString('base64url');
+            const base64Url = Buffer.from(tikwmUrl(videoData.music)).toString('base64url');
             formats.push({
               formatId: `fb_${base64Url}`,
               ext: 'mp3',
