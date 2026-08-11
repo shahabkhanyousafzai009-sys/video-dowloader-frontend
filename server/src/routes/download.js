@@ -118,7 +118,8 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
 });
 
 /**
- * Stream fallback video URLs while handling 301/302 redirects seamlessly
+ * Stream fallback video URLs while handling 301/302 redirects seamlessly.
+ * Uses domain-aware headers so TikWM, Lovetik, and TikTok CDNs all receive correct Referer.
  */
 function streamFallbackWithRedirects(targetUrl, res, depth = 0) {
   if (depth > 5) {
@@ -132,28 +133,62 @@ function streamFallbackWithRedirects(targetUrl, res, depth = 0) {
   const parsed = new URL(targetUrl);
   const client = parsed.protocol === 'https:' ? https : http;
 
+  // Domain-aware headers — TikWM needs tikwm.com referer, TikTok CDN needs tiktok.com
+  const isTikWM = parsed.hostname.includes('tikwm.com');
+  const isLovetik = parsed.hostname.includes('lovetik.com');
+  const referer = isTikWM ? 'https://www.tikwm.com/' :
+                  isLovetik ? 'https://lovetik.com/' :
+                  'https://www.tiktok.com/';
+  const origin = isTikWM ? 'https://www.tikwm.com' :
+                 isLovetik ? 'https://lovetik.com' :
+                 'https://www.tiktok.com';
+
   const reqOptions = {
     hostname: parsed.hostname,
     port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
     path: parsed.pathname + parsed.search,
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-      'Referer': 'https://www.tiktok.com/',
+      'Accept': '*/*',
+      'Referer': referer,
+      'Origin': origin,
     },
   };
 
+  console.log(`[fallback stream] Streaming from ${parsed.hostname}${parsed.pathname} (depth=${depth})`);
+
   const req = client.get(reqOptions, (streamRes) => {
+    // Follow redirects
     if (streamRes.statusCode >= 300 && streamRes.statusCode < 400 && streamRes.headers.location) {
       let redirectUrl = streamRes.headers.location;
       if (!redirectUrl.startsWith('http')) {
         redirectUrl = new URL(redirectUrl, targetUrl).toString();
       }
+      console.log(`[fallback stream] Following ${streamRes.statusCode} redirect -> ${redirectUrl.substring(0, 120)}...`);
       return streamFallbackWithRedirects(redirectUrl, res, depth + 1);
     }
 
+    // Handle error responses
+    if (streamRes.statusCode >= 400) {
+      let errorBody = '';
+      streamRes.on('data', (chunk) => { errorBody += chunk.toString().substring(0, 200); });
+      streamRes.on('end', () => {
+        console.error(`[fallback stream] HTTP ${streamRes.statusCode} from ${parsed.hostname}: ${errorBody.substring(0, 200)}`);
+        if (!res.headersSent) {
+          res.status(502).json({ success: false, error: `Media server returned ${streamRes.statusCode}` });
+        }
+      });
+      return;
+    }
+
+    // Success — pipe media to client
     if (streamRes.headers['content-length']) {
       res.setHeader('Content-Length', streamRes.headers['content-length']);
     }
+    if (streamRes.headers['content-type'] && !res.headersSent) {
+      // Preserve original content type if not already set
+    }
+    console.log(`[fallback stream] Streaming ${streamRes.headers['content-length'] || 'unknown'} bytes from ${parsed.hostname}`);
     streamRes.pipe(res);
   });
 
@@ -161,6 +196,14 @@ function streamFallbackWithRedirects(targetUrl, res, depth = 0) {
     console.error(`[fallback stream] Error: ${err.message}`);
     if (!res.headersSent) {
       res.status(500).json({ success: false, error: 'Failed to stream video' });
+    }
+  });
+
+  req.setTimeout(30000, () => {
+    console.error(`[fallback stream] Timeout streaming from ${parsed.hostname}`);
+    try { req.destroy(); } catch (e) { }
+    if (!res.headersSent) {
+      res.status(504).json({ success: false, error: 'Media stream timeout' });
     }
   });
 
