@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { buildInfoArgs, buildDownloadArgs, detectPlatform, parseFormats, PLATFORM_META } = require('./platforms');
+const { buildInfoArgs, buildDownloadArgs, detectPlatform, parseFormats, PLATFORM_META, resolveShortUrl } = require('./platforms');
 
 function getCookiesPath() {
   if (process.env.COOKIES_FILE) {
@@ -15,7 +15,8 @@ function getCookiesPath() {
 }
 
 const YTDLP_BIN = process.env.YTDLP_PATH || 'yt-dlp';
-const FFMPEG_BIN = process.env.FFMPEG_PATH || (() => {
+const FFMPEG_BIN = (() => {
+  if (process.env.FFMPEG_PATH) return process.env.FFMPEG_PATH;
   try {
     const ffmpegStatic = require('ffmpeg-static');
     return ffmpegStatic;
@@ -24,7 +25,8 @@ const FFMPEG_BIN = process.env.FFMPEG_PATH || (() => {
   }
 })();
 
-function getVideoInfo(url) {
+async function getVideoInfo(rawUrl) {
+  const url = await resolveShortUrl(rawUrl);
   const platform = detectPlatform(url);
   if (!platform) {
     return Promise.reject(new Error('Unsupported platform'));

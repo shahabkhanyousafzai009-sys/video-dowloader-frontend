@@ -246,6 +246,64 @@ function guessQualityLabel(height) {
   return '144p';
 }
 
+/**
+ * Resolve shortened TikTok / Instagram mobile redirect URLs (vt.tiktok.com, vm.tiktok.com)
+ * to full video permalinks before passing to extractors
+ */
+function resolveShortUrl(url, depth = 0) {
+  return new Promise((resolve) => {
+    if (!url || typeof url !== 'string' || depth > 5) return resolve(url);
+
+    const isShort = /^https?:\/\/(vm|vt|v)\.tiktok\.com\/[\w-]+/i.test(url) ||
+                    /^https?:\/\/(www\.)?tiktok\.com\/t\/[\w-]+/i.test(url) ||
+                    /^https?:\/\/(www\.)?instagr\.am\//i.test(url);
+
+    if (!isShort) return resolve(url);
+
+    try {
+      const http = require('http');
+      const https = require('https');
+      const parsed = new URL(url);
+      const client = parsed.protocol === 'https:' ? https : http;
+
+      const options = {
+        hostname: parsed.hostname,
+        port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
+        path: parsed.pathname + parsed.search,
+        method: 'HEAD',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+        },
+      };
+
+      const req = client.request(options, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          let redirectUrl = res.headers.location;
+          if (!redirectUrl.startsWith('http')) {
+            redirectUrl = new URL(redirectUrl, url).toString();
+          }
+          console.log(`[url resolver] Expanded short link (${url}) -> ${redirectUrl}`);
+          return resolve(resolveShortUrl(redirectUrl, depth + 1));
+        }
+        resolve(url);
+      });
+
+      req.on('error', (err) => {
+        console.warn(`[url resolver] Error expanding URL ${url}: ${err.message}`);
+        resolve(url);
+      });
+
+      req.setTimeout(4000, () => {
+        try { req.destroy(); } catch (e) { }
+        resolve(url);
+      });
+      req.end();
+    } catch (e) {
+      resolve(url);
+    }
+  });
+}
+
 module.exports = {
   PLATFORM_PATTERNS,
   PLATFORM_META,
@@ -254,4 +312,5 @@ module.exports = {
   buildInfoArgs,
   buildDownloadArgs,
   parseFormats,
+  resolveShortUrl,
 };

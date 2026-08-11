@@ -65,6 +65,8 @@ const qualityColors: Record<string, string> = {
   '480p': 'from-slate-400 to-slate-500',
   '360p': 'from-stone-400 to-stone-500',
   'MP3 Audio': 'from-pink-400 to-rose-500',
+  'No Watermark': 'from-cyan-400 to-blue-500',
+  'Watermark': 'from-purple-400 to-indigo-500',
 };
 
 export function FormatSelector({ suggestions, selectedIndex, onSelect }: FormatSelectorProps) {
