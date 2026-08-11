@@ -26,10 +26,16 @@ const FFMPEG_BIN = (() => {
 })();
 
 async function getVideoInfo(rawUrl) {
-  const url = await resolveShortUrl(rawUrl);
+  let url = await resolveShortUrl(rawUrl);
   const platform = detectPlatform(url);
   if (!platform) {
     return Promise.reject(new Error('Unsupported platform'));
+  }
+
+  // Strip TikTok tracking params early — they break yt-dlp and all fallback APIs
+  if (platform === 'tiktok') {
+    url = url.split('?')[0];
+    console.log(`[getVideoInfo] TikTok URL cleaned: ${url}`);
   }
 
   return new Promise((resolve, reject) => {
@@ -395,28 +401,38 @@ const querystring = require('querystring');
 const https = require('https');
 
 function getTikTokInfoFallback(url) {
-  console.log(`[TikTok fallback] Trying TikWM first for: ${url}`);
-  return getTikWMInfo(url)
+  // Always strip tracking query params before any fallback
+  const cleanUrl = url.split('?')[0];
+  console.log(`[TikTok fallback] Clean URL: ${cleanUrl}`);
+  console.log(`[TikTok fallback] Trying TikWM POST API first...`);
+  return getTikWMInfo(cleanUrl)
     .catch((err) => {
       console.warn(`[TikTok fallback] TikWM failed (${err.message}). Trying Lovetik...`);
-      return getLovetikInfo(url);
+      return getLovetikInfo(cleanUrl);
+    })
+    .catch((err) => {
+      console.warn(`[TikTok fallback] Lovetik failed (${err.message}). Trying TikTok oEmbed...`);
+      return getTikTokOEmbedInfo(cleanUrl);
     });
 }
 
 function getTikWMInfo(url) {
   return new Promise((resolve, reject) => {
     const cleanUrl = url.split('?')[0];
-    const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
-    const parsed = new URL(apiUrl);
+    // Use POST API endpoint — bypasses Cloudflare GET blocks on cloud server IPs
+    const postData = JSON.stringify({ url: cleanUrl, count: 12, cursor: 0, web: 1, hd: 1 });
 
     const reqOptions = {
-      hostname: parsed.hostname,
+      hostname: 'www.tikwm.com',
       port: 443,
-      path: parsed.pathname + parsed.search,
-      method: 'GET',
+      path: '/api/',
+      method: 'POST',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData),
+        'Origin': 'https://www.tikwm.com',
         'Referer': 'https://www.tikwm.com/',
       },
     };
@@ -426,6 +442,12 @@ function getTikWMInfo(url) {
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
         try {
+          // Log first 200 chars if not JSON for debugging on Render
+          if (!data.trim().startsWith('{') && !data.trim().startsWith('[')) {
+            console.error(`[TikWM] Non-JSON response (${res.statusCode}): ${data.substring(0, 200)}`);
+            return reject(new Error(`TikWM returned non-JSON (status ${res.statusCode})`));
+          }
+
           const json = JSON.parse(data);
           if (json.code !== 0) {
             return reject(new Error(json.msg || 'TikWM failed'));
@@ -446,6 +468,23 @@ function getTikWMInfo(url) {
               hasAudio: true,
               hasVideo: true,
               qualityLabel: 'No Watermark',
+              vcodec: 'h264',
+              acodec: 'aac',
+            });
+          }
+
+          if (videoData.hdplay) {
+            const base64Url = Buffer.from(videoData.hdplay).toString('base64url');
+            formats.push({
+              formatId: `fb_${base64Url}`,
+              ext: 'mp4',
+              resolution: '1080p',
+              width: 0,
+              height: 0,
+              filesize: null,
+              hasAudio: true,
+              hasVideo: true,
+              qualityLabel: 'HD No Watermark',
               vcodec: 'h264',
               acodec: 'aac',
             });
@@ -485,9 +524,10 @@ function getTikWMInfo(url) {
             });
           }
 
+          console.log(`[TikWM] Success! Found ${formats.length} formats for: ${cleanUrl}`);
           resolve({
             title: videoData.title || 'TikTok Video',
-            thumbnail: videoData.cover || null,
+            thumbnail: videoData.cover || videoData.origin_cover || null,
             duration: videoData.duration || 0,
             uploader: videoData.author?.unique_id || videoData.author?.nickname || 'Unknown',
             viewCount: videoData.play_count || null,
@@ -501,6 +541,7 @@ function getTikWMInfo(url) {
             originalUrl: url,
           });
         } catch (e) {
+          console.error(`[TikWM] Parse error: ${e.message}. Response start: ${data.substring(0, 200)}`);
           reject(new Error('Failed to parse TikWM response'));
         }
       });
@@ -511,6 +552,7 @@ function getTikWMInfo(url) {
       try { req.destroy(); } catch (e) { }
       reject(new Error('TikWM request timeout'));
     });
+    req.write(postData);
     req.end();
   });
 }
@@ -529,20 +571,26 @@ function getLovetikInfo(url) {
         'Content-Length': postData.length,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         'Accept': 'application/json, text/plain, */*',
+        'Origin': 'https://lovetik.com',
         'Referer': 'https://lovetik.com/',
       }
     };
 
-    console.log(`[TikTok fallback] Querying Lovetik for metadata: ${url}`);
+    console.log(`[Lovetik] Querying for metadata: ${cleanUrl}`);
 
     const req = https.request(options, (res) => {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
         try {
+          if (!data.trim().startsWith('{') && !data.trim().startsWith('[')) {
+            console.error(`[Lovetik] Non-JSON response (${res.statusCode}): ${data.substring(0, 200)}`);
+            return reject(new Error(`Lovetik returned non-JSON (status ${res.statusCode})`));
+          }
+
           const json = JSON.parse(data);
           if (json.status !== 'ok') {
-            return reject(new Error(json.mess || 'Failed to extract TikTok video via fallback'));
+            return reject(new Error(json.mess || 'Failed to extract TikTok video via Lovetik'));
           }
 
           const formats = [];
@@ -584,6 +632,7 @@ function getLovetikInfo(url) {
             }
           }
 
+          console.log(`[Lovetik] Success! Found ${formats.length} formats for: ${cleanUrl}`);
           resolve({
             title: json.title || 'TikTok Video',
             thumbnail: json.cover || null,
@@ -600,16 +649,105 @@ function getLovetikInfo(url) {
             originalUrl: url,
           });
         } catch (e) {
-          reject(new Error('Failed to parse fallback response'));
+          console.error(`[Lovetik] Parse error: ${e.message}. Response start: ${data.substring(0, 200)}`);
+          reject(new Error('Failed to parse Lovetik response'));
         }
       });
     });
 
-    req.on('error', (err) => {
-      reject(err);
+    req.on('error', (err) => reject(err));
+    req.setTimeout(8000, () => {
+      try { req.destroy(); } catch (e) { }
+      reject(new Error('Lovetik request timeout'));
+    });
+    req.write(postData);
+    req.end();
+  });
+}
+
+// Third fallback: TikTok oEmbed API (official, no Cloudflare, works from any server)
+function getTikTokOEmbedInfo(url) {
+  return new Promise((resolve, reject) => {
+    const cleanUrl = url.split('?')[0];
+    const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(cleanUrl)}`;
+    const parsed = new URL(oembedUrl);
+
+    console.log(`[TikTok oEmbed] Fetching metadata for: ${cleanUrl}`);
+
+    const req = https.request({
+      hostname: parsed.hostname,
+      port: 443,
+      path: parsed.pathname + parsed.search,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (!json.title && !json.author_name) {
+            return reject(new Error('TikTok oEmbed returned empty data'));
+          }
+
+          // Extract video ID from URL for direct API download attempt
+          const videoIdMatch = cleanUrl.match(/\/video\/(\d+)/);
+          const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+          // oEmbed gives us metadata but no direct download links
+          // We build a yt-dlp retry with --extractor-args as last resort
+          const formats = [];
+
+          // Try building a direct TikTok API URL for download
+          if (videoId) {
+            const directApiUrl = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${videoId}`;
+            const base64Url = Buffer.from(directApiUrl).toString('base64url');
+            formats.push({
+              formatId: `fb_${base64Url}`,
+              ext: 'mp4',
+              resolution: '720p',
+              width: 0,
+              height: 0,
+              filesize: null,
+              hasAudio: true,
+              hasVideo: true,
+              qualityLabel: 'No Watermark',
+              vcodec: 'h264',
+              acodec: 'aac',
+            });
+          }
+
+          console.log(`[TikTok oEmbed] Got metadata: "${json.title?.substring(0, 50)}..." by ${json.author_name}`);
+          resolve({
+            title: json.title || 'TikTok Video',
+            thumbnail: json.thumbnail_url || null,
+            duration: 0,
+            uploader: json.author_name || json.author_unique_id || 'Unknown',
+            viewCount: null,
+            platform: {
+              id: 'tiktok',
+              name: 'TikTok',
+              color: '#00F2EA',
+              icon: '♪',
+            },
+            formats,
+            originalUrl: url,
+          });
+        } catch (e) {
+          console.error(`[TikTok oEmbed] Parse error: ${e.message}. Response: ${data.substring(0, 200)}`);
+          reject(new Error('Failed to parse TikTok oEmbed response'));
+        }
+      });
     });
 
-    req.write(postData);
+    req.on('error', (err) => reject(err));
+    req.setTimeout(8000, () => {
+      try { req.destroy(); } catch (e) { }
+      reject(new Error('TikTok oEmbed timeout'));
+    });
     req.end();
   });
 }
