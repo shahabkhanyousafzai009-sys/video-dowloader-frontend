@@ -615,73 +615,93 @@ function getLovetikInfo(url) {
 }
 
 function handleTikTokDownloadFallback(url, formatId, headers, res) {
-  const querystring = require('querystring');
-  const https = require('https');
+  const cleanUrl = url.split('?')[0];
+  console.log(`[TikTok download fallback] Attempting download fallback for clean URL: ${cleanUrl}`);
 
-  const postData = querystring.stringify({ query: url });
-  const options = {
-    hostname: 'lovetik.com',
-    port: 443,
-    path: '/api/ajax/search',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'Content-Length': postData.length,
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    }
-  };
-
-  const req = https.request(options, (fallbackRes) => {
-    let data = '';
-    fallbackRes.on('data', (chunk) => { data += chunk; });
-    fallbackRes.on('end', () => {
-      try {
-        const json = JSON.parse(data);
-        if (json.status !== 'ok' || !Array.isArray(json.links)) {
-          throw new Error('Invalid fallback response');
-        }
-
-        // Prefer "No Watermark" link
-        const targetLink = json.links.find(l => l.t && l.t.includes('No Watermark')) || json.links[0];
-        if (!targetLink || !targetLink.a) {
-          throw new Error('No download link found');
-        }
-
-        console.log(`[TikTok fallback stream] Streaming from: ${targetLink.a}`);
-
-        res.setHeader('Content-Type', headers.contentType);
-        res.setHeader('Content-Disposition', headers.contentDisposition);
-
-        https.get(targetLink.a, (streamRes) => {
-          if (streamRes.headers['content-length']) {
-            res.setHeader('Content-Length', streamRes.headers['content-length']);
+  // Try TikWM direct stream first
+  getTikWMInfo(cleanUrl)
+    .then((info) => {
+      const fbFormat = info.formats.find(f => f.formatId.startsWith('fb_') && f.hasVideo) || info.formats[0];
+      if (fbFormat && fbFormat.formatId) {
+        const targetUrl = Buffer.from(fbFormat.formatId.substring(3), 'base64url').toString('utf8');
+        console.log(`[TikTok download fallback] Streaming TikWM media URL: ${targetUrl}`);
+        return pipeWithRedirects(targetUrl, headers, res);
+      }
+      throw new Error('No TikWM video stream found');
+    })
+    .catch((err) => {
+      console.warn(`[TikTok download fallback] TikWM download fallback failed (${err.message}). Trying Lovetik...`);
+      return getLovetikInfo(cleanUrl)
+        .then((info) => {
+          const fbFormat = info.formats.find(f => f.formatId.startsWith('fb_') && f.hasVideo) || info.formats[0];
+          if (fbFormat && fbFormat.formatId) {
+            const targetUrl = Buffer.from(fbFormat.formatId.substring(3), 'base64url').toString('utf8');
+            console.log(`[TikTok download fallback] Streaming Lovetik media URL: ${targetUrl}`);
+            return pipeWithRedirects(targetUrl, headers, res);
           }
-          streamRes.pipe(res);
-        }).on('error', (err) => {
-          console.error(`[fallback stream] Error: ${err.message}`);
-          if (!res.headersSent) {
-            res.status(500).json({ success: false, error: 'Failed to stream video' });
-          }
+          throw new Error('No Lovetik video stream found');
         });
-
-      } catch (e) {
-        console.error(`[TikTok download fallback] Failed to parse: ${e.message}`);
-        if (!res.headersSent) {
-          res.status(500).json({ success: false, error: 'Download failed' });
-        }
+    })
+    .catch((err) => {
+      console.error(`[TikTok download fallback] All fallbacks failed: ${err.message}`);
+      if (!res.headersSent) {
+        res.status(500).json({ success: false, error: 'Download process failed' });
       }
     });
+}
+
+function pipeWithRedirects(targetUrl, headers, res, depth = 0) {
+  if (depth > 5) {
+    console.error('[TikTok fallback stream] Too many redirects');
+    if (!res.headersSent) res.status(500).json({ success: false, error: 'Too many redirects' });
+    return;
+  }
+
+  const https = require('https');
+  const http = require('http');
+  const parsed = new URL(targetUrl);
+  const client = parsed.protocol === 'https:' ? https : http;
+
+  const reqOptions = {
+    hostname: parsed.hostname,
+    port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
+    path: parsed.pathname + parsed.search,
+    method: 'GET',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      'Referer': 'https://www.tiktok.com/',
+    },
+  };
+
+  const req = client.get(reqOptions, (streamRes) => {
+    if (streamRes.statusCode >= 300 && streamRes.statusCode < 400 && streamRes.headers.location) {
+      let redirectUrl = streamRes.headers.location;
+      if (!redirectUrl.startsWith('http')) {
+        redirectUrl = new URL(redirectUrl, targetUrl).toString();
+      }
+      return pipeWithRedirects(redirectUrl, headers, res, depth + 1);
+    }
+
+    if (!res.headersSent) {
+      res.setHeader('Content-Type', headers.contentType);
+      res.setHeader('Content-Disposition', headers.contentDisposition);
+      if (streamRes.headers['content-length']) {
+        res.setHeader('Content-Length', streamRes.headers['content-length']);
+      }
+    }
+    streamRes.pipe(res);
   });
 
   req.on('error', (err) => {
-    console.error(`[TikTok download fallback] Request error: ${err.message}`);
+    console.error(`[TikTok fallback stream] Error: ${err.message}`);
     if (!res.headersSent) {
-      res.status(500).json({ success: false, error: 'Download failed' });
+      res.status(500).json({ success: false, error: 'Failed to stream video' });
     }
   });
 
-  req.write(postData);
-  req.end();
+  res.on('close', () => {
+    try { req.destroy(); } catch (e) { }
+  });
 }
 
 function requestWithRedirect(url, options, postData = null, depth = 0) {
