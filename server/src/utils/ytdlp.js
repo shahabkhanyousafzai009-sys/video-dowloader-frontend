@@ -488,35 +488,35 @@ function getTikWMInfo(url) {
             return `https://www.tikwm.com${path.startsWith('/') ? '' : '/'}${path}`;
           };
 
-          if (videoData.play) {
-            const base64Url = Buffer.from(tikwmUrl(videoData.play)).toString('base64url');
-            formats.push({
-              formatId: `fb_${base64Url}`,
-              ext: 'mp4',
-              resolution: '720p',
-              width: 0,
-              height: 0,
-              filesize: null,
-              hasAudio: true,
-              hasVideo: true,
-              qualityLabel: 'No Watermark',
-              vcodec: 'h264',
-              acodec: 'aac',
-            });
-          }
-
           if (videoData.hdplay) {
             const base64Url = Buffer.from(tikwmUrl(videoData.hdplay)).toString('base64url');
             formats.push({
               formatId: `fb_${base64Url}`,
               ext: 'mp4',
               resolution: '1080p',
-              width: 0,
-              height: 0,
+              width: 1080,
+              height: 1920,
               filesize: null,
               hasAudio: true,
               hasVideo: true,
-              qualityLabel: 'HD No Watermark',
+              qualityLabel: 'HD No Watermark (1080p)',
+              vcodec: 'h264',
+              acodec: 'aac',
+            });
+          }
+
+          if (videoData.play) {
+            const base64Url = Buffer.from(tikwmUrl(videoData.play)).toString('base64url');
+            formats.push({
+              formatId: `fb_${base64Url}`,
+              ext: 'mp4',
+              resolution: '720p',
+              width: 720,
+              height: 1280,
+              filesize: null,
+              hasAudio: true,
+              hasVideo: true,
+              qualityLabel: 'No Watermark (720p)',
               vcodec: 'h264',
               acodec: 'aac',
             });
@@ -813,13 +813,13 @@ function getSSSTikInfo(url) {
               const formats = [{
                 formatId: `fb_${base64Url}`,
                 ext: 'mp4',
-                resolution: '720p',
-                width: 0,
-                height: 0,
+                resolution: '1080p',
+                width: 1080,
+                height: 1920,
                 filesize: null,
                 hasAudio: true,
                 hasVideo: true,
-                qualityLabel: 'No Watermark (SSSTik)',
+                qualityLabel: 'HD No Watermark (1080p)',
                 vcodec: 'h264',
                 acodec: 'aac',
               }];
