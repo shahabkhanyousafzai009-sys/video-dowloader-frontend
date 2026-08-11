@@ -406,9 +406,22 @@ function getTikTokInfoFallback(url) {
 function getTikWMInfo(url) {
   return new Promise((resolve, reject) => {
     const cleanUrl = url.split('?')[0];
-    const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+    const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+    const parsed = new URL(apiUrl);
 
-    https.get(apiUrl, (res) => {
+    const reqOptions = {
+      hostname: parsed.hostname,
+      port: 443,
+      path: parsed.pathname + parsed.search,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': 'https://www.tikwm.com/',
+      },
+    };
+
+    const req = https.request(reqOptions, (res) => {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
@@ -491,15 +504,21 @@ function getTikWMInfo(url) {
           reject(new Error('Failed to parse TikWM response'));
         }
       });
-    }).on('error', (err) => {
-      reject(err);
     });
+
+    req.on('error', (err) => reject(err));
+    req.setTimeout(8000, () => {
+      try { req.destroy(); } catch (e) { }
+      reject(new Error('TikWM request timeout'));
+    });
+    req.end();
   });
 }
 
 function getLovetikInfo(url) {
   return new Promise((resolve, reject) => {
-    const postData = querystring.stringify({ query: url.split('?')[0] });
+    const cleanUrl = url.split('?')[0];
+    const postData = querystring.stringify({ query: cleanUrl });
     const options = {
       hostname: 'lovetik.com',
       port: 443,
@@ -508,7 +527,9 @@ function getLovetikInfo(url) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Content-Length': postData.length,
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': 'https://lovetik.com/',
       }
     };
 
