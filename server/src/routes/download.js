@@ -53,6 +53,7 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
         'lovetik.com',
         'akamaized.net',
         'ssstik.io',
+        'tikcdn.io',
         'douyin.com',
         'tiktokv.com',
         'tiktokv.us',
@@ -138,11 +139,14 @@ function streamFallbackWithRedirects(targetUrl, res, depth = 0) {
   // Domain-aware headers — TikWM needs tikwm.com referer, TikTok CDN needs tiktok.com
   const isTikWM = parsed.hostname.includes('tikwm.com');
   const isLovetik = parsed.hostname.includes('lovetik.com');
+  const isSSSTik = parsed.hostname.includes('ssstik') || parsed.hostname.includes('tikcdn.io');
   const referer = isTikWM ? 'https://www.tikwm.com/' :
                   isLovetik ? 'https://lovetik.com/' :
+                  isSSSTik ? 'https://ssstik.io/' :
                   'https://www.tiktok.com/';
   const origin = isTikWM ? 'https://www.tikwm.com' :
                  isLovetik ? 'https://lovetik.com' :
+                 isSSSTik ? 'https://ssstik.io' :
                  'https://www.tiktok.com';
 
   const reqOptions = {

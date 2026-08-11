@@ -407,7 +407,11 @@ function getTikTokInfoFallback(url) {
   console.log(`[TikTok fallback] Trying TikWM POST API first...`);
   return getTikWMInfo(cleanUrl)
     .catch((err) => {
-      console.warn(`[TikTok fallback] TikWM failed (${err.message}). Trying Lovetik...`);
+      console.warn(`[TikTok fallback] TikWM failed (${err.message}). Trying SSSTik...`);
+      return getSSSTikInfo(cleanUrl);
+    })
+    .catch((err) => {
+      console.warn(`[TikTok fallback] SSSTik failed (${err.message}). Trying Lovetik...`);
       return getLovetikInfo(cleanUrl);
     })
     .catch((err) => {
@@ -725,28 +729,8 @@ function getTikTokOEmbedInfo(url) {
           const videoIdMatch = cleanUrl.match(/\/video\/(\d+)/);
           const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
-          // oEmbed gives us metadata but no direct download links
-          // We build a yt-dlp retry with --extractor-args as last resort
+          // oEmbed gives metadata only
           const formats = [];
-
-          // Try building a direct TikTok API URL for download
-          if (videoId) {
-            const directApiUrl = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${videoId}`;
-            const base64Url = Buffer.from(directApiUrl).toString('base64url');
-            formats.push({
-              formatId: `fb_${base64Url}`,
-              ext: 'mp4',
-              resolution: '720p',
-              width: 0,
-              height: 0,
-              filesize: null,
-              hasAudio: true,
-              hasVideo: true,
-              qualityLabel: 'No Watermark',
-              vcodec: 'h264',
-              acodec: 'aac',
-            });
-          }
 
           console.log(`[TikTok oEmbed] Got metadata: "${json.title?.substring(0, 50)}..." by ${json.author_name}`);
           resolve({
@@ -780,11 +764,104 @@ function getTikTokOEmbedInfo(url) {
   });
 }
 
+function getSSSTikInfo(url) {
+  return new Promise((resolve, reject) => {
+    const cleanUrl = url.split('?')[0];
+    console.log(`[SSSTik] Fetching token and media for: ${cleanUrl}`);
+
+    https.get('https://ssstik.io/en-1', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        const ttMatch = data.match(/tt:'([^']+)'/);
+        const tt = ttMatch ? ttMatch[1] : '';
+
+        const postData = querystring.stringify({
+          id: cleanUrl,
+          locale: 'en',
+          tt: tt
+        });
+
+        const req = https.request({
+          hostname: 'ssstik.io',
+          path: '/abc?url=dl',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Content-Length': Buffer.byteLength(postData),
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            'HX-Request': 'true',
+            'HX-Target': 'target',
+            'HX-Current-URL': 'https://ssstik.io/en-1',
+          }
+        }, (apiRes) => {
+          let apiData = '';
+          apiRes.on('data', c => apiData += c);
+          apiRes.on('end', () => {
+            const dlMatch = apiData.match(/href="(https:\/\/[^"]+)"[^>]*>Without watermark<\/a>/i) || apiData.match(/href="(https:\/\/[^"]+)"/i);
+            const titleMatch = apiData.match(/<p class="maintext">([^<]+)<\/p>/i);
+            const authorMatch = apiData.match(/<h2>([^<]+)<\/h2>/i);
+            const thumbMatch = apiData.match(/<img [^>]*src="(https:\/\/[^"]+)"/i);
+
+            if (dlMatch && dlMatch[1]) {
+              const directMediaUrl = dlMatch[1];
+              const base64Url = Buffer.from(directMediaUrl).toString('base64url');
+              const formats = [{
+                formatId: `fb_${base64Url}`,
+                ext: 'mp4',
+                resolution: '720p',
+                width: 0,
+                height: 0,
+                filesize: null,
+                hasAudio: true,
+                hasVideo: true,
+                qualityLabel: 'No Watermark (SSSTik)',
+                vcodec: 'h264',
+                acodec: 'aac',
+              }];
+
+              console.log(`[SSSTik] Success! Media URL extracted for: ${cleanUrl}`);
+              resolve({
+                title: titleMatch ? titleMatch[1].trim() : 'TikTok Video',
+                thumbnail: thumbMatch ? thumbMatch[1] : null,
+                duration: 0,
+                uploader: authorMatch ? authorMatch[1].trim() : 'Unknown',
+                viewCount: null,
+                platform: {
+                  id: 'tiktok',
+                  name: 'TikTok',
+                  color: '#00F2EA',
+                  icon: '♪',
+                },
+                formats,
+                originalUrl: url,
+              });
+            } else {
+              reject(new Error('SSSTik media link not found in response'));
+            }
+          });
+        });
+
+        req.on('error', (err) => reject(err));
+        req.setTimeout(10000, () => {
+          try { req.destroy(); } catch (e) { }
+          reject(new Error('SSSTik API request timeout'));
+        });
+        req.write(postData);
+        req.end();
+      });
+    }).on('error', (err) => reject(err));
+  });
+}
+
 function handleTikTokDownloadFallback(url, formatId, headers, res) {
   const cleanUrl = url.split('?')[0];
   console.log(`[TikTok download fallback] Attempting download fallback for clean URL: ${cleanUrl}`);
 
-  // Try TikWM direct stream first
   getTikWMInfo(cleanUrl)
     .then((info) => {
       const fbFormat = info.formats.find(f => f.formatId.startsWith('fb_') && f.hasVideo) || info.formats[0];
@@ -796,7 +873,20 @@ function handleTikTokDownloadFallback(url, formatId, headers, res) {
       throw new Error('No TikWM video stream found');
     })
     .catch((err) => {
-      console.warn(`[TikTok download fallback] TikWM download fallback failed (${err.message}). Trying Lovetik...`);
+      console.warn(`[TikTok download fallback] TikWM download fallback failed (${err.message}). Trying SSSTik...`);
+      return getSSSTikInfo(cleanUrl)
+        .then((info) => {
+          const fbFormat = info.formats.find(f => f.formatId.startsWith('fb_') && f.hasVideo) || info.formats[0];
+          if (fbFormat && fbFormat.formatId) {
+            const targetUrl = Buffer.from(fbFormat.formatId.substring(3), 'base64url').toString('utf8');
+            console.log(`[TikTok download fallback] Streaming SSSTik media URL: ${targetUrl}`);
+            return pipeWithRedirects(targetUrl, headers, res);
+          }
+          throw new Error('No SSSTik video stream found');
+        });
+    })
+    .catch((err) => {
+      console.warn(`[TikTok download fallback] SSSTik download fallback failed (${err.message}). Trying Lovetik...`);
       return getLovetikInfo(cleanUrl)
         .then((info) => {
           const fbFormat = info.formats.find(f => f.formatId.startsWith('fb_') && f.hasVideo) || info.formats[0];
@@ -830,11 +920,14 @@ function pipeWithRedirects(targetUrl, headers, res, depth = 0) {
 
   const isTikWM = parsed.hostname.includes('tikwm.com');
   const isLovetik = parsed.hostname.includes('lovetik.com');
+  const isSSSTik = parsed.hostname.includes('ssstik') || parsed.hostname.includes('tikcdn.io');
   const referer = isTikWM ? 'https://www.tikwm.com/' :
                   isLovetik ? 'https://lovetik.com/' :
+                  isSSSTik ? 'https://ssstik.io/' :
                   'https://www.tiktok.com/';
   const origin = isTikWM ? 'https://www.tikwm.com' :
                  isLovetik ? 'https://lovetik.com' :
+                 isSSSTik ? 'https://ssstik.io' :
                  'https://www.tiktok.com';
 
   const reqOptions = {
