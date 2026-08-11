@@ -9,8 +9,19 @@ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const theme = stored || (prefersDark ? 'dark' : 'dark'); // Default to dark
 document.documentElement.classList.add(theme);
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const mountApp = () => {
+  const rootEl = document.getElementById('root');
+  if (rootEl && !rootEl.hasChildNodes()) {
+    createRoot(rootEl).render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mountApp);
+} else {
+  mountApp();
+}

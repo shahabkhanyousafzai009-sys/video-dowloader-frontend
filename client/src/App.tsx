@@ -13,6 +13,9 @@ import { SeoContentSection } from './components/SeoContentSection';
 import { AdBanner } from './components/AdBanner';
 import { CookieConsent } from './components/CookieConsent';
 import { DownloadHistory } from './components/DownloadHistory';
+import { GuidesHub } from './components/GuidesHub';
+import { GuideDetailPage } from './components/GuideDetailPage';
+import { GUIDES_DATA } from './data/guidesData';
 import { Language, TRANSLATIONS } from './utils/i18n';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
@@ -76,6 +79,8 @@ function App() {
   const [isLegalOpen, setIsLegalOpen] = useState<boolean>(false);
   const [legalTab, setLegalTab] = useState<LegalTab>('privacy');
   const [currentPlatform, setCurrentPlatform] = useState<Platform>('all');
+  const [isGuidesHub, setIsGuidesHub] = useState<boolean>(false);
+  const [activeGuideSlug, setActiveGuideSlug] = useState<string | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('snapload_lang') as Language;
@@ -102,15 +107,50 @@ function App() {
     const handleLocationChange = () => {
       const pathname = window.location.pathname;
 
+      // Extract language prefix if present (/es, /de, /fr)
+      let lang: Language = 'en';
+      let cleanPath = pathname;
+      if (pathname.startsWith('/es')) {
+        lang = 'es';
+        cleanPath = pathname.replace('/es', '') || '/';
+      } else if (pathname.startsWith('/de')) {
+        lang = 'de';
+        cleanPath = pathname.replace('/de', '') || '/';
+      } else if (pathname.startsWith('/fr')) {
+        lang = 'fr';
+        cleanPath = pathname.replace('/fr', '') || '/';
+      }
+      setCurrentLanguage(lang);
+
       // Handle legacy /youtube-downloader link gracefully by redirecting to home
-      if (pathname === '/youtube-downloader') {
+      if (cleanPath === '/youtube-downloader') {
         window.history.replaceState({}, '', '/');
         setCurrentPlatform('all');
+        setIsGuidesHub(false);
+        setActiveGuideSlug(null);
         return;
       }
 
+      if (cleanPath === '/guides') {
+        setIsGuidesHub(true);
+        setActiveGuideSlug(null);
+        return;
+      }
+
+      if (cleanPath.startsWith('/guides/')) {
+        const slug = cleanPath.replace('/guides/', '');
+        if (GUIDES_DATA[slug]) {
+          setIsGuidesHub(false);
+          setActiveGuideSlug(slug);
+          return;
+        }
+      }
+
+      setIsGuidesHub(false);
+      setActiveGuideSlug(null);
+
       const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
-        (key) => PLATFORMS[key].path === pathname
+        (key) => PLATFORMS[key].path === cleanPath
       ) || 'all';
       setCurrentPlatform(matchedKey);
     };
@@ -122,15 +162,32 @@ function App() {
 
   // Update dynamic document title, meta tags, canonical link, hreflang tags, and BreadcrumbList JSON-LD schema for SEO
   useEffect(() => {
-    const seo = PLATFORMS[currentPlatform];
-    document.title = seo.title;
+    let title = PLATFORMS[currentPlatform].title;
+    let description = PLATFORMS[currentPlatform].description;
+    let path = PLATFORMS[currentPlatform].path;
+    let label = PLATFORMS[currentPlatform].label;
+
+    if (isGuidesHub) {
+      title = 'SnapLoad Video Downloader Tutorials & How-To Guides';
+      description = 'Step-by-step guides on how to download TikTok videos without watermark, save Instagram Reels in 1080p HD, and convert videos to MP3 audio.';
+      path = '/guides';
+      label = 'Guides';
+    } else if (activeGuideSlug && GUIDES_DATA[activeGuideSlug]) {
+      const guide = GUIDES_DATA[activeGuideSlug];
+      title = guide.title;
+      description = guide.description;
+      path = `/guides/${guide.slug}`;
+      label = guide.title;
+    }
+
+    document.title = title;
 
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', seo.description);
+      metaDesc.setAttribute('content', description);
     }
 
-    const currentUrl = `https://snaploaddownload.com${seo.path === '/' ? '' : seo.path}`;
+    const currentUrl = `https://snaploaddownload.com${path === '/' ? '' : path}`;
 
     // Canonical link
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -172,10 +229,10 @@ function App() {
           'name': 'Home',
           'item': 'https://snaploaddownload.com/'
         },
-        ...(seo.path !== '/' ? [{
+        ...(path !== '/' ? [{
           '@type': 'ListItem',
           'position': 2,
-          'name': seo.label,
+          'name': label,
           'item': currentUrl
         }] : [])
       ]
@@ -189,13 +246,38 @@ function App() {
       document.head.appendChild(scriptTag);
     }
     scriptTag.textContent = JSON.stringify(breadcrumbData);
-  }, [currentPlatform, currentLanguage]);
+  }, [currentPlatform, isGuidesHub, activeGuideSlug, currentLanguage]);
 
   const handlePlatformChange = (key: Platform) => {
+    setIsGuidesHub(false);
+    setActiveGuideSlug(null);
     setCurrentPlatform(key);
     const targetPath = PLATFORMS[key].path;
     if (window.location.pathname !== targetPath) {
       window.history.pushState({}, '', targetPath);
+    }
+  };
+
+  const handleNavigate = (targetPath: string) => {
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+    if (targetPath === '/guides') {
+      setIsGuidesHub(true);
+      setActiveGuideSlug(null);
+    } else if (targetPath.startsWith('/guides/')) {
+      const slug = targetPath.replace('/guides/', '');
+      if (GUIDES_DATA[slug]) {
+        setIsGuidesHub(false);
+        setActiveGuideSlug(slug);
+      }
+    } else {
+      setIsGuidesHub(false);
+      setActiveGuideSlug(null);
+      const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
+        (key) => PLATFORMS[key].path === targetPath
+      ) || 'all';
+      setCurrentPlatform(matchedKey);
     }
   };
 
@@ -238,7 +320,6 @@ function App() {
     ? videoInfo?.suggestions[selectedFormatIndex]
     : null;
 
-  const currentSEO = PLATFORMS[currentPlatform];
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
 
   return (
@@ -255,10 +336,10 @@ function App() {
 
       {/* Main Content */}
       <main className="relative z-10 max-w-3xl mx-auto px-4 pb-8">
-        {/* Platform Quick Switcher Pills for SEO Routing */}
+        {/* Platform & Guides Quick Switcher Pills for SEO Routing */}
         <div className="flex flex-wrap items-center justify-center gap-2 mt-4 mb-6 animate-fade-in">
           {(Object.keys(PLATFORMS) as Platform[]).map((key) => {
-            const isSelected = currentPlatform === key;
+            const isSelected = !isGuidesHub && !activeGuideSlug && currentPlatform === key;
             const labelText = t.nav[key] || PLATFORMS[key].label;
             return (
               <button
@@ -274,27 +355,57 @@ function App() {
               </button>
             );
           })}
+          <button
+            onClick={() => handleNavigate('/guides')}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+              isGuidesHub || activeGuideSlug
+                ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow scale-105'
+                : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
+            }`}
+          >
+            📖 Guides &amp; How-To
+          </button>
         </div>
 
-        {/* Dynamic SEO Hero Section */}
-        <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-3xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
-            {(t.hero[currentPlatform] || t.hero.all).heading}
-            <br />
-            <span className="gradient-text">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
-          </h1>
-          <p className="mt-4 text-sm sm:text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
-            {(t.hero[currentPlatform] || t.hero.all).sub}
-          </p>
-        </div>
+        {/* Render Guides Hub or Detail Page if Active */}
+        {isGuidesHub ? (
+          <GuidesHub onSelectGuide={(slug) => handleNavigate(`/guides/${slug}`)} />
+        ) : activeGuideSlug && GUIDES_DATA[activeGuideSlug] ? (
+          <GuideDetailPage
+            guide={GUIDES_DATA[activeGuideSlug]}
+            onBack={() => handleNavigate('/guides')}
+            onFetchInfo={handleFetchInfo}
+            loading={loading}
+            onReset={handleReset}
+          />
+        ) : (
+          <>
+            {/* Dynamic SEO Hero Section */}
+            <div className="text-center mb-8 animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-4 shadow-xs">
+                <span className="text-amber-400 tracking-widest">★★★★★</span>
+                <span className="dark:text-white/80 text-dark-800">4.9 / 5 Rating</span>
+                <span className="dark:text-white/40 text-dark-400 font-normal">(1,280+ Reviews)</span>
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
+                {(t.hero[currentPlatform] || t.hero.all).heading}
+                <br />
+                <span className="gradient-text">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
+              </h1>
+              <p className="mt-4 text-sm sm:text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
+                {(t.hero[currentPlatform] || t.hero.all).sub}
+              </p>
+            </div>
 
-        {/* URL Input */}
-        <div className="mb-8">
-          <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
-        </div>
+            {/* URL Input */}
+            <div className="mb-8">
+              <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
+            </div>
 
-        {/* Recent Downloads History */}
-        <DownloadHistory onSelectUrl={handleFetchInfo} />
+            {/* Recent Downloads History */}
+            <DownloadHistory onSelectUrl={handleFetchInfo} />
+          </>
+        )}
 
         {/* Loading Skeleton */}
         {loading && (
@@ -373,8 +484,8 @@ function App() {
           </div>
         )}
 
-        {/* Platform-Specific SEO & FAQ Content (When Idle) */}
-        {!videoInfo && !loading && !error && (
+        {/* Platform-Specific SEO & FAQ Content (When Idle on Main Downloader Routes) */}
+        {!isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (
           <>
             <SeoContentSection platform={currentPlatform} />
             <AdBanner slot="bottom-banner-slot" label="Advertisement" className="mt-12" />

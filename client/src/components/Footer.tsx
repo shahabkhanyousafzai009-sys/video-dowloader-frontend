@@ -9,6 +9,42 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
   return (
     <footer className="w-full mt-16 pb-8 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4">
+        {/* Internal Keyword Links Section for SEO Indexation & Crawling */}
+        <div className="glass-subtle rounded-xl p-4 mb-6">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-center dark:text-white/40 text-dark-500 mb-3">
+            Popular Downloader Tools &amp; Converters
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold">
+            <a
+              href="/tiktok-downloader"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+            >
+              TikTok Downloader Without Watermark
+            </a>
+            <span className="dark:text-white/10 text-dark-300">•</span>
+            <a
+              href="/instagram-downloader"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+            >
+              Instagram Reels Downloader 1080p
+            </a>
+            <span className="dark:text-white/10 text-dark-300">•</span>
+            <a
+              href="/mp3-downloader"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+            >
+              Video to MP3 Audio Converter
+            </a>
+            <span className="dark:text-white/10 text-dark-300">•</span>
+            <a
+              href="/"
+              className="dark:text-white/60 text-dark-600 hover:underline transition-all"
+            >
+              Universal Video Saver
+            </a>
+          </div>
+        </div>
+
         {/* Legal & Policy Navigation Links for Google AdSense Compliance */}
         <div className="glass-subtle rounded-xl p-4 mb-6 flex flex-wrap items-center justify-center gap-4 text-xs font-medium dark:text-white/70 text-dark-600">
           <button

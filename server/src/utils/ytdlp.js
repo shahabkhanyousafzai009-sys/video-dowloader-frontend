@@ -108,6 +108,9 @@ function streamDirect(url, formatId, headers, res) {
   const tmpFile = path.join(tmpDir, `snapload_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`);
 
   const args = buildDownloadArgs(url, platform, formatId, ext === 'mp3' ? 'audio' : 'video');
+  if (FFMPEG_BIN) {
+    args.unshift('--ffmpeg-location', FFMPEG_BIN);
+  }
   
   // Replace the stdout output path argument '-o -' with our temp file
   const oIdx = args.indexOf('-o');

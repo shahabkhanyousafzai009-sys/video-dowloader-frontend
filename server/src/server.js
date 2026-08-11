@@ -142,18 +142,21 @@ app.get('/api/health', (req, res) => {
 });
 
 // ===== Serve Static Frontend (Production) =====
+const { injectSeoMeta } = require('./utils/seoMeta');
 const clientBuildPath = path.join(__dirname, '../../client/dist');
 app.use(express.static(clientBuildPath));
 
-// SPA fallback — serve index.html for any non-API route
+// SPA fallback — serve index.html with dynamic server-side SEO & Open Graph meta injection
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) {
     return next();
   }
-  res.sendFile(path.join(clientBuildPath, 'index.html'), (err) => {
+
+  const indexPath = path.join(clientBuildPath, 'index.html');
+  fs.readFile(indexPath, 'utf8', (err, html) => {
     if (err) {
       // Frontend not built yet — show helpful message
-      res.status(200).send(`
+      return res.status(200).send(`
         <html>
           <body style="font-family: system-ui; display: flex; justify-content: center; align-items: center; height: 100vh; background: #0F0F23; color: #fff;">
             <div style="text-align: center;">
@@ -166,6 +169,10 @@ app.get('*', (req, res, next) => {
         </html>
       `);
     }
+
+    const injectedHtml = injectSeoMeta(html, req.path);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).send(injectedHtml);
   });
 });
 

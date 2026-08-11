@@ -121,10 +121,13 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
           args.push('-f', 'best[ext=mp4]/best');
           break;
         case 'instagram':
-          args.push('-f', 'bv*+ba/b');
+          // Prefer clean progressive MP4 with audio to avoid video corruption / green line artifacts
+          args.push('-f', 'best[ext=mp4]/b/best');
+          args.push('--remux-video', 'mp4');
           break;
         default:
           args.push('-f', 'best[ext=mp4]/best');
+          args.push('--remux-video', 'mp4');
       }
     }
     args.push('-o', '-');
