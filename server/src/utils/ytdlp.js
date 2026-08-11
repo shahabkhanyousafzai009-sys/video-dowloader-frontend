@@ -34,7 +34,7 @@ function getVideoInfo(url) {
     const args = buildInfoArgs(url, platform);
     const proc = spawn(YTDLP_BIN, args, {
       stdio: ['ignore', 'pipe', 'pipe'],
-      timeout: 60000,
+      timeout: platform === 'tiktok' ? 8000 : 30000,
     });
 
     let stdout = '';

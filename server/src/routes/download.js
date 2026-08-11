@@ -39,29 +39,32 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
     if (formatId && formatId.startsWith('fb_')) {
       const targetUrl = Buffer.from(formatId.substring(3), 'base64url').toString('utf8');
       
-      // Security check: only allow known media domains
+      // Security check: allow all verified TikTok and media CDN domains
       const parsed = new URL(targetUrl);
-      const allowedDomains = ['tiktokcdn.com', 'tiktokcdn-us.com', 'byteoversea.com', 'ibyteimg.com', 'muscdn.com', 'tiktok.com', 'tikwm.com', 'lovetik.com'];
+      const allowedDomains = [
+        'tiktokcdn.com',
+        'tiktokcdn-us.com',
+        'tiktokcdn-eu.com',
+        'byteoversea.com',
+        'ibyteimg.com',
+        'muscdn.com',
+        'tiktok.com',
+        'tikwm.com',
+        'lovetik.com',
+        'akamaized.net',
+        'ssstik.io',
+        'douyin.com',
+      ];
       const isAllowed = allowedDomains.some(domain => parsed.hostname.endsWith(domain));
       if (!isAllowed) {
+        console.warn(`[fallback stream] Blocked domain: ${parsed.hostname}`);
         return res.status(403).json({ error: 'Forbidden', message: 'Target domain is not allowed.' });
       }
 
-      const https = require('https');
       res.setHeader('Content-Type', type === 'audio' ? 'audio/mpeg' : 'video/mp4');
       res.setHeader('Content-Disposition', `${dispMode}; filename="${asciiTitle}.${type === 'audio' ? 'mp3' : 'mp4'}"; filename*=UTF-8''${encodedTitle}.${type === 'audio' ? 'mp3' : 'mp4'}`);
 
-      return https.get(targetUrl, (streamRes) => {
-        if (streamRes.headers['content-length']) {
-          res.setHeader('Content-Length', streamRes.headers['content-length']);
-        }
-        streamRes.pipe(res);
-      }).on('error', (err) => {
-        console.error(`[fallback stream] Error: ${err.message}`);
-        if (!res.headersSent) {
-          res.status(500).json({ success: false, error: 'Failed to stream video' });
-        }
-      });
+      return streamFallbackWithRedirects(targetUrl, res);
     }
 
     if (type === 'audio') {
@@ -113,5 +116,57 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
     }
   }
 });
+
+/**
+ * Stream fallback video URLs while handling 301/302 redirects seamlessly
+ */
+function streamFallbackWithRedirects(targetUrl, res, depth = 0) {
+  if (depth > 5) {
+    console.error('[fallback stream] Too many redirects');
+    if (!res.headersSent) res.status(500).json({ success: false, error: 'Too many redirects' });
+    return;
+  }
+
+  const https = require('https');
+  const http = require('http');
+  const parsed = new URL(targetUrl);
+  const client = parsed.protocol === 'https:' ? https : http;
+
+  const reqOptions = {
+    hostname: parsed.hostname,
+    port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
+    path: parsed.pathname + parsed.search,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      'Referer': 'https://www.tiktok.com/',
+    },
+  };
+
+  const req = client.get(reqOptions, (streamRes) => {
+    if (streamRes.statusCode >= 300 && streamRes.statusCode < 400 && streamRes.headers.location) {
+      let redirectUrl = streamRes.headers.location;
+      if (!redirectUrl.startsWith('http')) {
+        redirectUrl = new URL(redirectUrl, targetUrl).toString();
+      }
+      return streamFallbackWithRedirects(redirectUrl, res, depth + 1);
+    }
+
+    if (streamRes.headers['content-length']) {
+      res.setHeader('Content-Length', streamRes.headers['content-length']);
+    }
+    streamRes.pipe(res);
+  });
+
+  req.on('error', (err) => {
+    console.error(`[fallback stream] Error: ${err.message}`);
+    if (!res.headersSent) {
+      res.status(500).json({ success: false, error: 'Failed to stream video' });
+    }
+  });
+
+  res.on('close', () => {
+    try { req.destroy(); } catch (e) { }
+  });
+}
 
 module.exports = router;
