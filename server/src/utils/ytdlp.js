@@ -419,8 +419,8 @@ function getTikTokInfoFallback(url) {
 function getTikWMInfo(url) {
   return new Promise((resolve, reject) => {
     const cleanUrl = url.split('?')[0];
-    // Use POST API endpoint — bypasses Cloudflare GET blocks on cloud server IPs
-    const postData = JSON.stringify({ url: cleanUrl, count: 12, cursor: 0, web: 1, hd: 1 });
+    // Use form-urlencoded POST (matching real TikWM website behavior — JSON POST gets CF-blocked)
+    const postData = querystring.stringify({ url: cleanUrl, count: 12, cursor: 0, web: 1, hd: 1 });
 
     const reqOptions = {
       hostname: 'www.tikwm.com',
@@ -430,22 +430,42 @@ function getTikWMInfo(url) {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Content-Length': Buffer.byteLength(postData),
         'Origin': 'https://www.tikwm.com',
         'Referer': 'https://www.tikwm.com/',
+        'sec-ch-ua': '"Chromium";v="131", "Not_A Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-origin',
       },
     };
 
-    const req = https.request(reqOptions, (res) => {
+    const req = https.request(reqOptions, (rawRes) => {
+      // Handle gzip/deflate/br compressed responses
+      const zlib = require('zlib');
+      let res = rawRes;
+      const encoding = rawRes.headers['content-encoding'];
+      if (encoding === 'gzip') {
+        res = rawRes.pipe(zlib.createGunzip());
+      } else if (encoding === 'deflate') {
+        res = rawRes.pipe(zlib.createInflate());
+      } else if (encoding === 'br') {
+        res = rawRes.pipe(zlib.createBrotliDecompress());
+      }
+
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
         try {
           // Log first 200 chars if not JSON for debugging on Render
           if (!data.trim().startsWith('{') && !data.trim().startsWith('[')) {
-            console.error(`[TikWM] Non-JSON response (${res.statusCode}): ${data.substring(0, 200)}`);
-            return reject(new Error(`TikWM returned non-JSON (status ${res.statusCode})`));
+            console.error(`[TikWM] Non-JSON response (${rawRes.statusCode}): ${data.substring(0, 200)}`);
+            return reject(new Error(`TikWM returned non-JSON (status ${rawRes.statusCode})`));
           }
 
           const json = JSON.parse(data);
@@ -808,6 +828,15 @@ function pipeWithRedirects(targetUrl, headers, res, depth = 0) {
   const parsed = new URL(targetUrl);
   const client = parsed.protocol === 'https:' ? https : http;
 
+  const isTikWM = parsed.hostname.includes('tikwm.com');
+  const isLovetik = parsed.hostname.includes('lovetik.com');
+  const referer = isTikWM ? 'https://www.tikwm.com/' :
+                  isLovetik ? 'https://lovetik.com/' :
+                  'https://www.tiktok.com/';
+  const origin = isTikWM ? 'https://www.tikwm.com' :
+                 isLovetik ? 'https://lovetik.com' :
+                 'https://www.tiktok.com';
+
   const reqOptions = {
     hostname: parsed.hostname,
     port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
@@ -815,7 +844,9 @@ function pipeWithRedirects(targetUrl, headers, res, depth = 0) {
     method: 'GET',
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-      'Referer': 'https://www.tiktok.com/',
+      'Accept': '*/*',
+      'Referer': referer,
+      'Origin': origin,
     },
   };
 

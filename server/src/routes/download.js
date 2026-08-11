@@ -54,6 +54,8 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
         'akamaized.net',
         'ssstik.io',
         'douyin.com',
+        'tiktokv.com',
+        'tiktokv.us',
       ];
       const isAllowed = allowedDomains.some(domain => parsed.hostname.endsWith(domain));
       if (!isAllowed) {
