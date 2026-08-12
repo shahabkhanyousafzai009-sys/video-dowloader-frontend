@@ -3,9 +3,10 @@ import { LegalTab } from './LegalModal';
 
 interface FooterProps {
   onOpenLegal: (tab: LegalTab) => void;
+  onOpenWidget?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => {
   return (
     <footer className="w-full mt-16 pb-8 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4">
@@ -14,12 +15,19 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
           <p className="text-[11px] font-bold uppercase tracking-wider text-center dark:text-white/40 text-dark-500 mb-3">
             Popular Downloader Tools &amp; Converters
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold">
             <a
               href="/tiktok-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
             >
-              TikTok Downloader Without Watermark
+              TikTok Downloader No Watermark
+            </a>
+            <span className="dark:text-white/10 text-dark-300">•</span>
+            <a
+              href="/tiktok-mp3-downloader"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+            >
+              TikTok MP3 Sound Extractor
             </a>
             <span className="dark:text-white/10 text-dark-300">•</span>
             <a
@@ -30,18 +38,34 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
             </a>
             <span className="dark:text-white/10 text-dark-300">•</span>
             <a
-              href="/mp3-downloader"
+              href="/youtube-shorts-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
             >
-              Video to MP3 Audio Converter
+              YouTube Shorts Downloader
             </a>
             <span className="dark:text-white/10 text-dark-300">•</span>
             <a
-              href="/"
-              className="dark:text-white/60 text-dark-600 hover:underline transition-all"
+              href="/mp3-downloader"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
             >
-              Universal Video Saver
+              Video to MP3 Converter
             </a>
+            <span className="dark:text-white/10 text-dark-300">•</span>
+            {onOpenWidget ? (
+              <button
+                onClick={onOpenWidget}
+                className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-all cursor-pointer font-bold"
+              >
+                ⚡ Embed Widget on Your Site
+              </button>
+            ) : (
+              <a
+                href="/widget"
+                className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-all font-bold"
+              >
+                ⚡ Embed Widget on Your Site
+              </a>
+            )}
           </div>
         </div>
 

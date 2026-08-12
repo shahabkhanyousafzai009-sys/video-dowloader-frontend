@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Language } from '../utils/i18n';
 
-type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3';
+type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
 
 interface SeoContentProps {
   platform: PlatformKey;

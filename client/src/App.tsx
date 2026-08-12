@@ -17,11 +17,13 @@ import { GuidesHub } from './components/GuidesHub';
 import { GuideDetailPage } from './components/GuideDetailPage';
 import { GUIDES_DATA } from './data/guidesData';
 import { Language, TRANSLATIONS } from './utils/i18n';
+import { EmbedWidgetModal } from './components/EmbedWidgetModal';
+import { StandaloneWidgetView } from './components/StandaloneWidgetView';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
 
-type Platform = 'all' | 'tiktok' | 'instagram' | 'mp3';
+type Platform = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
 
 interface PlatformSEO {
   path: string;
@@ -52,6 +54,15 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
     heroHighlight: 'Without Watermark',
     heroSub: 'Paste your TikTok video link below to save clean, watermark-free HD videos directly to your device.',
   },
+  'tiktok-mp3': {
+    path: '/tiktok-mp3-downloader',
+    label: 'TikTok MP3',
+    title: 'TikTok MP3 Sound Downloader — Extract Audio Tracks Free | SnapLoad',
+    description: 'Extract and download high quality 320kbps MP3 audio tracks directly from any TikTok video link for free.',
+    heroHeading: 'TikTok Sound to MP3',
+    heroHighlight: 'Audio Converter',
+    heroSub: 'Extract high-bitrate MP3 audio tracks directly from viral TikTok video links in seconds.',
+  },
   instagram: {
     path: '/instagram-downloader',
     label: 'Instagram Reels',
@@ -60,6 +71,15 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
     heroHeading: 'Instagram Reels & Video',
     heroHighlight: 'Downloader HD',
     heroSub: 'Save high-definition Instagram Reels, clips, and video posts directly to your phone or computer.',
+  },
+  'youtube-shorts': {
+    path: '/youtube-shorts-downloader',
+    label: 'YouTube Shorts',
+    title: 'YouTube Shorts Downloader 1080p HD — Free MP4 & MP3 Saver | SnapLoad',
+    description: 'Download YouTube Shorts videos in MP4 1080p HD or extract 320kbps MP3 audio tracks for free.',
+    heroHeading: 'YouTube Shorts',
+    heroHighlight: 'Downloader HD & MP3',
+    heroSub: 'Download YouTube Shorts clips in full 1080p HD resolution or convert to MP3 audio files.',
   },
   mp3: {
     path: '/mp3-downloader',
@@ -70,6 +90,15 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
     heroHighlight: 'Audio Converter',
     heroSub: 'Extract high-bitrate MP3 audio tracks directly from TikTok or Instagram video links.',
   },
+  widget: {
+    path: '/widget',
+    label: 'Embed Widget',
+    title: 'Free Video Downloader Widget — Embed SnapLoad on Your Site',
+    description: 'Embed SnapLoad free video downloader widget on your website or blog with clean backlink integration.',
+    heroHeading: 'Embed Video Downloader',
+    heroHighlight: 'Widget on Your Site',
+    heroSub: 'Give your website visitors the power to download videos with our free embeddable widget.',
+  },
 };
 
 function App() {
@@ -77,6 +106,7 @@ function App() {
   const { downloading, progress, error: downloadError, startDownload, reset: resetDownload } = useDownload();
   const [selectedFormatIndex, setSelectedFormatIndex] = useState<number | null>(null);
   const [isLegalOpen, setIsLegalOpen] = useState<boolean>(false);
+  const [isWidgetModalOpen, setIsWidgetModalOpen] = useState<boolean>(false);
   const [legalTab, setLegalTab] = useState<LegalTab>('privacy');
   const [currentPlatform, setCurrentPlatform] = useState<Platform>('all');
   const [isGuidesHub, setIsGuidesHub] = useState<boolean>(false);
@@ -246,6 +276,64 @@ function App() {
       document.head.appendChild(scriptTag);
     }
     scriptTag.textContent = JSON.stringify(breadcrumbData);
+
+    // Dynamic Guide Schema (Article, HowTo, FAQPage) for E-E-A-T and Google Rich Snippets
+    let guideScriptTag = document.getElementById('guide-jsonld');
+    if (activeGuideSlug && GUIDES_DATA[activeGuideSlug]) {
+      const guide = GUIDES_DATA[activeGuideSlug];
+      const guideSchema = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Article',
+            '@id': `${currentUrl}#article`,
+            'headline': guide.title,
+            'description': guide.description,
+            'mainEntityOfPage': currentUrl,
+            'dateModified': '2026-08-12',
+            'publisher': {
+              '@type': 'Organization',
+              'name': 'SnapLoad',
+              'url': 'https://snaploaddownload.com/'
+            }
+          },
+          {
+            '@type': 'HowTo',
+            '@id': `${currentUrl}#howto`,
+            'name': guide.title,
+            'description': guide.description,
+            'step': guide.steps.map((step) => ({
+              '@type': 'HowToStep',
+              'position': step.stepNumber,
+              'name': step.title,
+              'text': step.description
+            }))
+          },
+          {
+            '@type': 'FAQPage',
+            '@id': `${currentUrl}#faq`,
+            'mainEntity': guide.faqs.map((faq) => ({
+              '@type': 'Question',
+              'name': faq.question,
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': faq.answer
+              }
+            }))
+          }
+        ]
+      };
+
+      if (!guideScriptTag) {
+        guideScriptTag = document.createElement('script');
+        guideScriptTag.id = 'guide-jsonld';
+        guideScriptTag.setAttribute('type', 'application/ld+json');
+        document.head.appendChild(guideScriptTag);
+      }
+      guideScriptTag.textContent = JSON.stringify(guideSchema);
+    } else if (guideScriptTag) {
+      guideScriptTag.remove();
+    }
   }, [currentPlatform, isGuidesHub, activeGuideSlug, currentLanguage]);
 
   const handlePlatformChange = (key: Platform) => {
@@ -321,6 +409,18 @@ function App() {
     : null;
 
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+
+  if (currentPlatform === 'widget') {
+    return (
+      <div className="w-full min-h-screen bg-dark-950 flex items-center justify-center p-2">
+        <StandaloneWidgetView
+          onFetchInfo={handleFetchInfo}
+          loading={loading}
+          onReset={handleReset}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative">
@@ -494,7 +594,16 @@ function App() {
       </main>
 
       {/* Footer */}
-      <Footer onOpenLegal={handleOpenLegal} />
+      <Footer
+        onOpenLegal={handleOpenLegal}
+        onOpenWidget={() => setIsWidgetModalOpen(true)}
+      />
+
+      {/* Embed Widget Modal */}
+      <EmbedWidgetModal
+        isOpen={isWidgetModalOpen}
+        onClose={() => setIsWidgetModalOpen(false)}
+      />
 
       {/* Legal Modal (AdSense Policies) */}
       <LegalModal
