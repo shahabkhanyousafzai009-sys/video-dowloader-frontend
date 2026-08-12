@@ -329,6 +329,17 @@ function streamFallbackAudioWithFFmpeg(targetUrl, quality = '192', res, depth = 
       return;
     }
 
+    // If stream is already native mp3/audio, pipe directly to response
+    const contentType = streamRes.headers['content-type'] || '';
+    if (contentType.includes('audio') || targetUrl.toLowerCase().includes('.mp3')) {
+      try { ffmpeg.kill(); } catch (e) {}
+      if (streamRes.headers['content-length']) {
+        res.setHeader('Content-Length', streamRes.headers['content-length']);
+      }
+      console.log(`[fallback audio] Direct audio stream from ${parsed.hostname}`);
+      return streamRes.pipe(res);
+    }
+
     streamRes.pipe(ffmpeg.stdin);
   });
 

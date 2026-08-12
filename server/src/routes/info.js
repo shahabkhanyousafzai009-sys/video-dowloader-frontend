@@ -116,10 +116,14 @@ function buildSuggestions(formats, platform) {
     }
   }
 
+  // Check if we have a direct fallback audio format (from TikWM music, Lovetik audio, etc.)
+  const fallbackAudio = formats.find(f => f.formatId && f.formatId.startsWith('fb_') && f.hasAudio && !f.hasVideo)
+    || formats.find(f => f.formatId && f.formatId.startsWith('fb_') && f.hasAudio);
+
   // Always add MP3 audio option
   suggestions.push({
     qualityLabel: 'MP3 Audio',
-    formatId: 'audio',
+    formatId: fallbackAudio ? fallbackAudio.formatId : 'audio',
     audioFormatId: null,
     needsMerge: false,
     ext: 'mp3',
