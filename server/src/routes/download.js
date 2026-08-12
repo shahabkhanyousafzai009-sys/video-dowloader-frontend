@@ -36,10 +36,44 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
     const isInline = req.query.inline === 'true' || req.query.disposition === 'inline';
     const dispMode = isInline ? 'inline' : 'attachment';
 
-    if (formatId && formatId.startsWith('fb_')) {
+    if (type === 'audio') {
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Content-Disposition', `${dispMode}; filename="${asciiTitle}.mp3"; filename*=UTF-8''${encodedTitle}.mp3`);
+
+      if (formatId && formatId.startsWith('fb_')) {
+        const targetUrl = Buffer.from(formatId.substring(3), 'base64url').toString('utf8');
+        const parsed = new URL(targetUrl);
+        const allowedDomains = [
+          'tiktokcdn.com',
+          'tiktokcdn-us.com',
+          'tiktokcdn-eu.com',
+          'byteoversea.com',
+          'ibyteimg.com',
+          'muscdn.com',
+          'tiktok.com',
+          'tikwm.com',
+          'lovetik.com',
+          'akamaized.net',
+          'ssstik.io',
+          'tikcdn.io',
+          'douyin.com',
+          'tiktokv.com',
+          'tiktokv.us',
+        ];
+        const isAllowed = allowedDomains.some(domain => parsed.hostname.endsWith(domain));
+        if (!isAllowed) {
+          console.warn(`[fallback stream] Blocked domain: ${parsed.hostname}`);
+          return res.status(403).json({ error: 'Forbidden', message: 'Target domain is not allowed.' });
+        }
+        return streamFallbackAudioWithFFmpeg(targetUrl, quality, res);
+      }
+
+      processes = streamAudio(url, quality, {
+        contentType: 'audio/mpeg',
+        contentDisposition: `${dispMode}; filename="${asciiTitle}.mp3"; filename*=UTF-8''${encodedTitle}.mp3`,
+      }, res);
+    } else if (formatId && formatId.startsWith('fb_')) {
       const targetUrl = Buffer.from(formatId.substring(3), 'base64url').toString('utf8');
-      
-      // Security check: allow all verified TikTok and media CDN domains
       const parsed = new URL(targetUrl);
       const allowedDomains = [
         'tiktokcdn.com',
@@ -64,17 +98,10 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
         return res.status(403).json({ error: 'Forbidden', message: 'Target domain is not allowed.' });
       }
 
-      res.setHeader('Content-Type', type === 'audio' ? 'audio/mpeg' : 'video/mp4');
-      res.setHeader('Content-Disposition', `${dispMode}; filename="${asciiTitle}.${type === 'audio' ? 'mp3' : 'mp4'}"; filename*=UTF-8''${encodedTitle}.${type === 'audio' ? 'mp3' : 'mp4'}`);
+      res.setHeader('Content-Type', 'video/mp4');
+      res.setHeader('Content-Disposition', `${dispMode}; filename="${asciiTitle}.mp4"; filename*=UTF-8''${encodedTitle}.mp4`);
 
       return streamFallbackWithRedirects(targetUrl, res);
-    }
-
-    if (type === 'audio') {
-      processes = streamAudio(url, quality, {
-        contentType: 'audio/mpeg',
-        contentDisposition: `${dispMode}; filename="${asciiTitle}.mp3"; filename*=UTF-8''${encodedTitle}.mp3`,
-      }, res);
     } else if (audioFormatId && formatId) {
       // Detect platform to decide merge strategy
       const { detectPlatform } = require('../utils/platforms');
@@ -215,6 +242,107 @@ function streamFallbackWithRedirects(targetUrl, res, depth = 0) {
 
   res.on('close', () => {
     try { req.destroy(); } catch (e) { }
+  });
+}
+
+const { spawn } = require('child_process');
+const FFMPEG_BIN = (() => {
+  if (process.env.FFMPEG_PATH) return process.env.FFMPEG_PATH;
+  try {
+    const ffmpegStatic = require('ffmpeg-static');
+    return ffmpegStatic;
+  } catch {
+    return 'ffmpeg';
+  }
+})();
+
+/**
+ * Convert direct fallback video streams into MP3 audio via FFmpeg
+ */
+function streamFallbackAudioWithFFmpeg(targetUrl, quality = '192', res, depth = 0) {
+  if (depth > 5) {
+    console.error('[fallback audio] Too many redirects');
+    if (!res.headersSent) res.status(500).json({ success: false, error: 'Too many redirects' });
+    return;
+  }
+
+  const https = require('https');
+  const http = require('http');
+  const parsed = new URL(targetUrl);
+  const client = parsed.protocol === 'https:' ? https : http;
+
+  const isTikWM = parsed.hostname.includes('tikwm.com');
+  const isLovetik = parsed.hostname.includes('lovetik.com');
+  const isSSSTik = parsed.hostname.includes('ssstik') || parsed.hostname.includes('tikcdn.io');
+  const referer = isTikWM ? 'https://www.tikwm.com/' :
+                  isLovetik ? 'https://lovetik.com/' :
+                  isSSSTik ? 'https://ssstik.io/' :
+                  'https://www.tiktok.com/';
+
+  const reqOptions = {
+    hostname: parsed.hostname,
+    port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
+    path: parsed.pathname + parsed.search,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      'Accept': '*/*',
+      'Referer': referer,
+    },
+  };
+
+  const audioBitrate = quality === '320' ? '320k' : '192k';
+
+  const ffmpeg = spawn(FFMPEG_BIN, [
+    '-i', 'pipe:0',
+    '-vn',
+    '-acodec', 'libmp3lame',
+    '-ab', audioBitrate,
+    '-f', 'mp3',
+    'pipe:1',
+  ], { stdio: ['pipe', 'pipe', 'pipe'] });
+
+  ffmpeg.stdout.pipe(res);
+
+  ffmpeg.stderr.on('data', (d) => {
+    const msg = d.toString();
+    if (msg.includes('Error') || msg.includes('Invalid')) {
+      console.error(`[ffmpeg fallback audio] ${msg}`);
+    }
+  });
+
+  const req = client.get(reqOptions, (streamRes) => {
+    if (streamRes.statusCode >= 300 && streamRes.statusCode < 400 && streamRes.headers.location) {
+      let redirectUrl = streamRes.headers.location;
+      if (!redirectUrl.startsWith('http')) {
+        redirectUrl = new URL(redirectUrl, targetUrl).toString();
+      }
+      try { ffmpeg.kill(); } catch (e) {}
+      return streamFallbackAudioWithFFmpeg(redirectUrl, quality, res, depth + 1);
+    }
+
+    if (streamRes.statusCode >= 400) {
+      console.error(`[fallback audio] HTTP ${streamRes.statusCode} from ${parsed.hostname}`);
+      try { ffmpeg.kill(); } catch (e) {}
+      if (!res.headersSent) {
+        res.status(502).json({ success: false, error: `Media server returned ${streamRes.statusCode}` });
+      }
+      return;
+    }
+
+    streamRes.pipe(ffmpeg.stdin);
+  });
+
+  req.on('error', (err) => {
+    console.error(`[fallback audio] Error: ${err.message}`);
+    try { ffmpeg.kill(); } catch (e) {}
+    if (!res.headersSent) {
+      res.status(500).json({ success: false, error: 'Failed to stream audio' });
+    }
+  });
+
+  res.on('close', () => {
+    try { req.destroy(); } catch (e) {}
+    try { ffmpeg.kill('SIGTERM'); } catch (e) {}
   });
 }
 
