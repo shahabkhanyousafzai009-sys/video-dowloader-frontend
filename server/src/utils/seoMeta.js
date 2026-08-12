@@ -27,6 +27,21 @@ const ROUTE_META = {
     description: 'Convert video links from TikTok & Instagram into 320kbps MP3 audio files. Free, fast audio extractor with no registration required.',
     canonical: `${BASE_URL}/mp3-downloader`,
   },
+  '/tiktok-mp3-downloader': {
+    title: 'TikTok MP3 Sound Downloader — Extract Audio Tracks Free | SnapLoad',
+    description: 'Extract and download high quality 320kbps MP3 audio tracks directly from any TikTok video link for free.',
+    canonical: `${BASE_URL}/tiktok-mp3-downloader`,
+  },
+  '/youtube-shorts-downloader': {
+    title: 'YouTube Shorts Downloader 1080p HD — Free MP4 & MP3 Saver | SnapLoad',
+    description: 'Download YouTube Shorts videos in MP4 1080p HD or extract 320kbps MP3 audio tracks for free.',
+    canonical: `${BASE_URL}/youtube-shorts-downloader`,
+  },
+  '/widget': {
+    title: 'Free Video Downloader Widget — Embed SnapLoad on Your Site',
+    description: 'Embed SnapLoad free video downloader widget on your website or blog with clean backlink integration.',
+    canonical: `${BASE_URL}/widget`,
+  },
   '/guides': {
     title: 'SnapLoad Video Downloader Tutorials & How-To Guides',
     description: 'Step-by-step guides on how to download TikTok videos without watermark, save Instagram Reels in 1080p HD, and convert videos to MP3 audio.',
@@ -46,6 +61,26 @@ const ROUTE_META = {
     title: 'How to Convert TikTok & Instagram Video Links to 320kbps MP3 Audio',
     description: 'Extract high-bitrate MP3 audio tracks directly from TikTok videos or Instagram Reels for free with no app installation.',
     canonical: `${BASE_URL}/guides/how-to-convert-video-to-mp3`,
+  },
+  '/guides/how-to-download-youtube-shorts-hd': {
+    title: 'How to Download YouTube Shorts Videos & Audio in 1080p HD Quality',
+    description: 'Learn how to download YouTube Shorts videos in MP4 format or extract 320kbps MP3 audio quickly and safely using SnapLoad.',
+    canonical: `${BASE_URL}/guides/how-to-download-youtube-shorts-hd`,
+  },
+  '/guides/how-to-download-tiktok-slideshow-photos': {
+    title: 'How to Download TikTok Photo Slideshows & Images in Full HD',
+    description: 'Complete guide to downloading all HD pictures from TikTok photo slideshows without watermarks on mobile or desktop.',
+    canonical: `${BASE_URL}/guides/how-to-download-tiktok-slideshow-photos`,
+  },
+  '/guides/how-to-save-instagram-stories-anonymously': {
+    title: 'How to Download Instagram Stories & Highlights Anonymously',
+    description: 'Learn how to download Instagram stories, video posts, and highlights anonymously in high definition.',
+    canonical: `${BASE_URL}/guides/how-to-save-instagram-stories-anonymously`,
+  },
+  '/guides/how-to-extract-audio-from-tiktok': {
+    title: 'How to Extract & Save TikTok Sound Tracks as 320kbps MP3',
+    description: 'Easy guide to converting viral TikTok video sounds into high-quality MP3 audio files for offline listening or editing.',
+    canonical: `${BASE_URL}/guides/how-to-extract-audio-from-tiktok`,
   },
   // ===== Spanish (ES) Routes =====
   '/es': {
