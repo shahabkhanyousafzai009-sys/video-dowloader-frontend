@@ -414,9 +414,18 @@ function App() {
     return (
       <div className="w-full min-h-screen bg-dark-950 flex items-center justify-center p-2">
         <StandaloneWidgetView
-          onFetchInfo={handleFetchInfo}
+          videoInfo={videoInfo}
           loading={loading}
+          error={error}
+          onFetchInfo={handleFetchInfo}
           onReset={handleReset}
+          selectedFormatIndex={selectedFormatIndex}
+          onSelectFormat={setSelectedFormatIndex}
+          onDownload={handleDownload}
+          downloading={downloading}
+          progress={progress}
+          downloadError={downloadError}
+          currentLanguage={currentLanguage}
         />
       </div>
     );
