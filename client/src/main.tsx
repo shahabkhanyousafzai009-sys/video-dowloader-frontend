@@ -11,7 +11,7 @@ document.documentElement.classList.add(theme);
 
 const mountApp = () => {
   const rootEl = document.getElementById('root');
-  if (rootEl && !rootEl.hasChildNodes()) {
+  if (rootEl) {
     createRoot(rootEl).render(
       <StrictMode>
         <App />
