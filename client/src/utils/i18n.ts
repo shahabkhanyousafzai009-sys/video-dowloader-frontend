@@ -1,5 +1,5 @@
 export type Language = 'en' | 'de' | 'fr' | 'es';
-export type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3';
+export type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
 
 export interface HeroTranslation {
   heading: string;
@@ -8,12 +8,7 @@ export interface HeroTranslation {
 }
 
 export interface TranslationSchema {
-  nav: {
-    all: string;
-    tiktok: string;
-    instagram: string;
-    mp3: string;
-  };
+  nav: Record<PlatformKey, string>;
   hero: Record<PlatformKey, HeroTranslation>;
   input: {
     placeholder: string;
@@ -38,8 +33,11 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     nav: {
       all: 'All Platforms',
       tiktok: 'TikTok No Watermark',
+      'tiktok-mp3': 'TikTok MP3',
       instagram: 'Instagram Reels',
+      'youtube-shorts': 'YouTube Shorts',
       mp3: 'MP3 Converter',
+      widget: 'Embed Widget',
     },
     hero: {
       all: {
@@ -52,15 +50,30 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         highlight: 'Without Watermark',
         sub: 'Paste your TikTok video link below to save clean, watermark-free HD videos directly to your device.',
       },
+      'tiktok-mp3': {
+        heading: 'TikTok Sound to MP3',
+        highlight: 'Audio Converter',
+        sub: 'Extract high-bitrate MP3 audio tracks directly from viral TikTok video links in seconds.',
+      },
       instagram: {
         heading: 'Instagram Reels & Video',
         highlight: 'Downloader HD',
         sub: 'Save high-definition Instagram Reels, clips, and video posts directly to your phone or computer.',
       },
+      'youtube-shorts': {
+        heading: 'YouTube Shorts',
+        highlight: 'Downloader HD & MP3',
+        sub: 'Download YouTube Shorts clips in full 1080p HD resolution or convert to MP3 audio files.',
+      },
       mp3: {
         heading: 'Video to MP3',
         highlight: 'Audio Converter',
         sub: 'Extract high-bitrate MP3 audio tracks directly from TikTok or Instagram video links.',
+      },
+      widget: {
+        heading: 'Embed Video Downloader',
+        highlight: 'Widget on Your Site',
+        sub: 'Give your website visitors the power to download videos with our free embeddable widget.',
       },
     },
     input: {
@@ -84,8 +97,11 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     nav: {
       all: 'Alle Plattformen',
       tiktok: 'TikTok Ohne Wasserzeichen',
+      'tiktok-mp3': 'TikTok MP3',
       instagram: 'Instagram Reels',
+      'youtube-shorts': 'YouTube Shorts',
       mp3: 'MP3 Konverter',
+      widget: 'Embed Widget',
     },
     hero: {
       all: {
@@ -98,15 +114,30 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         highlight: 'Ohne Wasserzeichen',
         sub: 'Fügen Sie Ihren TikTok-Videolink unten ein, um saubere, wasserzeichenfreie HD-Videos direkt auf Ihrem Gerät zu speichern.',
       },
+      'tiktok-mp3': {
+        heading: 'TikTok Sound zu MP3',
+        highlight: 'Audio Konverter',
+        sub: 'Extrahierten Sie erstklassige MP3-Audiospuren direkt aus TikTok-Videolinks.',
+      },
       instagram: {
         heading: 'Instagram Reels & Video',
         highlight: 'Downloader HD',
         sub: 'Speichern Sie hochauflösende Instagram Reels, Clips und Videobeiträge direkt auf Ihrem Telefon oder Computer.',
       },
+      'youtube-shorts': {
+        heading: 'YouTube Shorts',
+        highlight: 'Downloader HD & MP3',
+        sub: 'Laden Sie YouTube Shorts Clips in HD herunter oder konvertieren Sie sie in MP3.',
+      },
       mp3: {
         heading: 'Video zu MP3',
         highlight: 'Audio Konverter',
         sub: 'Extrahierten Sie erstklassige MP3-Audiospuren direkt aus TikTok- oder Instagram-Videolinks.',
+      },
+      widget: {
+        heading: 'Embed Downloader',
+        highlight: 'Widget auf Ihrer Website',
+        sub: 'Bieten Sie Ihren Website-Besuchern einen kostenlosen Video-Downloader.',
       },
     },
     input: {
@@ -130,8 +161,11 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     nav: {
       all: 'Toutes les Plateformes',
       tiktok: 'TikTok Sans Filigrane',
+      'tiktok-mp3': 'TikTok MP3',
       instagram: 'Instagram Reels',
+      'youtube-shorts': 'YouTube Shorts',
       mp3: 'Convertisseur MP3',
+      widget: 'Embed Widget',
     },
     hero: {
       all: {
@@ -144,15 +178,30 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         highlight: 'Sans Filigrane',
         sub: 'Collez votre lien vidéo TikTok ci-dessous pour enregistrer des vidéos HD propres sans filigrane.',
       },
+      'tiktok-mp3': {
+        heading: 'Son TikTok en MP3',
+        highlight: 'Convertisseur Audio',
+        sub: 'Extrayez des pistes audio MP3 haute qualité directement à partir de liens TikTok.',
+      },
       instagram: {
         heading: 'Instagram Reels & Vidéo',
         highlight: 'Téléchargeur HD',
         sub: 'Enregistrez des Reels, clips et vidéos Instagram haute définition directement sur votre téléphone ou ordinateur.',
       },
+      'youtube-shorts': {
+        heading: 'YouTube Shorts',
+        highlight: 'Téléchargeur HD & MP3',
+        sub: 'Téléchargez des clips YouTube Shorts en HD 1080p ou convertissez-les en MP3.',
+      },
       mp3: {
         heading: 'Vidéo en MP3',
         highlight: 'Convertisseur Audio',
         sub: 'Extrayez des pistes audio MP3 haute qualité directement à partir de liens vidéo TikTok ou Instagram.',
+      },
+      widget: {
+        heading: 'Intégrer le Widget',
+        highlight: 'Sur Votre Site Web',
+        sub: 'Offrez à vos visiteurs la possibilité de télécharger des vidéos avec notre widget gratuit.',
       },
     },
     input: {
@@ -176,8 +225,11 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     nav: {
       all: 'Todas las Plataformas',
       tiktok: 'TikTok Sin Marca de Agua',
+      'tiktok-mp3': 'TikTok MP3',
       instagram: 'Instagram Reels',
+      'youtube-shorts': 'YouTube Shorts',
       mp3: 'Convertidor MP3',
+      widget: 'Embed Widget',
     },
     hero: {
       all: {
@@ -190,15 +242,30 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         highlight: 'Sin Marca de Agua',
         sub: 'Pega tu enlace de video de TikTok a continuación para guardar videos HD limpios sin marca de agua.',
       },
+      'tiktok-mp3': {
+        heading: 'Audio de TikTok a MP3',
+        highlight: 'Convertidor de Audio',
+        sub: 'Extrae pistas de audio MP3 de alta calidad directamente desde enlaces de TikTok.',
+      },
       instagram: {
         heading: 'Instagram Reels y Video',
         highlight: 'Descargador HD',
         sub: 'Guarda Reels, clips y publicaciones de video de Instagram en alta definición directamente en tu teléfono o computadora.',
       },
+      'youtube-shorts': {
+        heading: 'YouTube Shorts',
+        highlight: 'Descargador HD y MP3',
+        sub: 'Descarga clips de YouTube Shorts en HD 1080p o conviértelos a audio MP3.',
+      },
       mp3: {
         heading: 'Video a MP3',
         highlight: 'Convertidor de Audio',
         sub: 'Extrae pistas de audio MP3 de alta calidad directamente desde enlaces de video de TikTok o Instagram.',
+      },
+      widget: {
+        heading: 'Incrustar Widget',
+        highlight: 'En Tu Sitio Web',
+        sub: 'Ofrece a los visitantes de tu sitio web un descargador de video gratuito.',
       },
     },
     input: {
