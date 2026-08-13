@@ -19,9 +19,33 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9601240294629728"
      crossorigin="anonymous"></script>
 
-    <!-- Monetag Multitag & Ad Zone 11564601 -->
-    <script src="https://quge5.com/88/tag.min.js" data-zone="269651" async data-cfasync="false"></script>
-    <script>(function(s){s.dataset.zone='11564601',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <!-- Monetag Multitag & Ad Zone 11564601 (Throttled: 1-Minute Cooldown) -->
+    <script>
+      (function() {
+        const AD_COOLDOWN_MS = 60000; // 1 minute (60 seconds)
+        const lastAdTime = sessionStorage.getItem('snapload_ad_last_shown');
+        const now = Date.now();
+
+        if (!lastAdTime || (now - parseInt(lastAdTime, 10)) >= AD_COOLDOWN_MS) {
+          // Delay script execution by 60 seconds (1 minute) so initial user interaction is smooth
+          setTimeout(function() {
+            sessionStorage.setItem('snapload_ad_last_shown', Date.now().toString());
+
+            var s1 = document.createElement('script');
+            s1.dataset.zone = '11564601';
+            s1.src = 'https://al5sm.com/tag.min.js';
+            (document.body || document.documentElement).appendChild(s1);
+
+            var s2 = document.createElement('script');
+            s2.src = 'https://quge5.com/88/tag.min.js';
+            s2.dataset.zone = '269651';
+            s2.async = true;
+            s2.setAttribute('data-cfasync', 'false');
+            (document.body || document.documentElement).appendChild(s2);
+          }, 60000); // 1 minute initial delay
+        }
+      })();
+    </script>
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://snaploaddownload.com/" />
