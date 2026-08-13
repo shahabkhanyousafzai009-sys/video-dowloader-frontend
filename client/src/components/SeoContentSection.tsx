@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Language } from '../utils/i18n';
 
 type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
@@ -392,6 +392,32 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
   const langData = SEO_DATA[currentLanguage] || SEO_DATA.en;
   const content = langData[platform] || langData.all;
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  useEffect(() => {
+    if (content && content.faqs && content.faqs.length > 0) {
+      const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': content.faqs.map((faq) => ({
+          '@type': 'Question',
+          'name': faq.question,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': faq.answer,
+          },
+        })),
+      };
+
+      let scriptTag = document.getElementById('dynamic-faq-jsonld');
+      if (!scriptTag) {
+        scriptTag = document.createElement('script');
+        scriptTag.id = 'dynamic-faq-jsonld';
+        scriptTag.setAttribute('type', 'application/ld+json');
+        document.head.appendChild(scriptTag);
+      }
+      scriptTag.textContent = JSON.stringify(faqSchema);
+    }
+  }, [content]);
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
