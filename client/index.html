@@ -19,26 +19,8 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9601240294629728"
      crossorigin="anonymous"></script>
 
-    <!-- Monetag Sequential Ad Loader: 1st Ad on open, 2nd Ad after 1 minute -->
-    <script>
-      (function() {
-        // 1. Show just 1 ad first on site open (Zone 11564601)
-        var s1 = document.createElement('script');
-        s1.dataset.zone = '11564601';
-        s1.src = 'https://al5sm.com/tag.min.js';
-        (document.body || document.documentElement).appendChild(s1);
-
-        // 2. Show 2nd ad after 1 minute (60 seconds) one by one
-        setTimeout(function() {
-          var s2 = document.createElement('script');
-          s2.src = 'https://quge5.com/88/tag.min.js';
-          s2.dataset.zone = '269651';
-          s2.async = true;
-          s2.setAttribute('data-cfasync', 'false');
-          (document.body || document.documentElement).appendChild(s2);
-        }, 60000); // 1 minute (60,000 ms) delay
-      })();
-    </script>
+    <!-- Monetag Ad Zone 11564601 -->
+    <script>(function(s){s.dataset.zone='11564601',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://snaploaddownload.com/" />
