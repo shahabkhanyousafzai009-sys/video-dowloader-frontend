@@ -6,11 +6,20 @@ interface DownloadButtonProps {
 }
 
 export function DownloadButton({ onClick, disabled, downloading, isAudio }: DownloadButtonProps) {
+  const handleClick = () => {
+    try {
+      window.open('https://omg10.com/4/11577586', '_blank', 'noopener,noreferrer');
+    } catch {
+      // Silently ignore if pop-up blocked
+    }
+    onClick();
+  };
+
   return (
     <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
       <button
         id="download-button"
-        onClick={onClick}
+        onClick={handleClick}
         disabled={disabled || downloading}
         className={`w-full relative overflow-hidden rounded-2xl px-8 py-4.5
                     font-bold text-base text-white
