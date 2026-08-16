@@ -1,5 +1,6 @@
 import React from 'react';
 import { GUIDES_DATA } from '../data/guidesData';
+import { AdBanner } from './AdBanner';
 
 interface GuidesHubProps {
   onSelectGuide: (slug: string) => void;
@@ -22,6 +23,9 @@ export const GuidesHub: React.FC<GuidesHubProps> = ({ onSelectGuide }) => {
           Step-by-step tutorials to save TikTok videos without watermark, download Instagram Reels in 1080p, and convert videos to MP3 audio.
         </p>
       </div>
+
+      {/* Top Ad Banner */}
+      <AdBanner slot="guides-hub-top" label="Sponsored" className="my-6" />
 
       {/* Guide Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -55,6 +59,9 @@ export const GuidesHub: React.FC<GuidesHubProps> = ({ onSelectGuide }) => {
           </div>
         ))}
       </div>
+
+      {/* Bottom Ad Banner */}
+      <AdBanner slot="guides-hub-bottom" label="Advertisement" className="mt-8" />
     </div>
   );
 };

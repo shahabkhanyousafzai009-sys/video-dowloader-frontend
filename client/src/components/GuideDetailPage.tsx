@@ -1,6 +1,7 @@
 import React from 'react';
 import type { GuideArticle } from '../data/guidesData';
 import { UrlInput } from './UrlInput';
+import { AdBanner } from './AdBanner';
 
 interface GuideDetailPageProps {
   guide: GuideArticle;
@@ -87,6 +88,9 @@ export const GuideDetailPage: React.FC<GuideDetailPageProps> = ({
         </div>
       </section>
 
+      {/* Mid-Guide Ad Banner */}
+      <AdBanner slot={`guide-${guide.slug}-mid`} label="Sponsored Content" className="my-6" />
+
       {/* Frequently Asked Questions */}
       <section className="space-y-4 pt-4 border-t border-white/5">
         <h2 className="text-xl font-bold dark:text-white text-dark-900 flex items-center gap-2">
@@ -111,6 +115,9 @@ export const GuideDetailPage: React.FC<GuideDetailPageProps> = ({
           ))}
         </div>
       </section>
+
+      {/* Bottom Guide Ad Banner */}
+      <AdBanner slot={`guide-${guide.slug}-bottom`} label="Advertisement" className="mt-6" />
 
       {/* Back to Guides Link */}
       <div className="pt-4 text-center">

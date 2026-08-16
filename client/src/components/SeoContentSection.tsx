@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Language } from '../utils/i18n';
+import { AdBanner } from './AdBanner';
 
 type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
 
@@ -478,6 +479,9 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
           ))}
         </div>
       </div>
+
+      {/* Platform Banner Ad */}
+      <AdBanner slot={`platform-${platform}-slot`} label="Sponsored Content" className="my-8" />
 
       {/* Accordion FAQ Section */}
       <div className="glass-strong rounded-3xl p-6 sm:p-10 border border-white/10">
