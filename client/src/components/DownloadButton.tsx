@@ -8,7 +8,7 @@ interface DownloadButtonProps {
 export function DownloadButton({ onClick, disabled, downloading, isAudio }: DownloadButtonProps) {
   const handleClick = () => {
     try {
-      window.open('https://omg10.com/4/11577586', '_blank', 'noopener,noreferrer');
+      window.open('https://omg10.com/4/11569772', '_blank', 'noopener,noreferrer');
     } catch {
       // Silently ignore if pop-up blocked
     }

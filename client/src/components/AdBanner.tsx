@@ -45,6 +45,14 @@ export function AdBanner({
     }
   }, [scriptUrl]);
 
+  const handleBannerClick = () => {
+    try {
+      window.open(scriptUrl || 'https://omg10.com/4/11569772', '_blank', 'noopener,noreferrer');
+    } catch {
+      // Silently ignore pop-up blocks
+    }
+  };
+
   return (
     <div className={`w-full max-w-4xl mx-auto my-8 animate-fade-in ${className}`}>
       {/* Uppercase Header Label styled matching the screenshot */}
@@ -53,7 +61,10 @@ export function AdBanner({
       </div>
 
       {/* Main Banner Container with Dark Violet Glass Aesthetics matching screenshot */}
-      <div className="relative w-full rounded-2xl md:rounded-3xl border border-white/10 dark:border-white/10 border-slate-300/30 bg-[#0c091d]/85 dark:bg-[#0c091d]/95 backdrop-blur-xl shadow-2xl p-4 md:p-6 min-h-[220px] md:min-h-[260px] flex items-center justify-center overflow-hidden transition-all duration-300">
+      <div
+        onClick={handleBannerClick}
+        className="relative w-full rounded-2xl md:rounded-3xl border border-white/10 dark:border-white/10 border-slate-300/30 bg-[#0c091d]/85 dark:bg-[#0c091d]/95 backdrop-blur-xl shadow-2xl p-4 md:p-6 min-h-[220px] md:min-h-[260px] flex items-center justify-center overflow-hidden transition-all duration-300 cursor-pointer hover:border-primary-500/30 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] group"
+      >
         <div ref={adContainerRef} className="w-full flex items-center justify-center min-h-[180px]">
           <ins
             className="adsbygoogle"
