@@ -1,55 +1,71 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface AdBannerProps {
   slot?: string;
   format?: 'auto' | 'fluid' | 'rectangle';
   label?: string;
   className?: string;
+  scriptUrl?: string;
 }
 
 export function AdBanner({
   slot = '1234567890',
   format = 'auto',
-  label = 'Advertisement',
+  label = 'ADVERTISEMENT',
   className = '',
+  scriptUrl = 'https://omg10.com/4/11569772',
 }: AdBannerProps) {
-  const [isLocalhost, setIsLocalhost] = useState<boolean>(false);
+  const adContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hostname = window.location.hostname;
-      if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        setIsLocalhost(true);
-      }
-      try {
-        ((window as unknown as { adsbygoogle: unknown[] }).adsbygoogle =
-          (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle || []).push({});
-      } catch {
-        // Silently ignore if blocked or in dev
+    if (typeof window === 'undefined') return;
+
+    // Load OMG10 ad script dynamically into container
+    if (scriptUrl && adContainerRef.current) {
+      const existingScript = adContainerRef.current.querySelector(`script[src="${scriptUrl}"]`);
+      if (!existingScript) {
+        try {
+          const script = document.createElement('script');
+          script.src = scriptUrl;
+          script.async = true;
+          script.type = 'text/javascript';
+          adContainerRef.current.appendChild(script);
+        } catch {
+          // Silently ignore if blocked
+        }
       }
     }
-  }, []);
 
-  // Do not render empty ad box placeholders in local development (127.0.0.1 / localhost)
-  if (isLocalhost) {
-    return null;
-  }
+    // Push Google AdSense ad unit if available
+    try {
+      ((window as unknown as { adsbygoogle: unknown[] }).adsbygoogle =
+        (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle || []).push({});
+    } catch {
+      // Silently ignore if blocked or in dev
+    }
+  }, [scriptUrl]);
 
   return (
-    <div className={`w-full max-w-4xl mx-auto my-6 text-center animate-fade-in ${className}`}>
-      <div className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1 font-semibold">
+    <div className={`w-full max-w-4xl mx-auto my-8 animate-fade-in ${className}`}>
+      {/* Uppercase Header Label styled matching the screenshot */}
+      <div className="text-center font-bold text-[11px] md:text-xs uppercase tracking-[0.25em] text-slate-400 dark:text-gray-400/90 mb-2.5 font-sans">
         {label}
       </div>
-      <div className="glass-subtle rounded-2xl p-2 border border-white/10 overflow-hidden flex items-center justify-center shadow-sm">
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block', width: '100%' }}
-          data-ad-client="ca-pub-9601240294629728"
-          data-ad-slot={slot}
-          data-ad-format={format}
-          data-full-width-responsive="true"
-        />
+
+      {/* Main Banner Container with Dark Violet Glass Aesthetics matching screenshot */}
+      <div className="relative w-full rounded-2xl md:rounded-3xl border border-white/10 dark:border-white/10 border-slate-300/30 bg-[#0c091d]/85 dark:bg-[#0c091d]/95 backdrop-blur-xl shadow-2xl p-4 md:p-6 min-h-[220px] md:min-h-[260px] flex items-center justify-center overflow-hidden transition-all duration-300">
+        <div ref={adContainerRef} className="w-full flex items-center justify-center min-h-[180px]">
+          <ins
+            className="adsbygoogle"
+            style={{ display: 'block', width: '100%' }}
+            data-ad-client="ca-pub-9601240294629728"
+            data-ad-slot={slot}
+            data-ad-format={format}
+            data-full-width-responsive="true"
+          />
+        </div>
       </div>
     </div>
   );
 }
+
