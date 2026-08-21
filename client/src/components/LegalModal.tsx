@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type LegalTab = 'privacy' | 'terms' | 'disclaimer' | 'contact';
+export type LegalTab = 'privacy' | 'terms' | 'disclaimer' | 'contact' | 'dmca' | 'about' | 'cookies';
 
 interface LegalModalProps {
   isOpen: boolean;
@@ -47,14 +47,24 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               Terms of Service
             </button>
             <button
-              onClick={() => onTabChange('disclaimer')}
+              onClick={() => onTabChange('dmca')}
               className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'disclaimer'
+                activeTab === 'dmca'
                   ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
                   : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
               }`}
             >
-              Disclaimer
+              DMCA Policy
+            </button>
+            <button
+              onClick={() => onTabChange('about')}
+              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                activeTab === 'about'
+                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
+              }`}
+            >
+              About Us
             </button>
             <button
               onClick={() => onTabChange('contact')}
@@ -65,6 +75,26 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               }`}
             >
               Contact Us
+            </button>
+            <button
+              onClick={() => onTabChange('disclaimer')}
+              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                activeTab === 'disclaimer'
+                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
+              }`}
+            >
+              Disclaimer
+            </button>
+            <button
+              onClick={() => onTabChange('cookies')}
+              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                activeTab === 'cookies'
+                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
+              }`}
+            >
+              Cookie Policy
             </button>
           </div>
 

@@ -70,34 +70,62 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
         </div>
 
         {/* Legal & Policy Navigation Links for Google AdSense Compliance */}
-        <div className="glass-subtle rounded-xl p-4 mb-6 flex flex-wrap items-center justify-center gap-4 text-xs font-medium dark:text-white/70 text-dark-600">
-          <button
-            onClick={() => onOpenLegal('privacy')}
+        <div className="glass-subtle rounded-xl p-4 mb-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium dark:text-white/70 text-dark-600">
+          <a
+            href="/privacy-policy"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('privacy'); }}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Privacy Policy
-          </button>
+          </a>
           <span className="text-white/20">•</span>
-          <button
-            onClick={() => onOpenLegal('terms')}
+          <a
+            href="/terms-of-service"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('terms'); }}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Terms of Service
-          </button>
+          </a>
           <span className="text-white/20">•</span>
-          <button
-            onClick={() => onOpenLegal('disclaimer')}
+          <a
+            href="/dmca-policy"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('dmca'); }}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
-            Disclaimer
-          </button>
+            DMCA Policy
+          </a>
           <span className="text-white/20">•</span>
-          <button
-            onClick={() => onOpenLegal('contact')}
+          <a
+            href="/about-us"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('about'); }}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            About Us
+          </a>
+          <span className="text-white/20">•</span>
+          <a
+            href="/contact"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('contact'); }}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Contact Us
-          </button>
+          </a>
+          <span className="text-white/20">•</span>
+          <a
+            href="/disclaimer"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('disclaimer'); }}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Disclaimer
+          </a>
+          <span className="text-white/20">•</span>
+          <a
+            href="/cookie-policy"
+            onClick={(e) => { e.preventDefault(); onOpenLegal('cookies'); }}
+            className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Cookie Policy
+          </a>
         </div>
 
         {/* Disclaimer Note */}

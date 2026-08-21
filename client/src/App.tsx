@@ -19,6 +19,7 @@ import { GUIDES_DATA } from './data/guidesData';
 import { Language, TRANSLATIONS } from './utils/i18n';
 import { EmbedWidgetModal } from './components/EmbedWidgetModal';
 import { StandaloneWidgetView } from './components/StandaloneWidgetView';
+import { LegalPage, LegalPageType } from './components/LegalPage';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
@@ -111,6 +112,7 @@ function App() {
   const [currentPlatform, setCurrentPlatform] = useState<Platform>('all');
   const [isGuidesHub, setIsGuidesHub] = useState<boolean>(false);
   const [activeGuideSlug, setActiveGuideSlug] = useState<string | null>(null);
+  const [activeLegalPage, setActiveLegalPage] = useState<LegalPageType | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('snapload_lang') as Language;
@@ -158,7 +160,28 @@ function App() {
         setCurrentPlatform('all');
         setIsGuidesHub(false);
         setActiveGuideSlug(null);
+        setActiveLegalPage(null);
         return;
+      }
+
+      // Standalone Legal / Policy Routes
+      const legalRoutes: Record<string, LegalPageType> = {
+        '/privacy-policy': 'privacy',
+        '/terms-of-service': 'terms',
+        '/dmca-policy': 'dmca',
+        '/about-us': 'about',
+        '/contact': 'contact',
+        '/disclaimer': 'disclaimer',
+        '/cookie-policy': 'cookies',
+      };
+
+      if (legalRoutes[cleanPath]) {
+        setActiveLegalPage(legalRoutes[cleanPath]);
+        setIsGuidesHub(false);
+        setActiveGuideSlug(null);
+        return;
+      } else {
+        setActiveLegalPage(null);
       }
 
       if (cleanPath === '/guides') {
@@ -197,7 +220,50 @@ function App() {
     let path = PLATFORMS[currentPlatform].path;
     let label = PLATFORMS[currentPlatform].label;
 
-    if (isGuidesHub) {
+    if (activeLegalPage) {
+      const legalMeta: Record<LegalPageType, { title: string; desc: string; path: string }> = {
+        privacy: {
+          title: 'Privacy Policy — SnapLoad Video Downloader',
+          desc: 'Official SnapLoad Privacy Policy. Learn about our zero-log architecture, zero server media storage, GDPR and CCPA privacy protections.',
+          path: '/privacy-policy',
+        },
+        terms: {
+          title: 'Terms of Service — SnapLoad Video Downloader',
+          desc: 'SnapLoad Terms of Service detailing permitted personal, non-commercial fair use of our online media downloading utility.',
+          path: '/terms-of-service',
+        },
+        dmca: {
+          title: 'DMCA Copyright Policy & Takedown Agent — SnapLoad',
+          desc: 'Digital Millennium Copyright Act (DMCA) policy, copyright infringement notification procedures, and Designated Agent contact for SnapLoad.',
+          path: '/dmca-policy',
+        },
+        about: {
+          title: 'About Us — Mission & Standards — SnapLoad',
+          desc: 'Learn about SnapLoad mission, privacy engineering standards, technology architecture, and technical editorial team.',
+          path: '/about-us',
+        },
+        contact: {
+          title: 'Contact Us & Customer Support — SnapLoad',
+          desc: 'Contact the SnapLoad technical support team and Copyright Agent for inquiries, bug reports, and copyright notifications.',
+          path: '/contact',
+        },
+        disclaimer: {
+          title: 'Legal Disclaimer & Platform Notice — SnapLoad',
+          desc: 'Official legal disclaimers regarding third-party platform trademarks, non-affiliation, and copyright compliance.',
+          path: '/disclaimer',
+        },
+        cookies: {
+          title: 'Cookie Policy — SnapLoad Video Downloader',
+          desc: 'Comprehensive explanation of cookies, web beacons, Google AdSense advertising cookies, and privacy management on SnapLoad.',
+          path: '/cookie-policy',
+        },
+      };
+      const currentMeta = legalMeta[activeLegalPage];
+      title = currentMeta.title;
+      description = currentMeta.desc;
+      path = currentMeta.path;
+      label = activeLegalPage.toUpperCase();
+    } else if (isGuidesHub) {
       title = 'SnapLoad Video Downloader Tutorials & How-To Guides';
       description = 'Step-by-step guides on how to download TikTok videos without watermark, save Instagram Reels in 1080p HD, and convert videos to MP3 audio.';
       path = '/guides';
@@ -334,11 +400,12 @@ function App() {
     } else if (guideScriptTag) {
       guideScriptTag.remove();
     }
-  }, [currentPlatform, isGuidesHub, activeGuideSlug, currentLanguage]);
+  }, [currentPlatform, isGuidesHub, activeGuideSlug, activeLegalPage, currentLanguage]);
 
   const handlePlatformChange = (key: Platform) => {
     setIsGuidesHub(false);
     setActiveGuideSlug(null);
+    setActiveLegalPage(null);
     setCurrentPlatform(key);
     const targetPath = PLATFORMS[key].path;
     if (window.location.pathname !== targetPath) {
@@ -350,6 +417,25 @@ function App() {
     if (window.location.pathname !== targetPath) {
       window.history.pushState({}, '', targetPath);
     }
+
+    const legalRoutes: Record<string, LegalPageType> = {
+      '/privacy-policy': 'privacy',
+      '/terms-of-service': 'terms',
+      '/dmca-policy': 'dmca',
+      '/about-us': 'about',
+      '/contact': 'contact',
+      '/disclaimer': 'disclaimer',
+      '/cookie-policy': 'cookies',
+    };
+
+    if (legalRoutes[targetPath]) {
+      setActiveLegalPage(legalRoutes[targetPath]);
+      setIsGuidesHub(false);
+      setActiveGuideSlug(null);
+      return;
+    }
+
+    setActiveLegalPage(null);
     if (targetPath === '/guides') {
       setIsGuidesHub(true);
       setActiveGuideSlug(null);
@@ -476,8 +562,10 @@ function App() {
           </button>
         </div>
 
-        {/* Render Guides Hub or Detail Page if Active */}
-        {isGuidesHub ? (
+        {/* Render Legal Page, Guides Hub, Guide Detail, or Main Downloader */}
+        {activeLegalPage ? (
+          <LegalPage type={activeLegalPage} onNavigate={handleNavigate} />
+        ) : isGuidesHub ? (
           <GuidesHub onSelectGuide={(slug) => handleNavigate(`/guides/${slug}`)} />
         ) : activeGuideSlug && GUIDES_DATA[activeGuideSlug] ? (
           <GuideDetailPage
@@ -545,14 +633,11 @@ function App() {
           </div>
         )}
 
-        {/* Video Preview & Format Selection */}
+        {/* Video Preview & Format Selection (Strictly No AdSense Ads on Tool Result State) */}
         {videoInfo && !loading && !error && (
           <div className="space-y-6">
             {/* Preview Card */}
             <VideoPreview info={videoInfo} />
-
-            {/* In-Feed Ad Banner (AdSense Slot 2) */}
-            <AdBanner slot="in-feed-slot" label="Sponsored" />
 
             {/* Format Selector */}
             <FormatSelector
@@ -594,7 +679,7 @@ function App() {
         )}
 
         {/* Platform-Specific SEO & FAQ Content (When Idle on Main Downloader Routes) */}
-        {!isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (
+        {!activeLegalPage && !isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (
           <>
             <SeoContentSection platform={currentPlatform} />
             <AdBanner slot="bottom-banner-slot" label="Advertisement" className="mt-12" />

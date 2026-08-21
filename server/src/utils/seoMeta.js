@@ -77,10 +77,56 @@ const ROUTE_META = {
     description: 'Learn how to download Instagram stories, video posts, and highlights anonymously in high definition.',
     canonical: `${BASE_URL}/guides/how-to-save-instagram-stories-anonymously`,
   },
-  '/guides/how-to-extract-audio-from-tiktok': {
-    title: 'How to Extract & Save TikTok Sound Tracks as 320kbps MP3',
-    description: 'Easy guide to converting viral TikTok video sounds into high-quality MP3 audio files for offline listening or editing.',
-    canonical: `${BASE_URL}/guides/how-to-extract-audio-from-tiktok`,
+  // ===== Standalone Legal & Policy Routes =====
+  '/privacy-policy': {
+    title: 'Privacy Policy — SnapLoad Video Downloader',
+    description: 'Official SnapLoad Privacy Policy. Learn about our zero-log architecture, zero server media storage, GDPR and CCPA privacy protections.',
+    canonical: `${BASE_URL}/privacy-policy`,
+  },
+  '/terms-of-service': {
+    title: 'Terms of Service — SnapLoad Video Downloader',
+    description: 'SnapLoad Terms of Service detailing permitted personal, non-commercial fair use of our online media downloading utility.',
+    canonical: `${BASE_URL}/terms-of-service`,
+  },
+  '/dmca-policy': {
+    title: 'DMCA Copyright Policy & Takedown Agent — SnapLoad',
+    description: 'Digital Millennium Copyright Act (DMCA) policy, copyright infringement notification procedures, and Designated Agent contact for SnapLoad.',
+    canonical: `${BASE_URL}/dmca-policy`,
+  },
+  '/about-us': {
+    title: 'About Us — Mission & Standards — SnapLoad',
+    description: 'Learn about SnapLoad mission, privacy engineering standards, technology architecture, and technical editorial team.',
+    canonical: `${BASE_URL}/about-us`,
+  },
+  '/contact': {
+    title: 'Contact Us & Customer Support — SnapLoad',
+    description: 'Contact the SnapLoad technical support team and Copyright Agent for inquiries, bug reports, and copyright notifications.',
+    canonical: `${BASE_URL}/contact`,
+  },
+  '/disclaimer': {
+    title: 'Legal Disclaimer & Platform Notice — SnapLoad',
+    description: 'Official legal disclaimers regarding third-party platform trademarks, non-affiliation, and copyright compliance.',
+    canonical: `${BASE_URL}/disclaimer`,
+  },
+  '/cookie-policy': {
+    title: 'Cookie Policy — SnapLoad Video Downloader',
+    description: 'Comprehensive explanation of cookies, web beacons, Google AdSense advertising cookies, and privacy management on SnapLoad.',
+    canonical: `${BASE_URL}/cookie-policy`,
+  },
+  '/guides/copyright-and-fair-use-guidelines': {
+    title: 'Copyright & Fair Use Guidelines for Online Video Content Creators (2026 Guide)',
+    description: 'Comprehensive legal and publisher guide to understanding copyright laws, Fair Use provisions, and attribution best practices.',
+    canonical: `${BASE_URL}/guides/copyright-and-fair-use-guidelines`,
+  },
+  '/guides/video-resolution-and-audio-quality-guide': {
+    title: 'Understanding Video Resolution & Audio Bitrate Standards (1080p, 4K, 320kbps)',
+    description: 'Technical publisher guide explaining video container formats, codecs, and high-fidelity audio extraction.',
+    canonical: `${BASE_URL}/guides/video-resolution-and-audio-quality-guide`,
+  },
+  '/guides/video-downloader-security-and-privacy-audit': {
+    title: 'Online Video Downloader Security & Privacy Audit 2026',
+    description: 'Security audit and safety benchmark guide examining web downloader privacy, zero-storage architectures, and HTTPS encryption standards.',
+    canonical: `${BASE_URL}/guides/video-downloader-security-and-privacy-audit`,
   },
   // ===== Spanish (ES) Routes =====
   '/es': {
