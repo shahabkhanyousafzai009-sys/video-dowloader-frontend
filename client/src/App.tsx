@@ -20,6 +20,11 @@ import { Language, TRANSLATIONS } from './utils/i18n';
 import { EmbedWidgetModal } from './components/EmbedWidgetModal';
 import { StandaloneWidgetView } from './components/StandaloneWidgetView';
 import { LegalPage, LegalPageType } from './components/LegalPage';
+import { BlogHub } from './components/BlogHub';
+import { BlogPostPage } from './components/BlogPostPage';
+import { BLOG_POSTS } from './data/blogData';
+import { AboutUsPage } from './components/AboutUsPage';
+import { ContactUsPage } from './components/ContactUsPage';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
@@ -113,6 +118,10 @@ function App() {
   const [isGuidesHub, setIsGuidesHub] = useState<boolean>(false);
   const [activeGuideSlug, setActiveGuideSlug] = useState<string | null>(null);
   const [activeLegalPage, setActiveLegalPage] = useState<LegalPageType | null>(null);
+  const [isBlogHub, setIsBlogHub] = useState<boolean>(false);
+  const [activeBlogPostSlug, setActiveBlogPostSlug] = useState<string | null>(null);
+  const [isAboutUsPage, setIsAboutUsPage] = useState<boolean>(false);
+  const [isContactUsPage, setIsContactUsPage] = useState<boolean>(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('snapload_lang') as Language;
@@ -132,6 +141,17 @@ function App() {
     } catch {
       // Ignore storage errors
     }
+  };
+
+  // Reset all page view flags helper
+  const resetAllViews = () => {
+    setIsGuidesHub(false);
+    setActiveGuideSlug(null);
+    setActiveLegalPage(null);
+    setIsBlogHub(false);
+    setActiveBlogPostSlug(null);
+    setIsAboutUsPage(false);
+    setIsContactUsPage(false);
   };
 
   // Detect route path on initial mount and browser back/forward buttons
@@ -154,14 +174,40 @@ function App() {
       }
       setCurrentLanguage(lang);
 
+      resetAllViews();
+
       // Handle legacy /youtube-downloader link gracefully by redirecting to home
       if (cleanPath === '/youtube-downloader') {
         window.history.replaceState({}, '', '/');
         setCurrentPlatform('all');
-        setIsGuidesHub(false);
-        setActiveGuideSlug(null);
-        setActiveLegalPage(null);
         return;
+      }
+
+      // About Us Route
+      if (cleanPath === '/about-us') {
+        setIsAboutUsPage(true);
+        return;
+      }
+
+      // Contact Us Routes
+      if (cleanPath === '/contact-us' || cleanPath === '/contact') {
+        setIsContactUsPage(true);
+        return;
+      }
+
+      // Blog Index Route
+      if (cleanPath === '/blog') {
+        setIsBlogHub(true);
+        return;
+      }
+
+      // Blog Article Route
+      if (cleanPath.startsWith('/blog/')) {
+        const slug = cleanPath.replace('/blog/', '');
+        if (BLOG_POSTS[slug]) {
+          setActiveBlogPostSlug(slug);
+          return;
+        }
       }
 
       // Standalone Legal / Policy Routes
@@ -169,38 +215,29 @@ function App() {
         '/privacy-policy': 'privacy',
         '/terms-of-service': 'terms',
         '/dmca-policy': 'dmca',
-        '/about-us': 'about',
-        '/contact': 'contact',
         '/disclaimer': 'disclaimer',
         '/cookie-policy': 'cookies',
       };
 
       if (legalRoutes[cleanPath]) {
         setActiveLegalPage(legalRoutes[cleanPath]);
-        setIsGuidesHub(false);
-        setActiveGuideSlug(null);
         return;
-      } else {
-        setActiveLegalPage(null);
       }
 
+      // Guides Hub Route
       if (cleanPath === '/guides') {
         setIsGuidesHub(true);
-        setActiveGuideSlug(null);
         return;
       }
 
+      // Guide Detail Route
       if (cleanPath.startsWith('/guides/')) {
         const slug = cleanPath.replace('/guides/', '');
         if (GUIDES_DATA[slug]) {
-          setIsGuidesHub(false);
           setActiveGuideSlug(slug);
           return;
         }
       }
-
-      setIsGuidesHub(false);
-      setActiveGuideSlug(null);
 
       const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
         (key) => PLATFORMS[key].path === cleanPath
@@ -220,7 +257,28 @@ function App() {
     let path = PLATFORMS[currentPlatform].path;
     let label = PLATFORMS[currentPlatform].label;
 
-    if (activeLegalPage) {
+    if (isAboutUsPage) {
+      title = 'About Us — Mission & Technical Standards | SnapLoad';
+      description = 'Learn about SnapLoad mission, privacy engineering standards, technology architecture, and technical editorial team.';
+      path = '/about-us';
+      label = 'About Us';
+    } else if (isContactUsPage) {
+      title = 'Contact Us & Customer Support | SnapLoad';
+      description = 'Contact the SnapLoad technical support team and Copyright Agent for inquiries, bug reports, and copyright notifications.';
+      path = '/contact-us';
+      label = 'Contact Us';
+    } else if (isBlogHub) {
+      title = 'SnapLoad Blog & Knowledge Base — Media Tutorials & Guides';
+      description = 'In-depth articles, tutorials, and technical manuals on downloading TikTok videos without watermark, saving 1080p Instagram Reels, and 320kbps MP3 conversion.';
+      path = '/blog';
+      label = 'Blog';
+    } else if (activeBlogPostSlug && BLOG_POSTS[activeBlogPostSlug]) {
+      const post = BLOG_POSTS[activeBlogPostSlug];
+      title = `${post.title} | SnapLoad Blog`;
+      description = post.excerpt;
+      path = `/blog/${post.slug}`;
+      label = post.title;
+    } else if (activeLegalPage) {
       const legalMeta: Record<LegalPageType, { title: string; desc: string; path: string }> = {
         privacy: {
           title: 'Privacy Policy — SnapLoad Video Downloader',
@@ -400,12 +458,10 @@ function App() {
     } else if (guideScriptTag) {
       guideScriptTag.remove();
     }
-  }, [currentPlatform, isGuidesHub, activeGuideSlug, activeLegalPage, currentLanguage]);
+  }, [currentPlatform, isGuidesHub, activeGuideSlug, activeLegalPage, isBlogHub, activeBlogPostSlug, isAboutUsPage, isContactUsPage, currentLanguage]);
 
   const handlePlatformChange = (key: Platform) => {
-    setIsGuidesHub(false);
-    setActiveGuideSlug(null);
-    setActiveLegalPage(null);
+    resetAllViews();
     setCurrentPlatform(key);
     const targetPath = PLATFORMS[key].path;
     if (window.location.pathname !== targetPath) {
@@ -418,36 +474,52 @@ function App() {
       window.history.pushState({}, '', targetPath);
     }
 
+    resetAllViews();
+
+    if (targetPath === '/about-us') {
+      setIsAboutUsPage(true);
+      return;
+    }
+
+    if (targetPath === '/contact-us' || targetPath === '/contact') {
+      setIsContactUsPage(true);
+      return;
+    }
+
+    if (targetPath === '/blog') {
+      setIsBlogHub(true);
+      return;
+    }
+
+    if (targetPath.startsWith('/blog/')) {
+      const slug = targetPath.replace('/blog/', '');
+      if (BLOG_POSTS[slug]) {
+        setActiveBlogPostSlug(slug);
+        return;
+      }
+    }
+
     const legalRoutes: Record<string, LegalPageType> = {
       '/privacy-policy': 'privacy',
       '/terms-of-service': 'terms',
       '/dmca-policy': 'dmca',
-      '/about-us': 'about',
-      '/contact': 'contact',
       '/disclaimer': 'disclaimer',
       '/cookie-policy': 'cookies',
     };
 
     if (legalRoutes[targetPath]) {
       setActiveLegalPage(legalRoutes[targetPath]);
-      setIsGuidesHub(false);
-      setActiveGuideSlug(null);
       return;
     }
 
-    setActiveLegalPage(null);
     if (targetPath === '/guides') {
       setIsGuidesHub(true);
-      setActiveGuideSlug(null);
     } else if (targetPath.startsWith('/guides/')) {
       const slug = targetPath.replace('/guides/', '');
       if (GUIDES_DATA[slug]) {
-        setIsGuidesHub(false);
         setActiveGuideSlug(slug);
       }
     } else {
-      setIsGuidesHub(false);
-      setActiveGuideSlug(null);
       const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
         (key) => PLATFORMS[key].path === targetPath
       ) || 'all';
@@ -531,10 +603,10 @@ function App() {
 
       {/* Main Content */}
       <main className="relative z-10 max-w-3xl mx-auto px-4 pb-8">
-        {/* Platform & Guides Quick Switcher Pills for SEO Routing */}
+        {/* Platform, Blog & Guides Quick Switcher Pills for SEO Routing */}
         <div className="flex flex-wrap items-center justify-center gap-2 mt-4 mb-6 animate-fade-in">
           {(Object.keys(PLATFORMS) as Platform[]).map((key) => {
-            const isSelected = !isGuidesHub && !activeGuideSlug && currentPlatform === key;
+            const isSelected = !isAboutUsPage && !isContactUsPage && !isBlogHub && !activeBlogPostSlug && !activeLegalPage && !isGuidesHub && !activeGuideSlug && currentPlatform === key;
             const labelText = t.nav[key] || PLATFORMS[key].label;
             return (
               <button
@@ -560,10 +632,32 @@ function App() {
           >
             📖 Guides &amp; How-To
           </button>
+          <button
+            onClick={() => handleNavigate('/blog')}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+              isBlogHub || activeBlogPostSlug
+                ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow scale-105'
+                : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
+            }`}
+          >
+            📚 Blog &amp; Knowledge Base
+          </button>
         </div>
 
-        {/* Render Legal Page, Guides Hub, Guide Detail, or Main Downloader */}
-        {activeLegalPage ? (
+        {/* Render View Components */}
+        {isAboutUsPage ? (
+          <AboutUsPage onNavigateHome={() => handleNavigate('/')} />
+        ) : isContactUsPage ? (
+          <ContactUsPage onNavigateHome={() => handleNavigate('/')} />
+        ) : isBlogHub ? (
+          <BlogHub onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)} onNavigateHome={() => handleNavigate('/')} />
+        ) : activeBlogPostSlug && BLOG_POSTS[activeBlogPostSlug] ? (
+          <BlogPostPage
+            post={BLOG_POSTS[activeBlogPostSlug]}
+            onBack={() => handleNavigate('/blog')}
+            onNavigateHome={() => handleNavigate('/')}
+          />
+        ) : activeLegalPage ? (
           <LegalPage type={activeLegalPage} onNavigate={handleNavigate} />
         ) : isGuidesHub ? (
           <GuidesHub onSelectGuide={(slug) => handleNavigate(`/guides/${slug}`)} />
@@ -679,7 +773,7 @@ function App() {
         )}
 
         {/* Platform-Specific SEO & FAQ Content (When Idle on Main Downloader Routes) */}
-        {!activeLegalPage && !isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (
+        {!isAboutUsPage && !isContactUsPage && !isBlogHub && !activeBlogPostSlug && !activeLegalPage && !isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (
           <>
             <SeoContentSection platform={currentPlatform} />
             <AdBanner slot="bottom-banner-slot" label="Advertisement" className="mt-12" />

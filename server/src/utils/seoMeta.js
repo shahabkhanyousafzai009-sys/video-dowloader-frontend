@@ -98,10 +98,40 @@ const ROUTE_META = {
     description: 'Learn about SnapLoad mission, privacy engineering standards, technology architecture, and technical editorial team.',
     canonical: `${BASE_URL}/about-us`,
   },
-  '/contact': {
+  '/contact-us': {
     title: 'Contact Us & Customer Support — SnapLoad',
     description: 'Contact the SnapLoad technical support team and Copyright Agent for inquiries, bug reports, and copyright notifications.',
-    canonical: `${BASE_URL}/contact`,
+    canonical: `${BASE_URL}/contact-us`,
+  },
+  '/blog': {
+    title: 'SnapLoad Blog & Knowledge Base — Media Tutorials & Technical Manuals',
+    description: 'In-depth articles, tutorials, and technical manuals on downloading TikTok videos without watermark, saving 1080p Instagram Reels, and 320kbps MP3 conversion.',
+    canonical: `${BASE_URL}/blog`,
+  },
+  '/blog/ultimate-guide-tiktok-video-downloader-no-watermark-2026': {
+    title: 'The Ultimate Guide to Downloading TikTok Videos Without Watermark in 2026',
+    description: 'A technical, step-by-step masterclass on saving full 1080p HD TikTok videos across iOS Safari, Android Chrome, and PC without creator logo overlays.',
+    canonical: `${BASE_URL}/blog/ultimate-guide-tiktok-video-downloader-no-watermark-2026`,
+  },
+  '/blog/how-to-save-instagram-reels-stories-carousel-photos-1080p-hd': {
+    title: 'How to Save Instagram Reels, Stories & Carousel Photos in 1080p HD',
+    description: 'An exhaustive technical guide covering Instagram Reels saving, multi-photo carousel downloads, and anonymous story viewing in full resolution.',
+    canonical: `${BASE_URL}/blog/how-to-save-instagram-reels-stories-carousel-photos-1080p-hd`,
+  },
+  '/blog/converting-video-links-to-320kbps-mp3-audio-technical-manual': {
+    title: 'Converting Video Links to High-Bitrate 320kbps MP3 Audio: A Complete Technical Manual',
+    description: 'Everything you need to know about extracting studio-grade 320kbps MP3 sound tracks from video links without audio quality degradation.',
+    canonical: `${BASE_URL}/blog/converting-video-links-to-320kbps-mp3-audio-technical-manual`,
+  },
+  '/blog/youtube-shorts-downloader-mp3-extractor-desktop-mobile-guide': {
+    title: 'YouTube Shorts Downloader & MP3 Extractor: Complete Desktop & Mobile Guide',
+    description: 'Learn how to download YouTube Shorts videos in MP4 1080p HD or convert them to standalone 320kbps MP3 audio files with zero software installs.',
+    canonical: `${BASE_URL}/blog/youtube-shorts-downloader-mp3-extractor-desktop-mobile-guide`,
+  },
+  '/blog/digital-copyright-fair-use-media-security-content-creators-guide': {
+    title: 'Digital Copyright, Fair Use, and Media Security: What Every Content Creator Should Know',
+    description: 'An essential legal & publisher guide to copyright law, Fair Use doctrines, digital rights management, and web downloader safety.',
+    canonical: `${BASE_URL}/blog/digital-copyright-fair-use-media-security-content-creators-guide`,
   },
   '/disclaimer': {
     title: 'Legal Disclaimer & Platform Notice — SnapLoad',

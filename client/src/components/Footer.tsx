@@ -50,6 +50,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
             >
               Video to MP3 Converter
             </a>
+            <a
+              href="/blog"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+            >
+              📚 Blog &amp; Knowledge Base
+            </a>
             <span className="dark:text-white/10 text-dark-300">•</span>
             {onOpenWidget ? (
               <button
