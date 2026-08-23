@@ -91,27 +91,32 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
 
           {/* High Intent SEO Keyword Tag Cloud */}
           <div className="mt-4 pt-3.5 border-t border-slate-200/60 dark:border-white/10 flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold dark:text-white/40 text-slate-500">
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              Snaptik Alternative
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              SSSTik Alternative
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              iGram Downloader
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              SnapInst Alternative
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              320kbps Audio Extractor
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              TikTok Photo Slideshow Saver
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
-              SaveFrom Net Alternative
-            </span>
+            {[
+              'Save From Net TikTok',
+              'Savefrom Net TikTok',
+              'Savefrom TikTok HD',
+              'TikTok Video Download',
+              'TikTok Pictures Download',
+              'TikTok Pic Downloader',
+              'TikTok Picture Downloader',
+              'TikTok Images Download',
+              'SST Video Download',
+              'TikTok Image Download',
+              'Tik Tok Images Download',
+              'TikTok Picture Download',
+              'TikTok Pic Download',
+              'Save From TikTok Video',
+              'Video TikTok Download',
+              'TikTok Image Downloader',
+              'TikTok Downloader Web',
+              'Tik Tok Reel Downloader',
+              'Save For TikTok',
+              'Video Saver Without Watermark',
+            ].map((kw) => (
+              <span key={kw} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+                {kw}
+              </span>
+            ))}
           </div>
         </div>
 
