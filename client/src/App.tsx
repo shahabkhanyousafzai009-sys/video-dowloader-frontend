@@ -107,6 +107,38 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
   },
 };
 
+const findBlogPostSlug = (rawSlug: string): string | null => {
+  if (!rawSlug) return null;
+  try {
+    const decoded = decodeURIComponent(rawSlug).trim().toLowerCase();
+    if (BLOG_POSTS[decoded]) return decoded;
+    const normalized = decoded.replace(/[\s_]+/g, '-');
+    if (BLOG_POSTS[normalized]) return normalized;
+    const matched = Object.keys(BLOG_POSTS).find(
+      (key) => key.toLowerCase() === normalized || key.toLowerCase() === decoded
+    );
+    return matched || null;
+  } catch {
+    return null;
+  }
+};
+
+const findGuideSlug = (rawSlug: string): string | null => {
+  if (!rawSlug) return null;
+  try {
+    const decoded = decodeURIComponent(rawSlug).trim().toLowerCase();
+    if (GUIDES_DATA[decoded]) return decoded;
+    const normalized = decoded.replace(/[\s_]+/g, '-');
+    if (GUIDES_DATA[normalized]) return normalized;
+    const matched = Object.keys(GUIDES_DATA).find(
+      (key) => key.toLowerCase() === normalized || key.toLowerCase() === decoded
+    );
+    return matched || null;
+  } catch {
+    return null;
+  }
+};
+
 function App() {
   const { videoInfo, loading, error, fetchInfo, reset: resetInfo } = useVideoInfo();
   const { downloading, progress, error: downloadError, startDownload, reset: resetDownload } = useDownload();
@@ -157,6 +189,7 @@ function App() {
   // Detect route path on initial mount and browser back/forward buttons
   useEffect(() => {
     const handleLocationChange = () => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
       const pathname = window.location.pathname;
 
       // Extract language prefix if present (/es, /de, /fr)
@@ -203,11 +236,14 @@ function App() {
 
       // Blog Article Route
       if (cleanPath.startsWith('/blog/')) {
-        const slug = cleanPath.replace('/blog/', '');
-        if (BLOG_POSTS[slug]) {
-          setActiveBlogPostSlug(slug);
+        const rawSlug = cleanPath.replace('/blog/', '');
+        const matchedSlug = findBlogPostSlug(rawSlug);
+        if (matchedSlug) {
+          setActiveBlogPostSlug(matchedSlug);
           return;
         }
+        setIsBlogHub(true);
+        return;
       }
 
       // Standalone Legal / Policy Routes
@@ -232,11 +268,14 @@ function App() {
 
       // Guide Detail Route
       if (cleanPath.startsWith('/guides/')) {
-        const slug = cleanPath.replace('/guides/', '');
-        if (GUIDES_DATA[slug]) {
-          setActiveGuideSlug(slug);
+        const rawSlug = cleanPath.replace('/guides/', '');
+        const matchedSlug = findGuideSlug(rawSlug);
+        if (matchedSlug) {
+          setActiveGuideSlug(matchedSlug);
           return;
         }
+        setIsGuidesHub(true);
+        return;
       }
 
       const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
@@ -513,6 +552,7 @@ function App() {
   }, [currentPlatform, isGuidesHub, activeGuideSlug, activeLegalPage, isBlogHub, activeBlogPostSlug, isAboutUsPage, isContactUsPage, currentLanguage]);
 
   const handlePlatformChange = (key: Platform) => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     resetAllViews();
     setCurrentPlatform(key);
     const targetPath = PLATFORMS[key].path;
@@ -522,6 +562,7 @@ function App() {
   };
 
   const handleNavigate = (targetPath: string) => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     if (window.location.pathname !== targetPath) {
       window.history.pushState({}, '', targetPath);
     }
@@ -544,11 +585,14 @@ function App() {
     }
 
     if (targetPath.startsWith('/blog/')) {
-      const slug = targetPath.replace('/blog/', '');
-      if (BLOG_POSTS[slug]) {
-        setActiveBlogPostSlug(slug);
+      const rawSlug = targetPath.replace('/blog/', '');
+      const matchedSlug = findBlogPostSlug(rawSlug);
+      if (matchedSlug) {
+        setActiveBlogPostSlug(matchedSlug);
         return;
       }
+      setIsBlogHub(true);
+      return;
     }
 
     const legalRoutes: Record<string, LegalPageType> = {
@@ -567,10 +611,13 @@ function App() {
     if (targetPath === '/guides') {
       setIsGuidesHub(true);
     } else if (targetPath.startsWith('/guides/')) {
-      const slug = targetPath.replace('/guides/', '');
-      if (GUIDES_DATA[slug]) {
-        setActiveGuideSlug(slug);
+      const rawSlug = targetPath.replace('/guides/', '');
+      const matchedSlug = findGuideSlug(rawSlug);
+      if (matchedSlug) {
+        setActiveGuideSlug(matchedSlug);
+        return;
       }
+      setIsGuidesHub(true);
     } else {
       const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
         (key) => PLATFORMS[key].path === targetPath

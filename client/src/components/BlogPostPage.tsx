@@ -11,6 +11,7 @@ interface BlogPostPageProps {
 
 export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavigateHome }) => {
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     // Inject Article JSON-LD Schema for E-E-A-T and Google Rich Snippets
     const articleSchema = {
       '@context': 'https://schema.org',

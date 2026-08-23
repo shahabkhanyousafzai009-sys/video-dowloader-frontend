@@ -19,6 +19,10 @@ export const GuideDetailPage: React.FC<GuideDetailPageProps> = ({
   loading,
   onReset,
 }) => {
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [guide.slug]);
+
   return (
     <article className="space-y-8 animate-fade-in max-w-3xl mx-auto">
       {/* Breadcrumb Navigation */}
