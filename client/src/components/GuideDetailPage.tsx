@@ -2,6 +2,7 @@ import React from 'react';
 import type { GuideArticle } from '../data/guidesData';
 import { UrlInput } from './UrlInput';
 import { AdBanner } from './AdBanner';
+import { BlogThumbnail } from './BlogThumbnail';
 
 interface GuideDetailPageProps {
   guide: GuideArticle;
@@ -28,6 +29,9 @@ export const GuideDetailPage: React.FC<GuideDetailPageProps> = ({
         <span>/</span>
         <span className="dark:text-white/80 text-dark-700 font-semibold truncate">{guide.title}</span>
       </div>
+
+      {/* Guide Featured Cover Thumbnail */}
+      <BlogThumbnail category={guide.platform} title={guide.title} imageUrl={guide.imageUrl} size="lg" />
 
       {/* Guide Header */}
       <div className="space-y-4">

@@ -20,6 +20,7 @@ export interface GuideArticle {
   targetKeyword: string;
   heroHeading: string;
   heroHighlight: string;
+  imageUrl?: string;
   steps: GuideStep[];
   faqs: GuideFaq[];
 }
@@ -36,6 +37,7 @@ export const GUIDES_DATA: Record<string, GuideArticle> = {
     targetKeyword: 'how to download tiktok video without watermark',
     heroHeading: 'How to Download TikTok',
     heroHighlight: 'Without Watermark',
+    imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80',
     steps: [
       {
         stepNumber: 1,
@@ -79,6 +81,7 @@ export const GUIDES_DATA: Record<string, GuideArticle> = {
     targetKeyword: 'how to save instagram reels',
     heroHeading: 'How to Save Instagram Reels',
     heroHighlight: 'in 1080p HD',
+    imageUrl: 'https://images.unsplash.com/photo-1611262588024-d12430b98920?auto=format&fit=crop&w=1200&q=80',
     steps: [
       {
         stepNumber: 1,
@@ -118,6 +121,7 @@ export const GUIDES_DATA: Record<string, GuideArticle> = {
     targetKeyword: 'how to convert video to mp3',
     heroHeading: 'How to Convert Video Links',
     heroHighlight: 'to 320kbps MP3',
+    imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
     steps: [
       {
         stepNumber: 1,

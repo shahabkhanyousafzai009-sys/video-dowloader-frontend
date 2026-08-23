@@ -496,14 +496,14 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
       
       {/* 1. Step-by-Step How-To Guide */}
       <article className="glass-strong rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl space-y-8">
-        <header className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-xs font-semibold">
+        <header className="text-center space-y-3 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-500 dark:text-primary-400 text-xs font-bold">
             <span>📖 How-To Guide</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {content.heading}
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
             {content.subheading}
           </p>
         </header>
@@ -512,15 +512,15 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
           {content.steps.map((step, idx) => (
             <div
               key={idx}
-              className="relative p-5 rounded-2xl bg-white/40 dark:bg-white/5 border border-gray-100 dark:border-white/5 shadow-sm hover:border-primary-500/30 transition-all"
+              className="relative p-6 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 shadow-md hover:border-primary-500/40 hover:shadow-xl transition-all"
             >
-              <span className="inline-block text-3xl font-black text-primary-500/40 mb-2 font-mono">
+              <span className="inline-block text-3xl font-black text-primary-500/50 mb-2 font-mono">
                 {step.number}
               </span>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1">
+              <h3 className="text-base font-extrabold text-slate-900 dark:text-white mb-1.5">
                 {step.title}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 {step.desc}
               </p>
             </div>
@@ -528,10 +528,10 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
         </div>
       </article>
 
-      {/* 2. Key Features & 300+ Word Deep Technical Breakdown */}
+      {/* 2. Key Features & Deep Technical Breakdown */}
       <article className="space-y-8">
         <div className="text-center space-y-2">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {content.whyTitle}
           </h3>
         </div>
@@ -540,26 +540,26 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
           {content.features.map((feat, idx) => (
             <div
               key={idx}
-              className="p-5 rounded-2xl glass-subtle border border-white/10 hover:border-primary-500/40 transition-all flex flex-col items-start"
+              className="p-5 rounded-2xl glass-subtle border border-slate-200/80 dark:border-white/10 hover:border-primary-500/40 transition-all flex flex-col items-start shadow-sm"
             >
               <span className="text-3xl mb-3">{feat.icon}</span>
-              <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white mb-1">
+              <h4 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mb-1">
                 {feat.title}
               </h4>
-              <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 {feat.desc}
               </p>
             </div>
           ))}
         </div>
 
-        {/* 300+ Word Deep Technical Content Box */}
+        {/* Deep Technical Content Box */}
         {content.deepTechnicalBreakdown && (
-          <div className="glass-strong rounded-3xl p-6 sm:p-8 border border-white/10 space-y-4">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white border-b border-white/10 pb-3">
+          <div className="glass-strong rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 space-y-4 shadow-lg">
+            <h3 className="text-lg font-extrabold text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-3">
               ⚙️ {content.deepTechnicalBreakdown.title}
             </h3>
-            <div className="space-y-4 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            <div className="space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
               {content.deepTechnicalBreakdown.paragraphs.map((p, idx) => (
                 <p key={idx}>{p}</p>
               ))}
@@ -568,28 +568,28 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
         )}
       </article>
 
-      {/* Policy-Compliant In-Content Ad Banner (strictly surrounded by rich publisher text) */}
+      {/* Policy-Compliant In-Content Ad Banner */}
       <AdBanner slot={`platform-${platform}-slot`} label="Sponsored Content" className="my-8" />
 
       {/* 3. Troubleshooting & Best Practices Section */}
       {content.troubleshooting && (
-        <article className="glass-strong rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
+        <article className="glass-strong rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 space-y-6 shadow-lg">
           <header className="space-y-1">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
               <span>🛠️</span> {content.troubleshooting.title}
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               Verified solutions and operational guidelines for seamless video conversions.
             </p>
           </header>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {content.troubleshooting.items.map((item, idx) => (
-              <div key={idx} className="glass-subtle p-5 rounded-2xl border border-white/10 space-y-2">
-                <h4 className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white">
+              <div key={idx} className="glass-subtle p-5 rounded-2xl border border-slate-200/80 dark:border-white/10 space-y-2">
+                <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white">
                   {item.title}
                 </h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   {item.desc}
                 </p>
               </div>
@@ -598,44 +598,44 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
         </article>
       )}
 
-      {/* 4. Interactive Accordion FAQ Section with FAQPage Schema */}
-      <article className="glass-strong rounded-3xl p-6 sm:p-10 border border-white/10">
+      {/* 4. Interactive Accordion FAQ Section */}
+      <article className="glass-strong rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-white/10 shadow-xl">
         <header className="text-center mb-8">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight">
             {content.faqTitle}
           </h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             Answers to common questions about downloads, quality, and platform safety.
           </p>
         </header>
 
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           {content.faqs.map((faq, idx) => {
             const isOpen = openFaqIndex === idx;
             return (
               <div
                 key={idx}
-                className="rounded-2xl border border-gray-200/50 dark:border-white/10 overflow-hidden transition-all bg-white/30 dark:bg-white/5"
+                className="rounded-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden transition-all bg-white/40 dark:bg-white/5"
               >
                 <button
                   type="button"
                   onClick={() => toggleFaq(idx)}
-                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-semibold text-gray-900 dark:text-white text-sm sm:text-base hover:bg-white/10 transition-all cursor-pointer"
+                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-slate-900 dark:text-white text-sm sm:text-base hover:bg-slate-100/50 dark:hover:bg-white/10 transition-all cursor-pointer"
                 >
-                  <span>{faq.question}</span>
+                  <span className="pr-4">{faq.question}</span>
                   <svg
-                    className={`w-5 h-5 transition-transform duration-300 text-primary-400 shrink-0 ${
+                    className={`w-5 h-5 transition-transform duration-300 text-primary-500 dark:text-primary-400 shrink-0 ${
                       isOpen ? 'rotate-180' : ''
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 {isOpen && (
-                  <div className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs sm:text-sm text-gray-600 dark:text-gray-300 animate-fade-in border-t border-gray-100 dark:border-white/5 pt-3 leading-relaxed">
+                  <div className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 animate-fade-in border-t border-slate-200/60 dark:border-white/5 pt-3 leading-relaxed font-medium">
                     {faq.answer}
                   </div>
                 )}

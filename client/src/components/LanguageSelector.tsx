@@ -27,20 +27,21 @@ export function LanguageSelector({ currentLanguage, onLanguageChange }: Language
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold
-                   glass-subtle dark:text-white/80 text-dark-700
-                   hover:bg-white/10 transition-all border border-white/10"
+        className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold
+                   bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white/90
+                   hover:bg-slate-200 dark:hover:bg-white/20 transition-all duration-200
+                   border border-slate-200/80 dark:border-white/15 cursor-pointer shadow-sm"
         aria-label="Select Language"
       >
         <span>{currentMeta.flag}</span>
-        <span className="hidden sm:inline">{currentMeta.label}</span>
+        <span className="font-bold tracking-tight">{currentMeta.code || currentMeta.label}</span>
         <svg
-          className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3.5 h-3.5 text-slate-500 dark:text-white/70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 

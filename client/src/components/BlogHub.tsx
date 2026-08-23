@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BLOG_POSTS } from '../data/blogData';
+import { BlogThumbnail } from './BlogThumbnail';
 
 interface BlogHubProps {
   onSelectPost: (slug: string) => void;
@@ -84,17 +85,20 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome }
         </div>
       </div>
 
-      {/* Articles Grid */}
+      {/* Articles Grid with Visual Thumbnails */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredPosts.map((post) => (
           <article
             key={post.slug}
             onClick={() => onSelectPost(post.slug)}
-            className="glass rounded-3xl p-6 border border-white/10 hover:border-primary-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xl hover:shadow-2xl hover:scale-[1.01]"
+            className="glass rounded-3xl p-5 border border-white/10 hover:border-primary-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xl hover:shadow-2xl hover:scale-[1.01] space-y-4"
           >
-            <div className="space-y-4">
+            {/* Featured Article Visual Thumbnail */}
+            <BlogThumbnail category={post.category} title={post.title} imageUrl={post.imageUrl} size="sm" />
+
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary-500/20 text-primary-300 border border-primary-500/30">
+                <span className="px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary-500/20 text-primary-300 border border-primary-500/30">
                   {post.category}
                 </span>
                 <span className="text-xs dark:text-white/40 text-dark-400 font-mono">
@@ -102,16 +106,16 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome }
                 </span>
               </div>
 
-              <h2 className="text-lg font-bold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors leading-snug">
+              <h2 className="text-base sm:text-lg font-bold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors leading-snug">
                 {post.title}
               </h2>
 
-              <p className="text-xs sm:text-sm dark:text-white/60 text-dark-600 line-clamp-3 leading-relaxed">
+              <p className="text-xs sm:text-sm dark:text-white/60 text-dark-600 line-clamp-2 leading-relaxed">
                 {post.excerpt}
               </p>
             </div>
 
-            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs">
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <span className="text-base">{post.author.avatar}</span>
                 <div>

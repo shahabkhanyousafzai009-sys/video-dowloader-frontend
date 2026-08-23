@@ -401,6 +401,58 @@ function App() {
     }
     scriptTag.textContent = JSON.stringify(breadcrumbData);
 
+    // SiteNavigationElement Schema for SEO Sitelinks Discovery
+    const siteNavSchema = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-tiktok',
+          'name': 'TikTok Downloader Without Watermark',
+          'url': 'https://snaploaddownload.com/tiktok-downloader'
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-tiktok-mp3',
+          'name': 'TikTok MP3 Sound Extractor',
+          'url': 'https://snaploaddownload.com/tiktok-mp3-downloader'
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-instagram',
+          'name': 'Instagram Reels Downloader HD',
+          'url': 'https://snaploaddownload.com/instagram-downloader'
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-youtube',
+          'name': 'YouTube Shorts Downloader',
+          'url': 'https://snaploaddownload.com/youtube-shorts-downloader'
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-mp3',
+          'name': 'Video to MP3 Converter',
+          'url': 'https://snaploaddownload.com/mp3-downloader'
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-blog',
+          'name': 'Blog & Knowledge Base',
+          'url': 'https://snaploaddownload.com/blog'
+        }
+      ]
+    };
+
+    let navScriptTag = document.getElementById('sitenav-jsonld');
+    if (!navScriptTag) {
+      navScriptTag = document.createElement('script');
+      navScriptTag.id = 'sitenav-jsonld';
+      navScriptTag.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(navScriptTag);
+    }
+    navScriptTag.textContent = JSON.stringify(siteNavSchema);
+
     // Dynamic Guide Schema (Article, HowTo, FAQPage) for E-E-A-T and Google Rich Snippets
     let guideScriptTag = document.getElementById('guide-jsonld');
     if (activeGuideSlug && GUIDES_DATA[activeGuideSlug]) {
@@ -599,51 +651,16 @@ function App() {
       </div>
 
       {/* Header */}
-      <Header currentLanguage={currentLanguage} onLanguageChange={handleLanguageChange} />
+      <Header
+        currentLanguage={currentLanguage}
+        onLanguageChange={handleLanguageChange}
+        onNavigate={handleNavigate}
+        currentPlatform={currentPlatform}
+        onOpenWidgetModal={() => setIsWidgetModalOpen(true)}
+      />
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-3xl mx-auto px-4 pb-8">
-        {/* Platform, Blog & Guides Quick Switcher Pills for SEO Routing */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-4 mb-6 animate-fade-in">
-          {(Object.keys(PLATFORMS) as Platform[]).map((key) => {
-            const isSelected = !isAboutUsPage && !isContactUsPage && !isBlogHub && !activeBlogPostSlug && !activeLegalPage && !isGuidesHub && !activeGuideSlug && currentPlatform === key;
-            const labelText = t.nav[key] || PLATFORMS[key].label;
-            return (
-              <button
-                key={key}
-                onClick={() => handlePlatformChange(key)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
-                  isSelected
-                    ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow scale-105'
-                    : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
-                }`}
-              >
-                {labelText}
-              </button>
-            );
-          })}
-          <button
-            onClick={() => handleNavigate('/guides')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
-              isGuidesHub || activeGuideSlug
-                ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow scale-105'
-                : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
-            }`}
-          >
-            📖 Guides &amp; How-To
-          </button>
-          <button
-            onClick={() => handleNavigate('/blog')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
-              isBlogHub || activeBlogPostSlug
-                ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow scale-105'
-                : 'glass-subtle dark:text-white/70 text-dark-600 hover:bg-white/[0.1] hover:text-white'
-            }`}
-          >
-            📚 Blog &amp; Knowledge Base
-          </button>
-        </div>
-
+      <main className="relative z-10 max-w-3xl mx-auto px-4 pt-4 pb-8">
         {/* Render View Components */}
         {isAboutUsPage ? (
           <AboutUsPage onNavigateHome={() => handleNavigate('/')} />

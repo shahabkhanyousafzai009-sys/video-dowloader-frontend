@@ -1,6 +1,7 @@
 import React from 'react';
 import { GUIDES_DATA } from '../data/guidesData';
 import { AdBanner } from './AdBanner';
+import { BlogThumbnail } from './BlogThumbnail';
 
 interface GuidesHubProps {
   onSelectGuide: (slug: string) => void;
@@ -10,7 +11,7 @@ export const GuidesHub: React.FC<GuidesHubProps> = ({ onSelectGuide }) => {
   const guidesList = Object.values(GUIDES_DATA);
 
   return (
-    <div className="space-y-8 animate-fade-in max-w-3xl mx-auto">
+    <div className="space-y-8 animate-fade-in max-w-4xl mx-auto">
       {/* Header Banner */}
       <div className="text-center space-y-3">
         <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-primary-500/10 text-primary-400 border border-primary-500/20">
@@ -28,31 +29,34 @@ export const GuidesHub: React.FC<GuidesHubProps> = ({ onSelectGuide }) => {
       <AdBanner slot="guides-hub-top" label="Sponsored" className="my-6" />
 
       {/* Guide Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {guidesList.map((guide) => (
           <div
             key={guide.slug}
             onClick={() => onSelectGuide(guide.slug)}
-            className="glass hover:glass-strong rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between border border-white/5 hover:border-primary-500/30"
+            className="glass hover:glass-strong rounded-3xl p-4 cursor-pointer transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between border border-white/5 hover:border-primary-500/30 space-y-3 shadow-xl"
           >
-            <div className="space-y-3">
+            {/* Guide Cover Thumbnail */}
+            <BlogThumbnail category={guide.platform} title={guide.title} imageUrl={guide.imageUrl} size="sm" />
+
+            <div className="space-y-2">
               <div className="flex items-center justify-between text-xs dark:text-white/40 text-dark-400">
-                <span className="font-semibold uppercase tracking-wider text-primary-400">
+                <span className="font-bold uppercase tracking-wider text-primary-400 text-[10px]">
                   {guide.platform}
                 </span>
-                <span>{guide.readTime}</span>
+                <span className="text-[10px] font-mono">{guide.readTime}</span>
               </div>
-              <h2 className="text-base font-bold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors line-clamp-2">
+              <h2 className="text-sm font-bold dark:text-white text-dark-900 group-hover:text-primary-400 transition-colors line-clamp-2 leading-snug">
                 {guide.title}
               </h2>
-              <p className="text-xs dark:text-white/50 text-dark-500 line-clamp-3 leading-relaxed">
+              <p className="text-xs dark:text-white/50 text-dark-500 line-clamp-2 leading-relaxed">
                 {guide.description}
               </p>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-primary-400 group-hover:translate-x-1 transition-transform">
-              <span>Read Full Guide</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2 font-bold">
+            <div className="pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-primary-400 group-hover:translate-x-1 transition-transform">
+              <span>Read Guide</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </div>

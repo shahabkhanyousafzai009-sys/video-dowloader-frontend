@@ -10,68 +10,108 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
   return (
     <footer className="w-full mt-16 pb-8 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Internal Keyword Links Section for SEO Indexation & Crawling */}
-        <div className="glass-subtle rounded-xl p-4 mb-6">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-center dark:text-white/40 text-dark-500 mb-3">
-            Popular Downloader Tools &amp; Converters
+        {/* Internal Keyword Links Section for SEO Indexation & Search Engine Crawling */}
+        <div className="glass-subtle rounded-2xl p-5 mb-6 border border-slate-200/80 dark:border-white/10 shadow-sm">
+          <p className="text-[11px] font-extrabold uppercase tracking-wider text-center dark:text-white/50 text-slate-500 mb-3.5">
+            Free Online Video Downloaders &amp; High-Bitrate MP3 Converters
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-bold text-center">
             <a
               href="/tiktok-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="TikTok Downloader Without Watermark HD"
             >
-              TikTok Downloader No Watermark
+              TikTok Downloader Without Watermark
             </a>
-            <span className="dark:text-white/10 text-dark-300">•</span>
+            <span className="dark:text-white/20 text-slate-300">•</span>
             <a
               href="/tiktok-mp3-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="TikTok MP3 Sound Extractor 320kbps"
             >
               TikTok MP3 Sound Extractor
             </a>
-            <span className="dark:text-white/10 text-dark-300">•</span>
+            <span className="dark:text-white/20 text-slate-300">•</span>
             <a
               href="/instagram-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="Instagram Reels & Video Downloader 1080p HD"
             >
               Instagram Reels Downloader 1080p
             </a>
-            <span className="dark:text-white/10 text-dark-300">•</span>
+            <span className="dark:text-white/20 text-slate-300">•</span>
             <a
               href="/youtube-shorts-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="YouTube Shorts Downloader MP4 & MP3"
             >
               YouTube Shorts Downloader
             </a>
-            <span className="dark:text-white/10 text-dark-300">•</span>
+            <span className="dark:text-white/20 text-slate-300">•</span>
             <a
               href="/mp3-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="Video to MP3 Converter 320kbps"
             >
               Video to MP3 Converter
             </a>
+            <span className="dark:text-white/20 text-slate-300">•</span>
+            <a
+              href="/guides"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="Step-by-step How-To Downloader Guides"
+            >
+              📖 How-To Guides
+            </a>
+            <span className="dark:text-white/20 text-slate-300">•</span>
             <a
               href="/blog"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="SnapLoad Knowledge Base & Blog"
             >
-              📚 Blog &amp; Knowledge Base
+              📚 Blog &amp; Tutorials
             </a>
-            <span className="dark:text-white/10 text-dark-300">•</span>
+            <span className="dark:text-white/20 text-slate-300">•</span>
             {onOpenWidget ? (
               <button
                 onClick={onOpenWidget}
-                className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-all cursor-pointer font-bold"
+                className="text-amber-500 dark:text-amber-400 hover:underline underline-offset-2 transition-all cursor-pointer font-extrabold"
               >
                 ⚡ Embed Widget on Your Site
               </button>
             ) : (
               <a
                 href="/widget"
-                className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-all font-bold"
+                className="text-amber-500 dark:text-amber-400 hover:underline underline-offset-2 transition-all font-extrabold"
               >
                 ⚡ Embed Widget on Your Site
               </a>
             )}
+          </div>
+
+          {/* High Intent SEO Keyword Tag Cloud */}
+          <div className="mt-4 pt-3.5 border-t border-slate-200/60 dark:border-white/10 flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold dark:text-white/40 text-slate-500">
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              Snaptik Alternative
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              SSSTik Alternative
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              iGram Downloader
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              SnapInst Alternative
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              320kbps Audio Extractor
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              TikTok Photo Slideshow Saver
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              SaveFrom Net Alternative
+            </span>
           </div>
         </div>
 

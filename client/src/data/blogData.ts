@@ -7,6 +7,7 @@ export interface BlogPost {
   readTime: string;
   publishDate: string;
   lastUpdated: string;
+  imageUrl?: string;
   author: {
     name: string;
     role: string;
@@ -26,6 +27,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '8 min read',
     publishDate: 'August 15, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -97,6 +99,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '7 min read',
     publishDate: 'August 16, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1611262588024-d12430b98920?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -142,6 +145,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '6 min read',
     publishDate: 'August 17, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Audio DSP Specialist',
       role: 'Digital Signal Processing Lead',
@@ -188,6 +192,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '6 min read',
     publishDate: 'August 18, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -228,6 +233,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '9 min read',
     publishDate: 'August 19, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Legal & Compliance Lead',
       role: 'IP & Web Policy Specialist',
@@ -283,6 +289,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '7 min read',
     publishDate: 'August 21, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -323,6 +330,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '6 min read',
     publishDate: 'August 21, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -358,6 +366,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '9 min read',
     publishDate: 'August 21, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -399,6 +408,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '7 min read',
     publishDate: 'August 21, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Legal & Compliance Lead',
       role: 'IP & Web Policy Specialist',
@@ -434,6 +444,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '8 min read',
     publishDate: 'August 21, 2026',
     lastUpdated: 'August 21, 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Audio DSP Specialist',
       role: 'Digital Signal Processing Lead',

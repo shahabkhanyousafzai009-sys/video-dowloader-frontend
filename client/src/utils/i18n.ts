@@ -287,9 +287,9 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
   },
 };
 
-export const LANGUAGE_LABELS: Record<Language, { label: string; flag: string }> = {
-  en: { label: 'English', flag: '🇺🇸' },
-  de: { label: 'Deutsch', flag: '🇩🇪' },
-  fr: { label: 'Français', flag: '🇫🇷' },
-  es: { label: 'Español', flag: '🇪🇸' },
+export const LANGUAGE_LABELS: Record<Language, { label: string; flag: string; code: string }> = {
+  en: { label: 'English', flag: '🇺🇸', code: 'US EN' },
+  de: { label: 'Deutsch', flag: '🇩🇪', code: 'DE' },
+  fr: { label: 'Français', flag: '🇫🇷', code: 'FR' },
+  es: { label: 'Español', flag: '🇪🇸', code: 'ES' },
 };

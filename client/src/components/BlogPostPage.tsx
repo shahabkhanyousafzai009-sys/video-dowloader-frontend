@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BlogPost } from '../data/blogData';
 import { AdBanner } from './AdBanner';
+import { BlogThumbnail } from './BlogThumbnail';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -59,6 +60,9 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavi
         <span>/</span>
         <span className="dark:text-white text-dark-900 truncate max-w-xs">{post.title}</span>
       </div>
+
+      {/* Featured Banner Thumbnail */}
+      <BlogThumbnail category={post.category} title={post.title} imageUrl={post.imageUrl} size="lg" />
 
       {/* Main Glass Article Wrapper */}
       <div className="glass rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl space-y-8">
