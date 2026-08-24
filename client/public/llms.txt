@@ -21,6 +21,8 @@
 - [Free Video Downloader Widget](https://snaploaddownload.com/widget): Embed SnapLoad downloader search bar on external sites & blogs.
 - [How-To Guides & Tutorials](https://snaploaddownload.com/guides): Step-by-step guides for video downloading, MP3 conversion, and media archiving.
 - [Blog & Knowledge Base](https://snaploaddownload.com/blog): In-depth articles on social media downloading, copyright compliance, and audio DSP bitrates.
+- [TikTok Video Download Ultimate Guide](https://snaploaddownload.com/blog/tiktok-video-download-ultimate-step-by-step-guide): Detailed step-by-step masterclass on saving watermark-free HD clips and MP3 sound tracks.
+- [How to Download TikTok Video on iPhone Guide](https://snaploaddownload.com/blog/how-to-download-tiktok-video-on-iphone-ultimate-guide): Exhaustive tutorial on downloading TikTok MP4 clips directly to iPhone Camera Roll via Safari and Apple Shortcuts.
 
 ## Technical & Architectural Overview
 - **Zero-Storage Privacy Model**: Files are converted and streamed dynamically to client browsers without persistent storage.

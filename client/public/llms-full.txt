@@ -42,6 +42,8 @@ No. SnapLoad operates on a privacy-first, zero-storage model. Media files are pa
 - Embeddable Downloader Widget: https://snaploaddownload.com/widget
 - How-To Guides Hub: https://snaploaddownload.com/guides
 - Blog Knowledge Base: https://snaploaddownload.com/blog
+- TikTok Video Download Guide: https://snaploaddownload.com/blog/tiktok-video-download-ultimate-step-by-step-guide
+- How to Download TikTok Video on iPhone: https://snaploaddownload.com/blog/how-to-download-tiktok-video-on-iphone-ultimate-guide
 
 ## 3. Technology Stack & Specifications
 - Architecture: Decoupled React + TypeScript Frontend with Node.js/Express media parser backend.
