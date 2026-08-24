@@ -720,6 +720,7 @@ function App() {
             post={BLOG_POSTS[activeBlogPostSlug]}
             onBack={() => handleNavigate('/blog')}
             onNavigateHome={() => handleNavigate('/')}
+            onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)}
           />
         ) : activeLegalPage ? (
           <LegalPage type={activeLegalPage} onNavigate={handleNavigate} />

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BlogPost } from '../data/blogData';
+import { BlogPost, BLOG_POSTS } from '../data/blogData';
 import { AdBanner } from './AdBanner';
 import { BlogThumbnail } from './BlogThumbnail';
 
@@ -7,9 +7,10 @@ interface BlogPostPageProps {
   post: BlogPost;
   onBack: () => void;
   onNavigateHome: () => void;
+  onSelectPost?: (slug: string) => void;
 }
 
-export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavigateHome }) => {
+export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavigateHome, onSelectPost }) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     // Inject Article JSON-LD Schema for E-E-A-T and Google Rich Snippets
@@ -46,6 +47,11 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavi
       if (scriptTag) scriptTag.remove();
     };
   }, [post]);
+
+  const relatedPosts = Object.values(BLOG_POSTS)
+    .filter((p) => p.slug !== post.slug)
+    .sort((a, b) => (a.category === post.category ? -1 : 1))
+    .slice(0, 2);
 
   return (
     <article className="w-full max-w-4xl mx-auto px-4 py-8 animate-fade-in space-y-8">
@@ -150,6 +156,33 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavi
             Our media technical team conducts rigorous safety audits, privacy tests, and stream manifest analysis to publish verified guides and tutorials for users worldwide.
           </p>
         </footer>
+
+        {/* Related Articles & Guides Grid */}
+        <div className="pt-8 border-t border-white/10 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-lg font-bold dark:text-white text-dark-900 tracking-tight">
+              Related Articles &amp; Guides
+            </h3>
+            <button
+              onClick={onBack}
+              className="text-xs font-semibold text-primary-400 hover:text-primary-300 transition-colors cursor-pointer"
+            >
+              View All Articles &rarr;
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {relatedPosts.map((relPost) => (
+              <div
+                key={relPost.slug}
+                onClick={() => (onSelectPost ? onSelectPost(relPost.slug) : onBack())}
+                className="cursor-pointer group hover:scale-[1.02] transition-transform duration-300"
+              >
+                <BlogThumbnail category={relPost.category} title={relPost.title} imageUrl={relPost.imageUrl} size="sm" />
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Back to Blog Button */}
         <div className="pt-4 flex justify-between items-center">
