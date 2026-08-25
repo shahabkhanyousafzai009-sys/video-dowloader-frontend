@@ -15,6 +15,26 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigateHome }) 
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('shahabkhanyousafzai009@gmail.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const openEmailClient = (sub = 'General Support Inquiry', msg = '') => {
+    const subjectEnc = encodeURIComponent(`[SnapLoad Support] ${sub} - ${formData.name || 'User'}`);
+    const bodyEnc = encodeURIComponent(`Sender Name: ${formData.name}\nSender Email: ${formData.email}\nCategory: ${sub}\n\nMessage:\n${msg || formData.message}`);
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=shahabkhanyousafzai009@gmail.com&su=${subjectEnc}&body=${bodyEnc}`;
+    
+    try {
+      window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+    } catch {
+      window.location.href = `mailto:shahabkhanyousafzai009@gmail.com?subject=${subjectEnc}&body=${bodyEnc}`;
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
@@ -23,6 +43,7 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigateHome }) 
     }
 
     setErrorMsg('');
+    openEmailClient(formData.subject, formData.message);
     setSubmitted(true);
   };
 
@@ -104,18 +125,36 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigateHome }) 
             </h2>
 
             {submitted ? (
-              <div className="glass-subtle p-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 space-y-3 text-center">
-                <span className="text-3xl">✅</span>
-                <h3 className="font-bold text-lg text-emerald-200">Message Sent Successfully!</h3>
-                <p className="text-xs text-emerald-200/80 leading-relaxed">
-                  Thank you for reaching out to SnapLoad. Our support engineering team has received your message and will respond shortly.
+              <div className="glass-subtle p-6 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 space-y-4 text-center">
+                <span className="text-4xl block">📬</span>
+                <h3 className="font-extrabold text-xl text-emerald-200">Message Ready to Send!</h3>
+                <p className="text-xs text-emerald-200/90 leading-relaxed max-w-md mx-auto">
+                  Your message has been formatted for direct delivery to <strong className="underline">shahabkhanyousafzai009@gmail.com</strong>. Click below to open Gmail or copy our support email address.
                 </p>
-                <button
-                  onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: 'General Support', message: '' }); }}
-                  className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-semibold cursor-pointer"
-                >
-                  Send Another Message
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => openEmailClient(formData.subject, formData.message)}
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <span>✉️ Open in Gmail / Mail App</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all border border-white/20 cursor-pointer"
+                  >
+                    {copied ? '✓ Email Copied!' : '📋 Copy Support Email'}
+                  </button>
+                </div>
+                <div className="pt-2">
+                  <button
+                    onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: 'General Support', message: '' }); }}
+                    className="text-xs text-emerald-400 hover:underline font-semibold cursor-pointer"
+                  >
+                    ← Fill out another message
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
