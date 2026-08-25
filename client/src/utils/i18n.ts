@@ -41,9 +41,9 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     },
     hero: {
       all: {
-        heading: 'Download Videos',
-        highlight: 'From Anywhere',
-        sub: 'Paste a link from TikTok or Instagram. Choose your quality and download instantly — no signup required.',
+        heading: 'Download Clean TikToks &',
+        highlight: 'HD Instagram Reels',
+        sub: 'SnapLoad extracts pristine TikTok videos without creator logo watermarks and saves Instagram Reels in lossless original HD resolution. Input any public post URL to download uncompressed MP4 files and 320kbps audio directly to your device storage in seconds.',
       },
       tiktok: {
         heading: 'TikTok Downloader',
