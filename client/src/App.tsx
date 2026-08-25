@@ -25,6 +25,7 @@ import { BlogPostPage } from './components/BlogPostPage';
 import { BLOG_POSTS } from './data/blogData';
 import { AboutUsPage } from './components/AboutUsPage';
 import { ContactUsPage } from './components/ContactUsPage';
+import { FaqPage } from './components/FaqPage';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
@@ -154,6 +155,7 @@ function App() {
   const [activeBlogPostSlug, setActiveBlogPostSlug] = useState<string | null>(null);
   const [isAboutUsPage, setIsAboutUsPage] = useState<boolean>(false);
   const [isContactUsPage, setIsContactUsPage] = useState<boolean>(false);
+  const [isFaqPage, setIsFaqPage] = useState<boolean>(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('snapload_lang') as Language;
@@ -184,6 +186,7 @@ function App() {
     setActiveBlogPostSlug(null);
     setIsAboutUsPage(false);
     setIsContactUsPage(false);
+    setIsFaqPage(false);
   };
 
   // Detect route path on initial mount and browser back/forward buttons
@@ -216,8 +219,8 @@ function App() {
         return;
       }
 
-      // About Us Route
-      if (cleanPath === '/about-us') {
+      // About Us & Information Routes
+      if (cleanPath === '/about-us' || cleanPath === '/about' || cleanPath === '/information' || cleanPath === '/information-about-snapload') {
         setIsAboutUsPage(true);
         return;
       }
@@ -225,6 +228,12 @@ function App() {
       // Contact Us Routes
       if (cleanPath === '/contact-us' || cleanPath === '/contact') {
         setIsContactUsPage(true);
+        return;
+      }
+
+      // FAQ Route
+      if (cleanPath === '/faq' || cleanPath === '/faqs') {
+        setIsFaqPage(true);
         return;
       }
 
@@ -306,6 +315,11 @@ function App() {
       description = 'Contact the SnapLoad technical support team and Copyright Agent for inquiries, bug reports, and copyright notifications.';
       path = '/contact-us';
       label = 'Contact Us';
+    } else if (isFaqPage) {
+      title = 'Frequently Asked Questions (FAQ) — SnapLoad Video Downloader';
+      description = 'Find fast answers to common questions about downloading TikTok videos without watermark, saving 1080p Instagram Reels, and 320kbps MP3 conversion.';
+      path = '/faq';
+      label = 'FAQ';
     } else if (isBlogHub) {
       title = 'SnapLoad Blog & Knowledge Base — Media Tutorials & Guides';
       description = 'In-depth articles, tutorials, and technical manuals on downloading TikTok videos without watermark, saving 1080p Instagram Reels, and 320kbps MP3 conversion.';
@@ -569,13 +583,18 @@ function App() {
 
     resetAllViews();
 
-    if (targetPath === '/about-us') {
+    if (targetPath === '/about-us' || targetPath === '/about' || targetPath === '/information' || targetPath === '/information-about-snapload') {
       setIsAboutUsPage(true);
       return;
     }
 
     if (targetPath === '/contact-us' || targetPath === '/contact') {
       setIsContactUsPage(true);
+      return;
+    }
+
+    if (targetPath === '/faq' || targetPath === '/faqs') {
+      setIsFaqPage(true);
       return;
     }
 
@@ -707,12 +726,14 @@ function App() {
       />
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-3xl mx-auto px-4 pt-4 pb-8">
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16">
         {/* Render View Components */}
         {isAboutUsPage ? (
           <AboutUsPage onNavigateHome={() => handleNavigate('/')} />
         ) : isContactUsPage ? (
           <ContactUsPage onNavigateHome={() => handleNavigate('/')} />
+        ) : isFaqPage ? (
+          <FaqPage onNavigateHome={() => handleNavigate('/')} onNavigateContact={() => handleNavigate('/contact-us')} />
         ) : isBlogHub ? (
           <BlogHub onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)} onNavigateHome={() => handleNavigate('/')} />
         ) : activeBlogPostSlug && BLOG_POSTS[activeBlogPostSlug] ? (
@@ -736,30 +757,42 @@ function App() {
           />
         ) : (
           <>
-            {/* Dynamic SEO Hero Section */}
-            <div className="text-center mb-8 animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-4 shadow-xs">
-                <span className="text-amber-400 tracking-widest">★★★★★</span>
-                <span className="dark:text-white/80 text-dark-800">4.9 / 5 Rating</span>
-                <span className="dark:text-white/40 text-dark-400 font-normal">(1,280+ Reviews)</span>
+            {/* Clean Floating Hero Section (No Container Box) */}
+            <div className="text-center py-6 sm:py-10 space-y-6 animate-fade-in max-w-4xl mx-auto">
+              
+              {/* Rating Badge with SVG Star */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 dark:text-amber-400 text-xs sm:text-sm font-semibold shadow-xs">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-amber-400 shrink-0">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+                <span className="dark:text-white/90 text-slate-800 font-bold">4.9 / 5 Rating</span>
+                <span className="dark:text-white/50 text-slate-500 font-normal">(1,280+ Reviews)</span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-extrabold dark:text-white text-dark-900 leading-tight">
+
+              {/* Main Headline */}
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black dark:text-white text-slate-900 leading-[1.1] tracking-tight">
                 {(t.hero[currentPlatform] || t.hero.all).heading}
                 <br />
-                <span className="gradient-text">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500">
+                  {(t.hero[currentPlatform] || t.hero.all).highlight}
+                </span>
               </h1>
-              <p className="mt-4 text-sm sm:text-base dark:text-white/45 text-dark-500 max-w-lg mx-auto leading-relaxed">
+
+              {/* Subheading */}
+              <p className="text-base sm:text-lg dark:text-slate-300 text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
                 {(t.hero[currentPlatform] || t.hero.all).sub}
               </p>
-            </div>
 
-            {/* URL Input */}
-            <div className="mb-8">
-              <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
-            </div>
+              {/* Interactive Search Bar */}
+              <div className="pt-2 max-w-3xl mx-auto">
+                <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
+              </div>
 
-            {/* Recent Downloads History */}
-            <DownloadHistory onSelectUrl={handleFetchInfo} />
+              {/* Download History */}
+              <div className="max-w-3xl mx-auto">
+                <DownloadHistory onSelectUrl={handleFetchInfo} />
+              </div>
+            </div>
           </>
         )}
 

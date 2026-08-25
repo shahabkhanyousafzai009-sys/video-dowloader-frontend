@@ -77,16 +77,48 @@ const SEO_DATA: Record<Language, Record<PlatformKey, ContentData>> = {
       },
       faqs: [
         {
-          question: 'Is SnapLoad completely free to use?',
-          answer: 'Yes! SnapLoad is 100% free with unlimited downloads. No sign-up, credit card, or software installation is required.'
+          question: 'Do I have to pay to use TikTok download without watermark?',
+          answer: 'No, our TikTok Downloader is 100% free to use with unlimited downloads. You do not need to pay any subscription fees, enter credit card details, or purchase software.',
         },
         {
-          question: 'How do I download TikTok videos without watermark?',
-          answer: 'Copy the TikTok video link, paste it into SnapLoad search box, click Fetch, and choose the "No Watermark HD" option.'
+          question: 'Do I need to install an extension to use the TikTok Downloader?',
+          answer: 'No extension or software installation is required. You can use our downloader directly inside any web browser on iPhone, Android, Windows, or Mac by simply pasting the video link.',
         },
         {
-          question: 'Can I convert Instagram Reels or TikTok videos to MP3?',
-          answer: 'Yes, SnapLoad automatically extracts high-bitrate 320kbps MP3 audio files from any social video link.'
+          question: 'Where are TikTok videos saved after downloading?',
+          answer: 'Downloaded videos are saved to your device’s default Downloads folder. On Android, Windows PC, and Mac, check your Downloads folder or Gallery app. On iPhone/iPad, Safari saves files to the Files app under Downloads, where you can tap "Save Video" to transfer them to your Camera Roll.',
+        },
+        {
+          question: 'Do I need to have a TT account to download TikTok videos?',
+          answer: 'No, you do not need a TikTok account or to be logged in. As long as you have the link to a public TikTok video, you can paste it and download the file immediately.',
+        },
+        {
+          question: 'Can the HD TikTok Downloader save videos from private accounts?',
+          answer: 'No, to respect user privacy and copyright standards, our downloader can only process public TikTok videos. Videos from private accounts cannot be retrieved.',
+        },
+        {
+          question: 'How do I get a link for TikTok videos?',
+          answer: 'Open the TikTok app or website, find the video you want, tap the "Share" arrow icon on your screen, and select "Copy Link". The URL will be saved to your clipboard ready to paste.',
+        },
+        {
+          question: 'How to save from TikTok video in MP4 on iPhone (iOS)?',
+          answer: 'Copy the TikTok video link, open Safari on your iPhone, visit our downloader, paste the link, and tap Download. Once downloaded in Safari, tap the Share icon and choose "Save Video" to store it in Apple Photos.',
+        },
+        {
+          question: 'Can I use your TikTok downloader without watermark on my Android phone?',
+          answer: 'Yes! Our downloader works on all Android smartphones via Chrome, Firefox, or Edge. Simply paste the TikTok link and select "Without Watermark" to save clean HD MP4 files directly to your gallery.',
+        },
+        {
+          question: 'How to download TikTok video without watermark in HD?',
+          answer: 'Copy your TikTok link, paste it into our search bar, click "Fetch Video", and select the "No Watermark HD 1080p" option. Our engine extracts the clean raw stream directly from origin servers.',
+        },
+        {
+          question: 'Is TikTok Download Available in MP4 Format?',
+          answer: 'Yes, all exported TikTok clips are provided in universal high-definition MP4 format, ensuring smooth playback across all smartphones, tablets, computers, and editing software.',
+        },
+        {
+          question: 'How can I convert TikTok to MP4 using a tiktok downloader app?',
+          answer: 'You do not need to install a separate application! Simply copy the TikTok link, open our web downloader in any browser, paste the link, and click download. Our cloud parser automatically processes the clean MP4 file in seconds.',
         },
       ]
     },
@@ -128,13 +160,49 @@ const SEO_DATA: Record<Language, Record<PlatformKey, ContentData>> = {
       },
       faqs: [
         {
-          question: 'Why download TikTok videos without watermark?',
-          answer: 'Downloading without watermark provides a clean 1080p HD video file suitable for personal archiving and high-quality viewing.'
+          question: 'Do I have to pay to use TikTok download without watermark?',
+          answer: 'No, our TikTok Downloader is 100% free to use with unlimited downloads. You do not need to pay any subscription fees, enter credit card details, or purchase software.',
         },
         {
-          question: 'Do I need a TikTok account to download videos?',
-          answer: 'No, you do not need a TikTok account or app installation. All you need is the public video URL.'
-        }
+          question: 'Do I need to install an extension to use the TikTok Downloader?',
+          answer: 'No extension or software installation is required. You can use our downloader directly inside any web browser on iPhone, Android, Windows, or Mac by simply pasting the video link.',
+        },
+        {
+          question: 'Where are TikTok videos saved after downloading?',
+          answer: 'Downloaded videos are saved to your device’s default Downloads folder. On Android, Windows PC, and Mac, check your Downloads folder or Gallery app. On iPhone/iPad, Safari saves files to the Files app under Downloads, where you can tap "Save Video" to transfer them to your Camera Roll.',
+        },
+        {
+          question: 'Do I need to have a TT account to download TikTok videos?',
+          answer: 'No, you do not need a TikTok account or to be logged in. As long as you have the link to a public TikTok video, you can paste it and download the file immediately.',
+        },
+        {
+          question: 'Can the HD TikTok Downloader save videos from private accounts?',
+          answer: 'No, to respect user privacy and copyright standards, our downloader can only process public TikTok videos. Videos from private accounts cannot be retrieved.',
+        },
+        {
+          question: 'How do I get a link for TikTok videos?',
+          answer: 'Open the TikTok app or website, find the video you want, tap the "Share" arrow icon on your screen, and select "Copy Link". The URL will be saved to your clipboard ready to paste.',
+        },
+        {
+          question: 'How to save from TikTok video in MP4 on iPhone (iOS)?',
+          answer: 'Copy the TikTok video link, open Safari on your iPhone, visit our downloader, paste the link, and tap Download. Once downloaded in Safari, tap the Share icon and choose "Save Video" to store it in Apple Photos.',
+        },
+        {
+          question: 'Can I use your TikTok downloader without watermark on my Android phone?',
+          answer: 'Yes! Our downloader works on all Android smartphones via Chrome, Firefox, or Edge. Simply paste the TikTok link and select "Without Watermark" to save clean HD MP4 files directly to your gallery.',
+        },
+        {
+          question: 'How to download TikTok video without watermark in HD?',
+          answer: 'Copy your TikTok link, paste it into our search bar, click "Fetch Video", and select the "No Watermark HD 1080p" option. Our engine extracts the clean raw stream directly from origin servers.',
+        },
+        {
+          question: 'Is TikTok Download Available in MP4 Format?',
+          answer: 'Yes, all exported TikTok clips are provided in universal high-definition MP4 format, ensuring smooth playback across all smartphones, tablets, computers, and editing software.',
+        },
+        {
+          question: 'How can I convert TikTok to MP4 using a tiktok downloader app?',
+          answer: 'You do not need to install a separate application! Simply copy the TikTok link, open our web downloader in any browser, paste the link, and click download. Our cloud parser automatically processes the clean MP4 file in seconds.',
+        },
       ]
     },
     instagram: {
@@ -492,7 +560,7 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
   };
 
   return (
-    <section className="w-full max-w-4xl mx-auto mt-16 space-y-16 animate-fade-in text-left">
+    <section className="w-full max-w-6xl mx-auto mt-4 sm:mt-8 space-y-8 sm:space-y-12 animate-fade-in text-left">
       
       {/* 1. Step-by-Step How-To Guide */}
       <article className="glass-strong rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl space-y-8">
@@ -599,7 +667,7 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
       )}
 
       {/* 4. Interactive Accordion FAQ Section */}
-      <article className="glass-strong rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-white/10 shadow-xl">
+      <article id="faq" className="glass-strong rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-white/10 shadow-xl scroll-mt-24">
         <header className="text-center mb-8">
           <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight">
             {content.faqTitle}

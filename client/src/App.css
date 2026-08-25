@@ -1,94 +1,35 @@
-/* ===== Animated Background ===== */
+/* ===== High Performance Optimized Background ===== */
 .app-background {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
+  pointer-events: none;
+  contain: strict;
 }
 
 .dark .app-background {
-  background: linear-gradient(135deg, #05050C 0%, #0A071A 30%, #140924 70%, #07091B 100%);
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 40%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.08) 0%, transparent 40%),
+    linear-gradient(135deg, #030712 0%, #090d16 50%, #030712 100%);
 }
 
 .light .app-background {
-  background: linear-gradient(135deg, #FAF9FE 0%, #F5F1FF 40%, #FFF0F5 80%, #F0F4FF 100%);
-}
-
-/* Animated gradient orbs */
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  animation: float 8s ease-in-out infinite;
-}
-
-.dark .bg-orb-1 {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(244, 63, 94, 0.25), transparent);
-  top: -10%;
-  left: -10%;
-  animation-delay: 0s;
-}
-
-.dark .bg-orb-2 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent);
-  top: 40%;
-  right: -10%;
-  animation-delay: -3s;
-}
-
-.dark .bg-orb-3 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent);
-  bottom: -5%;
-  left: 30%;
-  animation-delay: -5s;
-}
-
-.light .bg-orb-1 {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(244, 63, 94, 0.12), transparent);
-  top: -10%;
-  left: -10%;
-  animation-delay: 0s;
-}
-
-.light .bg-orb-2 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent);
-  top: 40%;
-  right: -10%;
-  animation-delay: -3s;
-}
-
-.light .bg-orb-3 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.05), transparent);
-  bottom: -5%;
-  left: 30%;
-  animation-delay: -5s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(30px, -30px) scale(1.05); }
-  50% { transform: translate(-20px, 20px) scale(0.95); }
-  75% { transform: translate(15px, 10px) scale(1.02); }
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 90% 40%, rgba(168, 85, 247, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.04) 0%, transparent 40%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
 }
 
 /* ===== Progress Bar Animation ===== */
 .progress-bar-fill {
-  background: linear-gradient(90deg, #f43f5e, #8b5cf6, #f43f5e);
+  background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
   background-size: 200% 100%;
   animation: shimmer 2s linear infinite;
+  will-change: background-position;
 }
 
 @keyframes shimmer {
@@ -98,7 +39,8 @@
 
 /* ===== Format Card Hover ===== */
 .format-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  will-change: transform;
 }
 
 .format-card:hover {
@@ -106,28 +48,23 @@
 }
 
 .format-card.selected {
-  border-color: rgba(244, 63, 94, 0.6);
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.15), inset 0 0 20px rgba(244, 63, 94, 0.03);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
 }
 
 .dark .format-card.selected {
-  background: rgba(244, 63, 94, 0.08);
+  background: rgba(99, 102, 241, 0.12);
 }
 
 .light .format-card.selected {
-  background: rgba(244, 63, 94, 0.05);
-  border-color: rgba(244, 63, 94, 0.4);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.5);
 }
 
-/* ===== Download Button Gradient Animation ===== */
+/* ===== Download Button ===== */
 .btn-download {
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
 }
 
 /* ===== Skeleton Loading ===== */
@@ -179,17 +116,17 @@
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.15s ease;
   z-index: 50;
 }
 
 .dark .tooltip::after {
-  background: rgba(15, 15, 35, 0.9);
+  background: rgba(15, 23, 42, 0.95);
   color: white;
 }
 
 .light .tooltip::after {
-  background: rgba(26, 26, 46, 0.9);
+  background: rgba(30, 41, 59, 0.95);
   color: white;
 }
 
@@ -200,7 +137,7 @@
 /* ===== Spinner ===== */
 .spinner {
   border: 3px solid rgba(255, 255, 255, 0.15);
-  border-top-color: #f43f5e;
+  border-top-color: #6366f1;
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -211,6 +148,6 @@
   to { transform: rotate(360deg); }
 }
 
-/* ===== Platform Badge Colors ===== */
+/* ===== Platform Badges ===== */
 .badge-tiktok { background: linear-gradient(135deg, #00F2EA, #FF0050); }
 .badge-instagram { background: linear-gradient(135deg, #833AB4, #E4405F, #FCAF45); }

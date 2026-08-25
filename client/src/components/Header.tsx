@@ -20,23 +20,34 @@ export function Header({
 }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(() => window.location.pathname);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on click outside
+  // Close dropdown on click outside & listen for popstate path changes
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
+
+    const handlePathUpdate = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('popstate', handlePathUpdate);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('popstate', handlePathUpdate);
+    };
   }, []);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
     setIsDropdownOpen(false);
     setIsMobileMenuOpen(false);
+    setCurrentPath(path);
 
     if (path.startsWith('#')) {
       const element = document.querySelector(path);
@@ -137,10 +148,10 @@ export function Header({
             <button
               type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-xl transition-all duration-200 cursor-pointer ${
-                isDropdownOpen || currentPlatform !== 'all'
-                  ? 'text-primary-600 dark:text-primary-400 bg-slate-100 dark:bg-white/10'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5'
+              className={`flex items-center gap-1.5 text-sm font-extrabold px-3.5 py-2 rounded-xl transition-all duration-200 cursor-pointer ${
+                isDropdownOpen || (currentPath !== '/blog' && !currentPath.startsWith('/blog/') && currentPath !== '/guides' && !currentPath.startsWith('/guides/') && currentPath !== '/faq' && currentPath !== '/about-us' && currentPath !== '/contact-us')
+                  ? 'text-primary-600 dark:text-primary-400 bg-primary-500/10 border border-primary-500/30 shadow-xs'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
               }`}
               aria-expanded={isDropdownOpen}
               aria-haspopup="true"
@@ -203,33 +214,52 @@ export function Header({
             )}
           </div>
 
-
-
           {/* Guides Navigation Link */}
           <a
             href="/guides"
             onClick={(e) => handleLinkClick(e, '/guides')}
-            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/5 transition-all cursor-pointer"
+            className={`text-sm px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+              currentPath === '/guides' || currentPath.startsWith('/guides/')
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/30 shadow-xs'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
+            }`}
           >
-            Guides
+            {(currentPath === '/guides' || currentPath.startsWith('/guides/')) && (
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+            )}
+            <span>Guides</span>
           </a>
 
           {/* Blog Navigation Link */}
           <a
             href="/blog"
             onClick={(e) => handleLinkClick(e, '/blog')}
-            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/5 transition-all cursor-pointer"
+            className={`text-sm px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+              currentPath === '/blog' || currentPath.startsWith('/blog/')
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/30 shadow-xs'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
+            }`}
           >
-            Blog
+            {(currentPath === '/blog' || currentPath.startsWith('/blog/')) && (
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+            )}
+            <span>Blog</span>
           </a>
 
           {/* FAQ Navigation Link */}
           <a
-            href="#faq"
-            onClick={(e) => handleLinkClick(e, '#faq')}
-            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/5 transition-all cursor-pointer"
+            href="/faq"
+            onClick={(e) => handleLinkClick(e, '/faq')}
+            className={`text-sm px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+              currentPath === '/faq' || currentPath === '/faqs'
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/30 shadow-xs'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
+            }`}
           >
-            FAQ
+            {(currentPath === '/faq' || currentPath === '/faqs') && (
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+            )}
+            <span>FAQ</span>
           </a>
         </div>
 
@@ -281,12 +311,14 @@ export function Header({
 
           <div className="border-t border-slate-100 dark:border-white/10 my-2" />
 
-
-
           <a
             href="/guides"
             onClick={(e) => handleLinkClick(e, '/guides')}
-            className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+            className={`block px-3 py-2 rounded-xl text-sm transition-colors ${
+              currentPath === '/guides' || currentPath.startsWith('/guides/')
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
+            }`}
           >
             Guides
           </a>
@@ -294,15 +326,23 @@ export function Header({
           <a
             href="/blog"
             onClick={(e) => handleLinkClick(e, '/blog')}
-            className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+            className={`block px-3 py-2 rounded-xl text-sm transition-colors ${
+              currentPath === '/blog' || currentPath.startsWith('/blog/')
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
+            }`}
           >
             Blog
           </a>
 
           <a
-            href="#faq"
-            onClick={(e) => handleLinkClick(e, '#faq')}
-            className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+            href="/faq"
+            onClick={(e) => handleLinkClick(e, '/faq')}
+            className={`block px-3 py-2 rounded-xl text-sm transition-colors ${
+              currentPath === '/faq' || currentPath === '/faqs'
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
+            }`}
           >
             FAQ
           </a>

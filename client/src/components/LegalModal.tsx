@@ -18,89 +18,43 @@ export const LegalModal: React.FC<LegalModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
       <div
-        className="glass rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl border border-white/10 dark:border-white/10 overflow-hidden"
+        className="glass-strong rounded-3xl w-full max-w-4xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200/80 dark:border-white/15 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => onTabChange('privacy')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'privacy'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              Privacy Policy
-            </button>
-            <button
-              onClick={() => onTabChange('terms')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'terms'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              Terms of Service
-            </button>
-            <button
-              onClick={() => onTabChange('dmca')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'dmca'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              DMCA Policy
-            </button>
-            <button
-              onClick={() => onTabChange('about')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'about'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              About Us
-            </button>
-            <button
-              onClick={() => onTabChange('contact')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'contact'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              Contact Us
-            </button>
-            <button
-              onClick={() => onTabChange('disclaimer')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'disclaimer'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              Disclaimer
-            </button>
-            <button
-              onClick={() => onTabChange('cookies')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === 'cookies'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                  : 'dark:text-white/60 text-dark-500 hover:text-white dark:hover:bg-white/5 hover:bg-black/5'
-              }`}
-            >
-              Cookie Policy
-            </button>
+        {/* Header Navigation Tabs */}
+        <div className="p-4 sm:p-5 bg-slate-900/90 dark:bg-slate-900/90 border-b border-slate-700/60 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1">
+            {[
+              { id: 'privacy', label: 'Privacy Policy' },
+              { id: 'terms', label: 'Terms of Service' },
+              { id: 'dmca', label: 'DMCA Policy' },
+              { id: 'about', label: 'About Us' },
+              { id: 'contact', label: 'Contact Us' },
+              { id: 'disclaimer', label: 'Disclaimer' },
+              { id: 'cookies', label: 'Cookie Policy' },
+            ].map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => onTabChange(tab.id as LegalTab)}
+                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all whitespace-nowrap cursor-pointer ${
+                    isActive
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-500/25'
+                      : 'text-slate-300 dark:text-slate-300 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors ml-2 cursor-pointer"
+            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors ml-3 cursor-pointer shrink-0"
             aria-label="Close modal"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -110,170 +64,148 @@ export const LegalModal: React.FC<LegalModalProps> = ({
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto space-y-6 text-xs sm:text-sm dark:text-white/80 text-dark-700 leading-relaxed">
+        <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-xs sm:text-sm dark:text-slate-200 text-slate-800 leading-relaxed font-medium bg-slate-900/40 dark:bg-slate-900/40">
+          
+          {/* Privacy Policy */}
           {activeTab === 'privacy' && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold dark:text-white text-dark-900 border-b border-white/10 pb-2">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
                 Privacy Policy for SnapLoad
               </h2>
-              <p className="text-xs dark:text-white/50 text-dark-400">
-                Effective Date: August 3, 2026 | Last Updated: August 3, 2026
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
+                Effective Date: August 2026 | Last Updated: August 2026
               </p>
 
               <p>
-                At SnapLoad (accessible from <strong>https://snaploaddownload.com</strong>), one of our main priorities is the privacy of our visitors. This Privacy Policy document details the types of information collected and recorded by SnapLoad and how we utilize it in full compliance with Google AdSense Policies, GDPR, and CCPA regulations.
+                At SnapLoad (accessible from <strong>https://snaploaddownload.com</strong>), one of our main priorities is visitor privacy. This Privacy Policy document details the types of information collected and recorded by SnapLoad and how we utilize it in compliance with Google AdSense Policies, GDPR, and CCPA regulations.
               </p>
 
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
                 1. Google AdSense &amp; DoubleClick DART Cookies
               </h3>
               <p>
                 Google is a third-party vendor on our site. Google uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to <code>snaploaddownload.com</code> and other websites on the internet.
               </p>
-              <ul className="list-disc pl-5 space-y-1 dark:text-white/70 text-dark-600">
-                <li>Third-party vendors, including Google, use cookies to serve ads based on a user&apos;s prior visits to this website or other websites.</li>
-                <li>Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visit to your sites and/or other sites on the Internet.</li>
-                <li>Visitors may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary-400 underline">Google Ads Settings</a>. Alternatively, visitors can opt out of third-party vendor&apos;s use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="text-primary-400 underline">www.aboutads.info</a>.</li>
+              <ul className="list-disc pl-5 space-y-1 text-slate-700 dark:text-slate-300">
+                <li>Third-party vendors, including Google, use cookies to serve ads based on prior user visits to this website.</li>
+                <li>Visitors may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary-400 underline">Google Ads Settings</a>.</li>
               </ul>
 
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                2. Information Collection &amp; Zero Log Policy
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
+                2. Information Collection &amp; Zero-Log Policy
               </h3>
               <p>
-                SnapLoad operates on a privacy-first model. We <strong>do not require account registration</strong>, and we do not store, copy, or host any downloaded video or audio files on our servers.
-              </p>
-              <p>
-                All media downloads are processed dynamically and streamed directly to your browser. Standard web server log files (IP addresses, browser type, ISP, timestamp, referring pages) are processed temporarily solely for operational routing, rate limiting, and server security.
+                SnapLoad operates on a privacy-first model. We <strong>do not require account registration</strong>, and we do not store, copy, or host any downloaded video or audio files on server disks. All downloads are executed dynamically in volatile RAM buffers.
               </p>
 
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                3. Advertising Partners Privacy Policies
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
+                3. GDPR Compliance (EEA &amp; UK User Rights)
               </h3>
               <p>
-                Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on SnapLoad, which are sent directly to users&apos; browsers. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
-              </p>
-              <p>
-                Note that SnapLoad has no access to or control over these cookies that are used by third-party advertisers.
-              </p>
-
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                4. GDPR Compliance (EEA &amp; UK User Rights)
-              </h3>
-              <p>
-                If you are located in the European Economic Area (EEA) or the United Kingdom, you are entitled to standard rights under General Data Protection Regulation (GDPR), including:
-              </p>
-              <ul className="list-disc pl-5 space-y-1 dark:text-white/70 text-dark-600">
-                <li>The right to access, update, or erase personal data.</li>
-                <li>The right to withdraw consent at any time via our Consent Management Platform (CMP) banner.</li>
-                <li>The right to object to data processing or request data portability.</li>
-              </ul>
-
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                5. CCPA Privacy Rights (Do Not Sell My Personal Information)
-              </h3>
-              <p>
-                Under the California Consumer Privacy Act (CCPA), California consumers have the right to request disclosure of categories of personal data collected, request deletion of personal data, and request that personal data not be sold. SnapLoad does not sell personal data to third parties.
-              </p>
-
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                6. Contact &amp; Consent
-              </h3>
-              <p>
-                By using our website, you hereby consent to our Privacy Policy and agree to its Terms and Conditions. For any privacy queries, contact us at <code>support@snaploaddownload.com</code>.
+                If you are located in the EEA or UK, you possess rights under the General Data Protection Regulation (GDPR) to access, erase, or restrict personal data processing. You can manage your preferences at any time via our Cookie ConsentCMP banner.
               </p>
             </div>
           )}
 
+          {/* Terms of Service */}
           {activeTab === 'terms' && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold dark:text-white text-dark-900 border-b border-white/10 pb-2">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
                 Terms of Service
               </h2>
-              <p className="text-xs dark:text-white/50 text-dark-400">
-                Effective Date: August 3, 2026
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
+                Effective Date: August 2026
               </p>
 
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
                 1. Acceptance of Terms
               </h3>
               <p>
                 By accessing and using SnapLoad (https://snaploaddownload.com), you accept and agree to be bound by the terms and provisions of this agreement.
               </p>
 
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
                 2. Acceptable Use &amp; Intellectual Property
               </h3>
               <p>
-                SnapLoad is provided as an online utility for downloading media content for personal, non-commercial use only. Users are solely responsible for ensuring they possess legal rights, authorization, or fair use permissions to download any media link entered into the tool.
+                SnapLoad is provided as an online utility for downloading media content for personal, non-commercial use only. Users are solely responsible for ensuring they possess legal rights or fair-use permissions for media entered into the tool.
               </p>
 
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                3. Disclaimer of Affiliation
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
+                3. Disclaimer of Platform Affiliation
               </h3>
               <p>
-                SnapLoad is an independent third-party tool and is <strong>NOT affiliated, associated, authorized, endorsed by, or in any way officially connected</strong> with TikTok, ByteDance, Instagram, Meta, or any of their subsidiaries or affiliates. All product and company names are trademarks™ or registered® trademarks of their respective holders.
-              </p>
-
-              <h3 className="text-base font-bold dark:text-white text-dark-900 pt-2">
-                4. Limitation of Liability
-              </h3>
-              <p>
-                In no event shall SnapLoad or its operators be liable for any direct, indirect, incidental, or consequential damages resulting from the use or inability to use this service.
+                SnapLoad is an independent web utility and is <strong>NOT affiliated, endorsed by, or connected with TikTok, ByteDance, Instagram, Meta, or YouTube</strong>. All trademark names belong to their respective owners.
               </p>
             </div>
           )}
 
-          {activeTab === 'disclaimer' && (
+          {/* DMCA Policy */}
+          {activeTab === 'dmca' && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold dark:text-white text-dark-900 border-b border-white/10 pb-2">
-                Legal Disclaimer &amp; Copyright Notice
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
+                DMCA Copyright Takedown Policy
               </h2>
               <p>
-                SnapLoad respects the intellectual property rights of content creators and copyright holders.
+                SnapLoad respects the intellectual property of content creators. We comply fully with the Digital Millennium Copyright Act (17 U.S.C. § 512).
               </p>
-              <div className="glass-subtle p-4 rounded-xl space-y-2 border border-amber-500/20">
-                <h3 className="font-bold text-amber-400">Copyright Compliance Statement</h3>
-                <p className="text-xs leading-relaxed">
-                  SnapLoad does not host, store, archive, or re-transmit any media files on its servers. All downloads are executed as direct real-time streams between the origin platform content distribution network (CDN) and the end user&apos;s device.
+              <div className="p-4 rounded-2xl glass-subtle border border-amber-500/30 space-y-2">
+                <h3 className="font-bold text-amber-400 text-base">Zero Server Storage Notice</h3>
+                <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  SnapLoad does not host, store, or archive media files on its servers. All downloads stream in real-time directly from origin CDN servers to the user device.
                 </p>
               </div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white pt-2">
+                Submitting a Takedown Notice
+              </h3>
               <p>
-                Users must ensure that their download activities comply with copyright laws applicable in their jurisdiction and the Terms of Service of origin platforms.
+                If you are a copyright owner and wish to submit a DMCA notice, please send a written notification containing video URL links and ownership proof to our designated agent:
+              </p>
+              <p className="font-mono text-primary-400 text-xs font-bold">
+                Email: shahabkhanyousafzai009@gmail.com
               </p>
             </div>
           )}
 
-          {activeTab === 'contact' && (
+          {/* About Us */}
+          {activeTab === 'about' && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold dark:text-white text-dark-900 border-b border-white/10 pb-2">
-                Contact &amp; Support
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
+                About SnapLoad
               </h2>
               <p>
-                Have questions, bug reports, DMCA requests, or feedback regarding SnapLoad? Reach out to our team:
+                SnapLoad is a high-performance web application designed to extract 1080p HD videos and 320kbps MP3 audio from TikTok, Instagram Reels, and YouTube Shorts.
               </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="p-4 rounded-xl glass-subtle border border-slate-200 dark:border-white/10 space-y-1">
+                  <div className="font-bold text-primary-400">⚡ Direct CDN Streaming</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-300">Extract un-watermarked HD source streams directly from origin CDNs.</div>
+                </div>
+                <div className="p-4 rounded-xl glass-subtle border border-slate-200 dark:border-white/10 space-y-1">
+                  <div className="font-bold text-emerald-400">🛡️ Zero Storage</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-300">Strict zero-log, zero-disk storage privacy protection.</div>
+                </div>
+              </div>
+            </div>
+          )}
 
-              <div className="glass-subtle p-5 rounded-xl space-y-3">
+          {/* Contact Us */}
+          {activeTab === 'contact' && (
+            <div className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
+                Contact Technical Support
+              </h2>
+              <p>
+                Have technical questions, bug reports, or copyright inquiries? Contact our engineering group:
+              </p>
+              <div className="p-5 rounded-2xl glass-subtle border border-slate-200 dark:border-white/10 space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary-500/20 text-primary-400 flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-primary-500/20 text-primary-400 flex items-center justify-center font-bold text-lg">
                     ✉
                   </div>
                   <div>
-                    <h4 className="font-bold dark:text-white text-dark-900">General Support &amp; Privacy Queries</h4>
-                    <p className="text-xs text-primary-400 font-medium font-mono">
-                      <a href="mailto:shahabkhanyousafzai009@gmail.com" className="hover:underline">
-                        shahabkhanyousafzai009@gmail.com
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 pt-3 border-t border-white/10">
-                  <div className="w-10 h-10 rounded-lg bg-accent-500/20 text-accent-400 flex items-center justify-center font-bold">
-                    ⚖
-                  </div>
-                  <div>
-                    <h4 className="font-bold dark:text-white text-dark-900">Copyright &amp; DMCA Agent</h4>
-                    <p className="text-xs text-accent-400 font-medium font-mono">
+                    <h4 className="font-bold text-slate-900 dark:text-white">Customer Support &amp; Privacy Agent</h4>
+                    <p className="text-xs font-mono text-primary-400 font-bold">
                       <a href="mailto:shahabkhanyousafzai009@gmail.com" className="hover:underline">
                         shahabkhanyousafzai009@gmail.com
                       </a>
@@ -283,13 +215,38 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               </div>
             </div>
           )}
+
+          {/* Disclaimer */}
+          {activeTab === 'disclaimer' && (
+            <div className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
+                Disclaimer &amp; Legal Notice
+              </h2>
+              <p>
+                SnapLoad is provided &quot;as is&quot; without warranties of any kind. Users are responsible for ensuring their download activities comply with local copyright laws and platform Terms of Service.
+              </p>
+            </div>
+          )}
+
+          {/* Cookie Policy */}
+          {activeTab === 'cookies' && (
+            <div className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white border-b border-slate-200/60 dark:border-white/10 pb-3">
+                Cookie Policy
+              </h2>
+              <p>
+                SnapLoad uses essential session cookies and third-party Google AdSense advertising cookies to deliver personalized services and measure ad traffic. You can adjust your cookie settings at any time in your browser settings.
+              </p>
+            </div>
+          )}
+
         </div>
 
-        {/* Footer */}
-        <div className="p-4 border-t border-white/10 flex justify-end">
+        {/* Modal Footer Action */}
+        <div className="p-4 bg-slate-900/90 dark:bg-slate-900/90 border-t border-slate-700/60 flex justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs sm:text-sm font-semibold transition-colors dark:text-white text-dark-900 cursor-pointer"
+            className="px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs sm:text-sm font-extrabold transition-colors text-white cursor-pointer"
           >
             Close
           </button>
