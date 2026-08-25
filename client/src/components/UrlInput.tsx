@@ -84,7 +84,7 @@ export function UrlInput({ onSubmit, loading, onReset, currentLanguage = 'en' }:
             onChange={(e) => setUrl(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            placeholder="Paste Instagram video link here..."
+            placeholder={t.input.placeholder || "Paste TikTok or Instagram video link here..."}
             className="flex-1 min-w-0 px-3 sm:px-4 py-3 sm:py-3.5 bg-transparent border-none outline-none text-sm sm:text-base font-semibold text-slate-900 placeholder-slate-400"
             disabled={loading}
             autoComplete="off"

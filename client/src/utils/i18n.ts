@@ -77,7 +77,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       },
     },
     input: {
-      placeholder: 'Paste a video link from TikTok or Instagram...',
+      placeholder: 'Paste TikTok or Instagram video link here...',
       paste: 'Paste',
       fetch: 'Fetch',
       fetching: 'Fetching...',
