@@ -40,9 +40,11 @@ export function InstallPwaBanner() {
     <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-50 max-w-md animate-fade-in">
       <div className="glass p-4 rounded-2xl border border-primary-500/30 shadow-glow flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white shrink-0">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" />
+          <div className="w-10 h-10 rounded-2xl bg-[#5B50F6] flex items-center justify-center text-white shrink-0 shadow-md shadow-indigo-500/20 border border-white/15">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+              <polyline points="7 11 12 16 17 11" />
+              <line x1="12" y1="4" x2="12" y2="16" />
             </svg>
           </div>
           <div>
@@ -53,7 +55,7 @@ export function InstallPwaBanner() {
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleInstallClick}
-            className="px-3.5 py-1.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-xs font-bold transition-all shadow-glow cursor-pointer"
+            className="px-3.5 py-1.5 rounded-xl bg-[#FF3B60] hover:bg-[#e02b4f] text-white text-xs font-extrabold transition-all shadow-md cursor-pointer"
           >
             Install
           </button>
