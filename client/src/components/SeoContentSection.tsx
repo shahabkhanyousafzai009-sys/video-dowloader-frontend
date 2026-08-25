@@ -599,7 +599,7 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
       {/* 2. Key Features & Deep Technical Breakdown */}
       <article className="space-y-8">
         <div className="text-center space-y-2">
-          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 tracking-tight">
             {content.whyTitle}
           </h3>
         </div>
@@ -611,7 +611,7 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
               className="p-5 rounded-2xl glass-subtle border border-slate-200/80 dark:border-white/10 hover:border-primary-500/40 transition-all flex flex-col items-start shadow-sm"
             >
               <span className="text-3xl mb-3">{feat.icon}</span>
-              <h4 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mb-1">
+              <h4 className="text-sm sm:text-base font-extrabold text-pink-600 dark:text-pink-400 mb-1">
                 {feat.title}
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
