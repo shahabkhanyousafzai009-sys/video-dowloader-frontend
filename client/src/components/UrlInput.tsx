@@ -143,21 +143,21 @@ export function UrlInput({ onSubmit, loading, onReset, currentLanguage = 'en' }:
         </button>
 
         {/* Disclaimer Note */}
-        <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center font-medium">
-          For personal, offline use only. By using this tool you agree to our <a href="/terms-of-service" className="underline hover:text-primary-600 dark:hover:text-primary-400 font-bold">Fair Use Policy</a>.
+        <p className="text-[11px] text-white/80 text-center font-medium">
+          For personal, offline use only. By using this tool you agree to our <a href="/terms-of-service" className="underline hover:text-white font-bold">Fair Use Policy</a>.
         </p>
 
         {/* Feature Checkmark Badges */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-extrabold text-slate-700 dark:text-slate-200">
-          <span className="flex items-center gap-1.5"><span className="text-emerald-500 font-black">✓</span> Original Quality</span>
-          <span className="flex items-center gap-1.5"><span className="text-emerald-500 font-black">✓</span> HD MP4</span>
-          <span className="flex items-center gap-1.5"><span className="text-emerald-500 font-black">✓</span> No Login Required</span>
-          <span className="flex items-center gap-1.5"><span className="text-emerald-500 font-black">✓</span> 100% Free</span>
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-bold text-white drop-shadow-sm">
+          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> Original Quality</span>
+          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> HD MP4</span>
+          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> No Login Required</span>
+          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> 100% Free</span>
         </div>
 
         {/* Validation Status Message */}
         {validationMsg && url.trim() && (
-          <p className="mt-2 text-xs font-bold text-amber-500 dark:text-amber-400 text-center flex items-center justify-center gap-1.5">
+          <p className="mt-2 text-xs font-bold text-amber-300 text-center flex items-center justify-center gap-1.5">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <circle cx="12" cy="12" r="10"/>
               <line x1="12" y1="8" x2="12" y2="12"/>

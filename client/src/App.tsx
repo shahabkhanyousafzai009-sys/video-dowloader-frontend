@@ -757,42 +757,40 @@ function App() {
           />
         ) : (
           <>
-            {/* Clean Hero Section with Vibrant Text Gradient */}
-            <div className="text-center py-8 sm:py-12 space-y-6 animate-fade-in max-w-4xl mx-auto">
-              
-              {/* Rating Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-600 dark:text-pink-400 text-xs sm:text-sm font-semibold shadow-xs">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-amber-400 shrink-0">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-                <span className="font-bold text-slate-800 dark:text-white">4.9 / 5 Rating</span>
-                <span className="text-slate-500 dark:text-slate-400 font-normal">(1,280+ Reviews)</span>
-              </div>
+            {/* Full-Bleed Edge-to-Edge Hero Banner with Vibrant Background Color */}
+            <div className="instagram-vibrant-hero w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-10 sm:py-16 -mt-4 mb-10 shadow-lg text-center space-y-6 animate-fade-in px-4 sm:px-6 lg:px-8">
+              <div className="max-w-4xl mx-auto space-y-6">
+                
+                {/* Rating Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 text-white text-xs sm:text-sm font-semibold shadow-sm backdrop-blur-md">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-amber-300 shrink-0">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span className="text-white font-bold">4.9 / 5 Rating</span>
+                  <span className="text-white/70 font-normal">(1,280+ Reviews)</span>
+                </div>
 
-              {/* Main Headline with Vibrant Gradient Text Color */}
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.15] tracking-tight max-w-4xl mx-auto">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500">
-                  {(t.hero[currentPlatform] || t.hero.all).heading}
-                </span>
-                <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500">
-                  {(t.hero[currentPlatform] || t.hero.all).highlight}
-                </span>
-              </h1>
+                {/* Main Headline */}
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto drop-shadow-md">
+                  {(t.hero[currentPlatform] || t.hero.all).heading}{' '}
+                  <span className="underline decoration-white/30 underline-offset-8">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
+                </h1>
 
-              {/* Subheading */}
-              <p className="text-base sm:text-lg dark:text-slate-300 text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
-                {(t.hero[currentPlatform] || t.hero.all).sub}
-              </p>
+                {/* Subheading */}
+                <p className="text-sm sm:text-base lg:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-xs">
+                  {(t.hero[currentPlatform] || t.hero.all).sub}
+                </p>
 
-              {/* Interactive Search Bar */}
-              <div className="pt-2">
-                <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
-              </div>
+                {/* Interactive Search Bar */}
+                <div className="pt-2">
+                  <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
+                </div>
 
-              {/* Download History */}
-              <div className="max-w-3xl mx-auto pt-2">
-                <DownloadHistory onSelectUrl={handleFetchInfo} />
+                {/* Download History */}
+                <div className="max-w-3xl mx-auto pt-2">
+                  <DownloadHistory onSelectUrl={handleFetchInfo} />
+                </div>
+
               </div>
             </div>
           </>
