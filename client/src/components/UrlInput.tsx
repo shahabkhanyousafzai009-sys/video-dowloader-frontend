@@ -59,39 +59,8 @@ export function UrlInput({ onSubmit, loading, onReset, currentLanguage = 'en' }:
     onReset();
   }, [onReset]);
 
-  const filters: { id: MediaFilter; label: string; icon: string }[] = [
-    { id: 'all', label: 'All', icon: '🔍' },
-    { id: 'video', label: 'Video', icon: '📹' },
-    { id: 'photo', label: 'Photo', icon: '🖼️' },
-    { id: 'dp', label: 'DP', icon: '👤' },
-    { id: 'story', label: 'Story', icon: '⏱️' },
-    { id: 'audio', label: 'Audio', icon: '🎵' },
-  ];
-
   return (
     <div className="w-full max-w-3xl mx-auto space-y-4 animate-slide-up">
-      
-      {/* Media Type Format Selector Chips */}
-      <div className="flex flex-wrap items-center justify-center gap-2 relative z-10">
-        {filters.map((f) => {
-          const isActive = activeFilter === f.id;
-          return (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => setActiveFilter(f.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 border shadow-xs ${
-                isActive
-                  ? 'bg-white text-slate-900 border-white shadow-md'
-                  : 'bg-white/15 text-white border-white/20 hover:bg-white/25 hover:border-white/40'
-              }`}
-            >
-              <span className="text-sm">{f.icon}</span>
-              <span>{f.label}</span>
-            </button>
-          );
-        })}
-      </div>
 
       <form onSubmit={handleSubmit} className="relative space-y-3">
         {/* Crisp White Search Container */}

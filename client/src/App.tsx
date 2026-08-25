@@ -757,8 +757,8 @@ function App() {
           />
         ) : (
           <>
-            {/* Signature Vibrant Hero Section */}
-            <div className="instagram-vibrant-hero rounded-3xl p-6 sm:p-10 lg:p-12 mb-8 shadow-2xl text-center space-y-6 animate-fade-in border border-white/20">
+            {/* Clean Un-Boxed Floating Hero Section */}
+            <div className="text-center py-6 sm:py-10 space-y-6 animate-fade-in max-w-4xl mx-auto">
               
               {/* Rating Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 text-white text-xs sm:text-sm font-semibold shadow-sm backdrop-blur-md">
@@ -770,13 +770,13 @@ function App() {
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto drop-shadow-md">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto drop-shadow-md">
                 {(t.hero[currentPlatform] || t.hero.all).heading}{' '}
                 <span className="underline decoration-white/30 underline-offset-8">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
               </h1>
 
               {/* Subheading */}
-              <p className="text-sm sm:text-base lg:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-xs">
+              <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-xs">
                 {(t.hero[currentPlatform] || t.hero.all).sub}
               </p>
 
