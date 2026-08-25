@@ -1,4 +1,4 @@
-/* ===== High Performance Signature Background ===== */
+/* ===== High Performance Optimized Background ===== */
 .app-background {
   position: fixed;
   inset: 0;
@@ -6,10 +6,32 @@
   overflow: hidden;
   pointer-events: none;
   contain: strict;
-  background: linear-gradient(135deg, #7026b9 0%, #d92662 50%, #f97316 100%) !important;
 }
 
-.app-background::before {
+.dark .app-background {
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 40%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.08) 0%, transparent 40%),
+    linear-gradient(135deg, #030712 0%, #090d16 50%, #030712 100%);
+}
+
+.light .app-background {
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 90% 40%, rgba(168, 85, 247, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.04) 0%, transparent 40%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+}
+
+/* Signature Vibrant Hero Section (Applied JUST to Hero) */
+.instagram-vibrant-hero {
+  background: linear-gradient(135deg, #7026b9 0%, #d92662 50%, #f97316 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.instagram-vibrant-hero::before {
   content: '';
   position: absolute;
   inset: 0;
