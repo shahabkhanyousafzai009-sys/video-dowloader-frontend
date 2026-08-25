@@ -35,8 +35,8 @@ interface ContentData {
 const SEO_DATA: Record<Language, Record<PlatformKey, ContentData>> = {
   en: {
     all: {
-      heading: 'Universal Online Video & Audio Downloader',
-      subheading: 'SnapLoad provides the fastest, most reliable privacy-first utility to convert and save HD videos and 320kbps MP3 audio from TikTok, Instagram Reels, and YouTube Shorts for free.',
+      heading: 'Fast, Free TikTok & Instagram Video Downloader — Original HD Quality',
+      subheading: 'SnapLoad is a free, web-based video downloader that allows you to instantly extract clean, watermark-free TikTok videos and original HD Instagram Reels directly to your local storage without account registration. Built for content creators, social media managers, and casual users, it processes video links in under three seconds through a secure, browser-based interface.',
       whyTitle: 'Why Choose SnapLoad Universal Converter?',
       faqTitle: 'Frequently Asked Questions',
       steps: [
