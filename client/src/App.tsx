@@ -757,39 +757,36 @@ function App() {
           />
         ) : (
           <>
-            {/* Clean Floating Hero Section (No Container Box) */}
-            <div className="text-center py-6 sm:py-10 space-y-6 animate-fade-in max-w-4xl mx-auto">
+            {/* Signature Vibrant Hero Section */}
+            <div className="instagram-vibrant-hero rounded-3xl p-6 sm:p-10 lg:p-12 mb-8 shadow-2xl text-center space-y-6 animate-fade-in border border-white/20">
               
-              {/* Rating Badge with SVG Star */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 dark:text-amber-400 text-xs sm:text-sm font-semibold shadow-xs">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-amber-400 shrink-0">
+              {/* Rating Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 text-white text-xs sm:text-sm font-semibold shadow-sm backdrop-blur-md">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-amber-300 shrink-0">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
-                <span className="dark:text-white/90 text-slate-800 font-bold">4.9 / 5 Rating</span>
-                <span className="dark:text-white/50 text-slate-500 font-normal">(1,280+ Reviews)</span>
+                <span className="text-white font-bold">4.9 / 5 Rating</span>
+                <span className="text-white/70 font-normal">(1,280+ Reviews)</span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black dark:text-white text-slate-900 leading-[1.1] tracking-tight">
-                {(t.hero[currentPlatform] || t.hero.all).heading}
-                <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500">
-                  {(t.hero[currentPlatform] || t.hero.all).highlight}
-                </span>
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto drop-shadow-md">
+                {(t.hero[currentPlatform] || t.hero.all).heading}{' '}
+                <span className="underline decoration-white/30 underline-offset-8">{(t.hero[currentPlatform] || t.hero.all).highlight}</span>
               </h1>
 
               {/* Subheading */}
-              <p className="text-base sm:text-lg dark:text-slate-300 text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="text-sm sm:text-base lg:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-xs">
                 {(t.hero[currentPlatform] || t.hero.all).sub}
               </p>
 
               {/* Interactive Search Bar */}
-              <div className="pt-2 max-w-3xl mx-auto">
+              <div className="pt-2">
                 <UrlInput onSubmit={handleFetchInfo} loading={loading} onReset={handleReset} currentLanguage={currentLanguage} />
               </div>
 
               {/* Download History */}
-              <div className="max-w-3xl mx-auto">
+              <div className="max-w-3xl mx-auto pt-2">
                 <DownloadHistory onSelectUrl={handleFetchInfo} />
               </div>
             </div>
