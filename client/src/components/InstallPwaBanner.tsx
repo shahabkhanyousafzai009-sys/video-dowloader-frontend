@@ -40,7 +40,7 @@ export function InstallPwaBanner() {
     <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-50 max-w-md animate-fade-in">
       <div className="glass p-4 rounded-2xl border border-primary-500/30 shadow-glow flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#5B50F6] flex items-center justify-center text-white shrink-0 shadow-md shadow-indigo-500/20 border border-white/15">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#7026b9] via-[#d92662] to-[#f97316] flex items-center justify-center text-white shrink-0 shadow-md shadow-pink-500/25 border border-white/20">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
               <polyline points="7 11 12 16 17 11" />

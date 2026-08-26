@@ -8,13 +8,13 @@ const BASE_URL = 'https://snaploaddownload.com';
 
 const ROUTE_META = {
   '/': {
-    title: 'SnapLoad — Universal Video Downloader | TikTok, Instagram & MP3',
-    description: 'Download videos from TikTok without watermark and Instagram Reels in 1080p HD or 4K. Extract MP3 audio. Free, fast, private, and no signup required.',
+    title: 'TikTok Downloader Without Watermark HD — Free TikTok Video Downloader | SnapLoad',
+    description: 'Best free TikTok Downloader and TikTok Video Downloader to save watermark-free HD TikTok videos, Instagram Reels & 320kbps MP3 sound. Fast, free online tiktok download.',
     canonical: `${BASE_URL}/`,
   },
   '/tiktok-downloader': {
-    title: 'TikTok Downloader Without Watermark HD — Free MP4 Saver | SnapLoad',
-    description: 'Download TikTok videos without watermark in full HD 1080p quality for free. Fast online TikTok video downloader, no app or account required.',
+    title: 'TikTok Downloader Without Watermark HD — TikTok Video Downloader | SnapLoad',
+    description: 'Download TikTok videos without watermark in full HD 1080p for free. Fast online TikTok video downloader, save TikTok MP4 clips & MP3 sound instantly.',
     canonical: `${BASE_URL}/tiktok-downloader`,
   },
   '/instagram-downloader': {
@@ -183,15 +183,36 @@ const ROUTE_META = {
     description: 'Security audit and safety benchmark guide examining web downloader privacy, zero-storage architectures, and HTTPS encryption standards.',
     canonical: `${BASE_URL}/guides/video-downloader-security-and-privacy-audit`,
   },
+  // ===== Portuguese (PT) Routes =====
+  '/pt': {
+    title: 'Baixar Video TikTok Sem Marca d\'Água HD — Downloader de TikTok | SnapLoad',
+    description: 'Ferramenta online grátis para baixar vídeo do TikTok sem marca d\'água em alta definição HD 1080p. Baixar música do TikTok e vídeos do Instagram grátis.',
+    canonical: `${BASE_URL}/pt`,
+  },
+  '/pt/tiktok-downloader': {
+    title: 'Baixar Video TikTok Sem Marca d\'Água Gratis HD 1080p | SnapLoad',
+    description: 'Baixar vídeos do TikTok sem marca d\'água online e grátis. Salve vídeos do TikTok em Full HD MP4 e converta para áudio MP3 rapidamente.',
+    canonical: `${BASE_URL}/pt/tiktok-downloader`,
+  },
+  '/pt/instagram-downloader': {
+    title: 'Baixar Reels do Instagram 1080p HD Gratis | SnapLoad',
+    description: 'Baixe Reels, vídeos e fotos do Instagram em resolução original HD. Downloader online gratuito para celular e computador.',
+    canonical: `${BASE_URL}/pt/instagram-downloader`,
+  },
+  '/pt/mp3-downloader': {
+    title: 'Conversor de Vídeo para MP3 Online Grátis | SnapLoad',
+    description: 'Extraia e baixe músicas do TikTok e Instagram em formato MP3 de 320kbps com alta qualidade de áudio.',
+    canonical: `${BASE_URL}/pt/mp3-downloader`,
+  },
   // ===== Spanish (ES) Routes =====
   '/es': {
-    title: 'SnapLoad — Descargador Universal de Videos | TikTok, Instagram y MP3',
-    description: 'Descarga videos de TikTok sin marca de agua e Instagram Reels en 1080p HD o 4K. Extrae audio MP3. Gratis, rápido y sin registro.',
+    title: 'Descargar Videos de TikTok Sin Marca de Agua Gratis HD | SnapLoad',
+    description: 'Descargar videos de tiktok sin marca de agua en 1080p HD gratis. Descargar video tiktok y Reels de Instagram de forma rápida y sin registros.',
     canonical: `${BASE_URL}/es`,
   },
   '/es/tiktok-downloader': {
-    title: 'Descargar Videos de TikTok Sin Marca de Agua Gratis HD | SnapLoad',
-    description: 'Descarga videos de TikTok sin marca de agua en full HD 1080p gratis. Descargador de TikTok online rápido sin aplicación.',
+    title: 'Descargar Video TikTok Sin Marca de Agua Gratis 1080p HD | SnapLoad',
+    description: 'Descargar videos de tiktok gratis sin marca de agua. Descargador de tiktok rápido online en full HD 1080p para móvil y PC.',
     canonical: `${BASE_URL}/es/tiktok-downloader`,
   },
   '/es/instagram-downloader': {
@@ -206,7 +227,7 @@ const ROUTE_META = {
   },
   // ===== German (DE) Routes =====
   '/de': {
-    title: 'SnapLoad — Video Downloader | TikTok, Instagram & MP3',
+    title: 'TikTok Video Downloader Ohne Wasserzeichen HD | SnapLoad',
     description: 'Laden Sie TikTok-Videos ohne Wasserzeichen und Instagram Reels in 1080p HD oder 4K herunter. MP3-Audio extrahieren. Kostenlos & schnell.',
     canonical: `${BASE_URL}/de`,
   },
@@ -227,7 +248,7 @@ const ROUTE_META = {
   },
   // ===== French (FR) Routes =====
   '/fr': {
-    title: 'SnapLoad — Téléchargeur de Vidéos | TikTok, Instagram & MP3',
+    title: 'Télécharger Vidéo TikTok Sans Filigrane HD Gratuit | SnapLoad',
     description: 'Téléchargez des vidéos TikTok sans filigrane et Reels Instagram en 1080p HD ou 4K. Extrayez des fichiers MP3. Gratuit et rapide.',
     canonical: `${BASE_URL}/fr`,
   },
@@ -256,7 +277,23 @@ function injectSeoMeta(html, rawPathname) {
     ? rawPathname.slice(0, -1)
     : rawPathname;
 
-  const meta = ROUTE_META[normalizedPath] || ROUTE_META['/'];
+  let meta = ROUTE_META[normalizedPath];
+
+  // Dynamic fallback for any of 50 global language route prefixes (e.g. /id, /tr, /ru, /ar, /hi, etc.)
+  if (!meta) {
+    const parts = normalizedPath.split('/').filter(Boolean);
+    if (parts.length > 0) {
+      const baseRoute = '/' + parts.slice(1).join('/');
+      const fallbackBase = ROUTE_META[baseRoute] || ROUTE_META['/'];
+      meta = {
+        title: fallbackBase.title,
+        description: fallbackBase.description,
+        canonical: `${BASE_URL}${normalizedPath}`,
+      };
+    } else {
+      meta = ROUTE_META['/'];
+    }
+  }
 
   let injectedHtml = html;
 

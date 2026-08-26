@@ -16,7 +16,7 @@ import { DownloadHistory } from './components/DownloadHistory';
 import { GuidesHub } from './components/GuidesHub';
 import { GuideDetailPage } from './components/GuideDetailPage';
 import { GUIDES_DATA } from './data/guidesData';
-import { Language, TRANSLATIONS } from './utils/i18n';
+import { Language, TRANSLATIONS, LANGUAGE_LABELS } from './utils/i18n';
 import { EmbedWidgetModal } from './components/EmbedWidgetModal';
 import { StandaloneWidgetView } from './components/StandaloneWidgetView';
 import { LegalPage, LegalPageType } from './components/LegalPage';
@@ -46,16 +46,16 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
   all: {
     path: '/',
     label: 'All Platforms',
-    title: 'SnapLoad — Universal Video Downloader | TikTok, Instagram & MP3 Converter',
-    description: 'Download videos from TikTok without watermark and Instagram Reels in 1080p HD or 4K. Extract 320kbps MP3 audio. Free Snaptik, SSSTik & iGram alternative.',
-    heroHeading: 'Download Videos',
-    heroHighlight: 'From Anywhere',
-    heroSub: 'Paste a link from TikTok or Instagram. Choose your quality and download instantly — no signup required.',
+    title: 'TikTok Downloader Without Watermark HD — TikTok Video Downloader | SnapLoad',
+    description: 'Download TikTok videos without watermark in 1080p Full HD. Fast TikTok Downloader, TikTok Video Downloader & 320kbps MP3 Converter. Free online tiktok download.',
+    heroHeading: 'TikTok Downloader &',
+    heroHighlight: 'TikTok Video Downloader HD',
+    heroSub: 'Paste a link from TikTok or Instagram. Save watermark-free TikTok videos, HD Reels, and 320kbps MP3 audio instantly — 100% free and no account needed.',
   },
   tiktok: {
     path: '/tiktok-downloader',
     label: 'TikTok No Watermark',
-    title: 'TikTok Downloader Without Watermark HD — Free Snaptik & SSSTik Alternative',
+    title: 'TikTok Downloader Without Watermark HD — TikTok Video Downloader | SnapLoad',
     description: 'Download TikTok videos without watermark in full HD 1080p quality for free. Fast online TikTok video downloader, save TikTok MP4 & slideshow photos with no account required.',
     heroHeading: 'TikTok Downloader',
     heroHighlight: 'Without Watermark',
@@ -175,6 +175,24 @@ function App() {
     } catch {
       // Ignore storage errors
     }
+
+    // Update browser URL bar to match language prefix for SEO and deep linking
+    const pathname = window.location.pathname;
+    let cleanPath = pathname;
+    const allLangKeys = Object.keys(LANGUAGE_LABELS) as Language[];
+    for (const lKey of allLangKeys) {
+      if (lKey === 'en') continue;
+      const prefix = `/${lKey}`;
+      if (pathname === prefix || pathname.startsWith(`${prefix}/`)) {
+        cleanPath = pathname.replace(prefix, '') || '/';
+        break;
+      }
+    }
+
+    const targetPath = lang === 'en' ? cleanPath : `/${lang}${cleanPath === '/' ? '' : cleanPath}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
   };
 
   // Reset all page view flags helper
@@ -195,18 +213,18 @@ function App() {
       window.scrollTo({ top: 0, behavior: 'instant' });
       const pathname = window.location.pathname;
 
-      // Extract language prefix if present (/es, /de, /fr)
+      // Extract language prefix if present (dynamic lookup across all 50 global languages)
       let lang: Language = 'en';
       let cleanPath = pathname;
-      if (pathname.startsWith('/es')) {
-        lang = 'es';
-        cleanPath = pathname.replace('/es', '') || '/';
-      } else if (pathname.startsWith('/de')) {
-        lang = 'de';
-        cleanPath = pathname.replace('/de', '') || '/';
-      } else if (pathname.startsWith('/fr')) {
-        lang = 'fr';
-        cleanPath = pathname.replace('/fr', '') || '/';
+      const allLangKeys = Object.keys(LANGUAGE_LABELS) as Language[];
+      for (const lKey of allLangKeys) {
+        if (lKey === 'en') continue;
+        const prefix = `/${lKey}`;
+        if (pathname === prefix || pathname.startsWith(`${prefix}/`)) {
+          lang = lKey;
+          cleanPath = pathname.replace(prefix, '') || '/';
+          break;
+        }
       }
       setCurrentLanguage(lang);
 
@@ -402,8 +420,8 @@ function App() {
       canonical.setAttribute('href', currentUrl);
     }
 
-    // Dynamic hreflang tags for multi-language international SEO
-    const supportedLangs = ['en', 'de', 'fr', 'es'];
+    // Dynamic hreflang tags for all 50 global languages for international SEO
+    const supportedLangs = Object.keys(LANGUAGE_LABELS) as Language[];
     supportedLangs.forEach((lang) => {
       let link = document.querySelector(`link[hreflang="${lang}"]`) as HTMLLinkElement | null;
       if (!link) {
@@ -412,7 +430,8 @@ function App() {
         link.setAttribute('hreflang', lang);
         document.head.appendChild(link);
       }
-      link.setAttribute('href', currentUrl);
+      const langPath = lang === 'en' ? path : `/${lang}${path === '/' ? '' : path}`;
+      link.setAttribute('href', `https://snaploaddownload.com${langPath}`);
     });
 
     let defaultHreflang = document.querySelector('link[hreflang="x-default"]') as HTMLLinkElement | null;
@@ -873,7 +892,7 @@ function App() {
         {/* Platform-Specific SEO & FAQ Content (When Idle on Main Downloader Routes) */}
         {!isAboutUsPage && !isContactUsPage && !isBlogHub && !activeBlogPostSlug && !activeLegalPage && !isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (
           <>
-            <SeoContentSection platform={currentPlatform} />
+            <SeoContentSection platform={currentPlatform} currentLanguage={currentLanguage} />
             <AdBanner slot="bottom-banner-slot" label="Advertisement" className="mt-12" />
           </>
         )}

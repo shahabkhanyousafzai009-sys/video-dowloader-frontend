@@ -115,9 +115,9 @@ export function Header({
           title="SnapLoad — Free Video Downloader"
           aria-label="SnapLoad Home Page"
         >
-          {/* Logo Badge Icon matching user screenshot */}
+          {/* Logo Badge Icon with Hero Gradient */}
           <div className="relative">
-            <div className="w-10 h-10 rounded-2xl bg-[#5B50F6] flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200 border border-white/15">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#7026b9] via-[#d92662] to-[#f97316] flex items-center justify-center shadow-md shadow-pink-500/25 group-hover:scale-105 transition-transform duration-200 border border-white/20">
               {/* White Download Arrow SVG */}
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />

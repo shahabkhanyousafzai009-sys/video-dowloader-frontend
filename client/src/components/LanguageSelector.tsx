@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Language, LANGUAGE_LABELS } from '../utils/i18n';
 
 interface LanguageSelectorProps {
@@ -8,7 +8,9 @@ interface LanguageSelectorProps {
 
 export function LanguageSelector({ currentLanguage, onLanguageChange }: LanguageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -20,7 +22,29 @@ export function LanguageSelector({ currentLanguage, onLanguageChange }: Language
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => searchInputRef.current?.focus(), 50);
+    } else {
+      setSearchQuery('');
+    }
+  }, [isOpen]);
+
   const currentMeta = LANGUAGE_LABELS[currentLanguage] || LANGUAGE_LABELS.en;
+
+  const filteredLanguages = useMemo(() => {
+    const allLangs = Object.keys(LANGUAGE_LABELS) as Language[];
+    if (!searchQuery.trim()) return allLangs;
+    const q = searchQuery.toLowerCase();
+    return allLangs.filter((key) => {
+      const meta = LANGUAGE_LABELS[key];
+      return (
+        meta.label.toLowerCase().includes(q) ||
+        meta.code.toLowerCase().includes(q) ||
+        key.toLowerCase().includes(q)
+      );
+    });
+  }, [searchQuery]);
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -46,36 +70,58 @@ export function LanguageSelector({ currentLanguage, onLanguageChange }: Language
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 rounded-2xl glass-strong border border-white/15 shadow-2xl py-1.5 z-50 animate-fade-in backdrop-blur-xl">
-          {(Object.keys(LANGUAGE_LABELS) as Language[]).map((langKey) => {
-            const meta = LANGUAGE_LABELS[langKey];
-            const isSelected = currentLanguage === langKey;
-            return (
-              <button
-                key={langKey}
-                type="button"
-                onClick={() => {
-                  onLanguageChange(langKey);
-                  setIsOpen(false);
-                }}
-                className={`w-full flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-all ${
-                  isSelected
-                    ? 'bg-primary-500/20 text-primary-400 font-bold'
-                    : 'dark:text-white/80 text-dark-800 hover:bg-white/10'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <span>{meta.flag}</span>
-                  <span>{meta.label}</span>
-                </span>
-                {isSelected && (
-                  <svg className="w-3.5 h-3.5 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                )}
-              </button>
-            );
-          })}
+        <div className="absolute right-0 mt-2 w-56 rounded-2xl glass-strong border border-white/15 shadow-2xl p-2 z-50 animate-fade-in backdrop-blur-xl">
+          {/* Search Input for 50 Global Languages */}
+          <div className="px-1.5 pt-1 pb-2 border-b border-slate-200/50 dark:border-white/10 mb-1">
+            <div className="relative">
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search language..."
+                className="w-full pl-7 pr-2.5 py-1 text-xs rounded-xl bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-white/40 border border-slate-200 dark:border-white/10 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              />
+              <svg className="w-3.5 h-3.5 absolute left-2 top-2 text-slate-400 dark:text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Scrollable list of 50 languages */}
+          <div className="max-h-64 overflow-y-auto space-y-0.5 custom-scrollbar pr-0.5">
+            {filteredLanguages.length === 0 ? (
+              <div className="px-3 py-3 text-center text-xs text-slate-400 dark:text-white/40 font-medium">
+                No language found
+              </div>
+            ) : (
+              filteredLanguages.map((langKey) => {
+                const meta = LANGUAGE_LABELS[langKey];
+                const isSelected = currentLanguage === langKey;
+                return (
+                  <button
+                    key={langKey}
+                    type="button"
+                    onClick={() => {
+                      onLanguageChange(langKey);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                      isSelected
+                        ? 'bg-primary-500/20 text-primary-400 font-bold'
+                        : 'dark:text-white/80 text-dark-800 hover:bg-white/10'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2.5 truncate">
+                      <span className="text-sm">{meta.flag}</span>
+                      <span className="truncate">{meta.label}</span>
+                    </span>
+                    <span className="text-[10px] opacity-50 uppercase tracking-wider font-mono">{meta.code}</span>
+                  </button>
+                );
+              })
+            )}
+          </div>
         </div>
       )}
     </div>

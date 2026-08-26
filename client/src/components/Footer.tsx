@@ -92,28 +92,26 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           {/* High Intent SEO Keyword Tag Cloud */}
           <div className="mt-4 pt-3.5 border-t border-slate-200/60 dark:border-white/10 flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold dark:text-white/40 text-slate-500">
             {[
-              'Save From Net TikTok',
-              'Savefrom Net TikTok',
-              'Savefrom TikTok HD',
+              'TikTok Downloader',
+              'TikTok Video Downloader',
+              'Baixar Video TikTok',
+              'TikTok Download',
+              'Descargar Videos de TikTok',
+              'Baixar Video do TikTok',
+              'Descargar Video TikTok',
               'TikTok Video Download',
-              'TikTok Pictures Download',
-              'TikTok Pic Downloader',
-              'TikTok Picture Downloader',
-              'TikTok Images Download',
-              'SST Video Download',
-              'TikTok Image Download',
-              'Tik Tok Images Download',
-              'TikTok Picture Download',
-              'TikTok Pic Download',
-              'Save From TikTok Video',
-              'Video TikTok Download',
-              'TikTok Image Downloader',
-              'TikTok Downloader Web',
-              'Tik Tok Reel Downloader',
-              'Save For TikTok',
-              'Video Saver Without Watermark',
+              'TikTok Downloader Without Watermark',
+              'Baixar Musica do TikTok',
+              'Descargar TikTok Sin Marca de Agua',
+              'TikTok MP3 Downloader',
+              'TikTok Photo Downloader',
+              'SaveFrom TikTok',
+              'SSSTik TikTok',
+              'SnapTik TikTok Downloader',
+              'TikTok Saver',
+              'Save Video TikTok',
             ].map((kw) => (
-              <span key={kw} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+              <span key={kw} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 font-extrabold text-primary-600 dark:text-primary-300">
                 {kw}
               </span>
             ))}
@@ -196,7 +194,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
         {/* Footer links */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-[#5B50F6] flex items-center justify-center shadow-xs border border-white/15">
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#7026b9] via-[#d92662] to-[#f97316] flex items-center justify-center shadow-xs border border-white/20">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"
                    strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
