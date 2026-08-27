@@ -13,25 +13,100 @@ interface BlogPostPageProps {
 export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavigateHome, onSelectPost }) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    // Inject Article JSON-LD Schema for E-E-A-T and Google Rich Snippets
+
+    // Dynamic SEO Title
+    document.title = `${post.title} | SnapLoad`;
+
+    // Dynamic Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', post.excerpt);
+    }
+
+    // Dynamic Canonical Link
+    const postUrl = `https://snaploaddownload.com/blog/${post.slug}`;
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', postUrl);
+    }
+
+    // Dynamic OpenGraph Metadata
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', post.title);
+
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', post.excerpt);
+
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', postUrl);
+
+    if (post.imageUrl) {
+      let ogImage = document.querySelector('meta[property="og:image"]');
+      if (ogImage) ogImage.setAttribute('content', post.imageUrl);
+      let twitterImage = document.querySelector('meta[name="twitter:image"]');
+      if (twitterImage) twitterImage.setAttribute('content', post.imageUrl);
+    }
+
+    // Inject Article & BreadcrumbList JSON-LD Schemas for High-Level Google SEO
     const articleSchema = {
       '@context': 'https://schema.org',
-      '@type': 'Article',
-      '@id': `https://snaploaddownload.com/blog/${post.slug}#article`,
-      'headline': post.title,
-      'description': post.excerpt,
-      'mainEntityOfPage': `https://snaploaddownload.com/blog/${post.slug}`,
-      'datePublished': post.publishDate,
-      'dateModified': post.lastUpdated,
-      'author': {
-        '@type': 'Organization',
-        'name': post.author.name,
-      },
-      'publisher': {
-        '@type': 'Organization',
-        'name': 'SnapLoad',
-        'url': 'https://snaploaddownload.com/',
-      },
+      '@graph': [
+        {
+          '@type': 'Article',
+          '@id': `${postUrl}#article`,
+          'isPartOf': {
+            '@type': 'WebPage',
+            '@id': postUrl,
+            'url': postUrl,
+            'name': post.title,
+          },
+          'headline': post.title,
+          'description': post.excerpt,
+          'mainEntityOfPage': postUrl,
+          'datePublished': post.publishDate,
+          'dateModified': post.lastUpdated,
+          'articleSection': post.category,
+          'image': post.imageUrl || 'https://snaploaddownload.com/og-image.png',
+          'author': {
+            '@type': 'Organization',
+            'name': post.author.name,
+            'jobTitle': post.author.role,
+          },
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'SnapLoad',
+            'url': 'https://snaploaddownload.com/',
+            'logo': {
+              '@type': 'ImageObject',
+              'url': 'https://snaploaddownload.com/logo.png',
+            },
+          },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${postUrl}#breadcrumb`,
+          'itemListElement': [
+            {
+              '@type': 'ListItem',
+              'position': 1,
+              'name': 'Home',
+              'item': 'https://snaploaddownload.com/',
+            },
+            {
+              '@type': 'ListItem',
+              'position': 2,
+              'name': 'Blog',
+              'item': 'https://snaploaddownload.com/blog',
+            },
+            {
+              '@type': 'ListItem',
+              'position': 3,
+              'name': post.title,
+              'item': postUrl,
+            },
+          ],
+        },
+      ],
     };
 
     let scriptTag = document.getElementById('blog-article-jsonld');

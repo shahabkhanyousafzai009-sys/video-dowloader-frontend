@@ -11,6 +11,74 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome }
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.title = 'SnapLoad Knowledge Base — Tutorials, Guides & Media Insights';
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'Explore SnapLoad Knowledge Base for expert guides on downloading TikTok videos without watermarks, Instagram Reels in 1080p HD, and converting video links to 320kbps MP3 audio.'
+      );
+    }
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://snaploaddownload.com/blog');
+    }
+
+    const blogHubSchema = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Blog',
+          '@id': 'https://snaploaddownload.com/blog#blog',
+          'name': 'SnapLoad Knowledge Base',
+          'description': 'Master online media downloading, video format standards, audio bitrate conversion, and digital copyright compliance.',
+          'url': 'https://snaploaddownload.com/blog',
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'SnapLoad',
+            'url': 'https://snaploaddownload.com/',
+            'logo': 'https://snaploaddownload.com/logo.png',
+          },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': 'https://snaploaddownload.com/blog#breadcrumb',
+          'itemListElement': [
+            {
+              '@type': 'ListItem',
+              'position': 1,
+              'name': 'Home',
+              'item': 'https://snaploaddownload.com/',
+            },
+            {
+              '@type': 'ListItem',
+              'position': 2,
+              'name': 'Blog',
+              'item': 'https://snaploaddownload.com/blog',
+            },
+          ],
+        },
+      ],
+    };
+
+    let scriptTag = document.getElementById('blog-hub-jsonld');
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.id = 'blog-hub-jsonld';
+      scriptTag.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify(blogHubSchema);
+
+    return () => {
+      if (scriptTag) scriptTag.remove();
+    };
+  }, []);
+
   const posts = Object.values(BLOG_POSTS);
   const categories = ['All', 'TikTok', 'Instagram', 'MP3 Conversion', 'YouTube Shorts', 'Legal & Security'];
 

@@ -54,13 +54,20 @@ Prior to this optimization, SnapLoad operated as a single URL web app (`/`). Sea
 - **Sitemap URLs:** Added all 5 platform URLs with updated `<lastmod>` and priority scores.
 - **AI Search Discoverability:** Updated `llms.txt` with markdown links for ChatGPT, Perplexity, Claude, and Gemini.
 
+### 4. Blog & Knowledge Base High-Level SEO (`client/src/components/BlogPostPage.tsx` & `BlogHub.tsx`)
+- **Dynamic Head Metadata:** Automated dynamic document `<title>`, `<meta name="description">`, `<link rel="canonical">`, and OpenGraph/Twitter card updates for every individual blog post and blog hub page navigation.
+- **Rich Structured Schemas:** Injected valid `@graph` JSON-LD `Article`, `Blog`, and `BreadcrumbList` schemas to optimize Google Search snippet SERP displays with rich breadcrumbs and publisher logo data.
+- **Modern Google Schema Compliance:** Stripped deprecated `HowTo` schemas from `index.html` to guarantee 100% Google Search Console validation.
+
 ---
 
 ## Implemented Assets Checklist
 
 - [x] **`client/src/App.tsx`**: Multi-route SEO state, dynamic title/description, platform quick switcher pills.
-- [x] **`client/index.html`**: `FAQPage` JSON-LD schema, canonical link, OG & Twitter meta tags.
-- [x] **`client/public/sitemap.xml`**: Expanded XML sitemap pointing to all platform landing pages.
+- [x] **`client/src/components/BlogPostPage.tsx`**: Dynamic title, meta description, canonical URL, OpenGraph tags, and JSON-LD `Article` + `BreadcrumbList` schemas.
+- [x] **`client/src/components/BlogHub.tsx`**: Dynamic head management and `Blog` + `BreadcrumbList` JSON-LD schema.
+- [x] **`client/index.html`**: Cleaned JSON-LD schemas (`WebApplication`, `WebSite`, `Organization`, `FAQPage`), canonical link, OG & Twitter meta tags.
+- [x] **`client/public/sitemap.xml`**: Expanded XML sitemap pointing to all platform landing pages and blog articles.
 - [x] **`client/public/llms.txt`**: Added AI search documentation with key markdown links for all landing routes.
 - [x] **`client/public/robots.txt`**: Configured AI crawler rules and sitemap path.
 - [x] **`server/src/middleware/cors.js`**: Allowed `snaploaddownload.com` and `www.snaploaddownload.com`.
