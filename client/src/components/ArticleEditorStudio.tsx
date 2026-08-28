@@ -33,18 +33,18 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
   const [isReadabilityOpen, setIsReadabilityOpen] = useState(true);
   const [isSerpOpen, setIsSerpOpen] = useState(false);
 
-  // Article Form State
-  const [title, setTitle] = useState(SAMPLE_DRAFT_ARTICLE.title);
-  const [subtitle, setSubtitle] = useState(SAMPLE_DRAFT_ARTICLE.subtitle);
-  const [slug, setSlug] = useState(SAMPLE_DRAFT_ARTICLE.slug);
-  const [category, setCategory] = useState<BlogPost['category']>(SAMPLE_DRAFT_ARTICLE.category);
-  const [readTime, setReadTime] = useState(SAMPLE_DRAFT_ARTICLE.readTime);
-  const [focusKeyword, setFocusKeyword] = useState(SAMPLE_DRAFT_ARTICLE.focusKeyword);
-  const [authorName, setAuthorName] = useState(SAMPLE_DRAFT_ARTICLE.authorName);
-  const [authorRole, setAuthorRole] = useState(SAMPLE_DRAFT_ARTICLE.authorRole);
-  const [authorAvatar, setAuthorAvatar] = useState(SAMPLE_DRAFT_ARTICLE.authorAvatar);
-  const [imageUrl, setImageUrl] = useState(SAMPLE_DRAFT_ARTICLE.imageUrl);
-  const [content, setContent] = useState(SAMPLE_DRAFT_ARTICLE.content);
+  // Article Form State (Clean Blank State by default)
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [category, setCategory] = useState<BlogPost['category']>('TikTok');
+  const [readTime, setReadTime] = useState('5 min read');
+  const [focusKeyword, setFocusKeyword] = useState('');
+  const [authorName, setAuthorName] = useState('SnapLoad Editorial Team');
+  const [authorRole, setAuthorRole] = useState('Senior Digital Media Analyst');
+  const [authorAvatar, setAuthorAvatar] = useState('📝');
+  const [imageUrl, setImageUrl] = useState('');
+  const [content, setContent] = useState('');
   const [isPillarContent, setIsPillarContent] = useState(false);
 
   const [publishedSuccessMsg, setPublishedSuccessMsg] = useState('');
