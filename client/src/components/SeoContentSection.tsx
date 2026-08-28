@@ -36,7 +36,7 @@ const MASTER_EN_DATA: Record<PlatformKey, ContentData> = {
   all: {
     heading: 'Fast, Free TikTok & Instagram Video Downloader — Original HD Quality',
     subheading: 'SnapLoad is a free, web-based video downloader that allows you to instantly extract clean, watermark-free TikTok videos and original HD Instagram Reels directly to your local storage without account registration. Built for content creators, social media managers, and casual users, it processes video links in under three seconds through a secure, browser-based interface.',
-    whyTitle: 'Why Choose SnapLoad Universal Converter?',
+    whyTitle: 'Why Choose SnapLoad Video Downloader?',
     faqTitle: 'Frequently Asked Questions',
     steps: [
       { number: '01', title: 'Copy Media URL', desc: 'Open TikTok or Instagram, find your target video or Reel, tap Share, and select "Copy Link".' },
@@ -119,7 +119,7 @@ const MASTER_EN_DATA: Record<PlatformKey, ContentData> = {
     ],
     features: [
       { title: 'Full 1080p HD Resolution', desc: 'Preserve full resolution without video compression loss.', icon: '🌟' },
-      { title: 'Reels, IGTV & Posts', desc: 'Universal support for all public Instagram media formats.', icon: '📹' },
+      { title: 'Reels, IGTV & Posts', desc: 'Complete 1080p support for all public Instagram media formats.', icon: '📹' },
       { title: 'Carousel Multi-Photo', desc: 'Download all high-resolution images from carousel posts.', icon: '🖼️' },
       { title: 'No Instagram Login', desc: 'Download content anonymously without entering your credentials.', icon: '🔒' },
     ],
@@ -516,7 +516,7 @@ const LOCALIZED_SEO_DATA: Partial<Record<Language, Record<PlatformKey, ContentDa
       ],
       features: [
         { title: 'Calidad 1080p HD', desc: 'Conserva la nitidez original sin compresión.', icon: '🌟' },
-        { title: 'Reels y Publicaciones', desc: 'Soporte universal para videos de Instagram.', icon: '📹' },
+        { title: 'Reels y Publicaciones', desc: 'Soporte completo para videos de Instagram.', icon: '📹' },
         { title: 'Carrusel de Fotos', desc: 'Descarga todas las fotos de publicaciones múltiples.', icon: '🖼️' },
         { title: 'Sin Iniciar Sesión', desc: 'Descarga anónima sin ingresar tus credenciales.', icon: '🔒' },
       ],

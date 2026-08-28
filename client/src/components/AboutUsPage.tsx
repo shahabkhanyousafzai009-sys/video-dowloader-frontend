@@ -63,7 +63,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigateHome, onNavi
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
-          Discover the mission, technology, zero-storage privacy architecture, and engineering standards powering the world's fastest universal video downloader and 320kbps MP3 extractor.
+          Discover the mission, technology, zero-storage privacy architecture, and engineering standards powering the world's fastest HD video downloader and 320kbps MP3 extractor.
         </p>
 
         {/* Live Metrics Grid */}

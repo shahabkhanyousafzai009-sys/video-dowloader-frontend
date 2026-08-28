@@ -77,7 +77,7 @@ const FAQ_DATA: FaqItem[] = [
     category: 'tiktok',
     categoryLabel: 'TikTok Downloader',
     question: 'Is TikTok Download Available in MP4 Format?',
-    answer: 'Yes, all exported TikTok clips are provided in universal, high-definition MP4 format, ensuring crisp 1080p video playback across all mobile devices, desktop computers, and video editing software.',
+    answer: 'Yes, all exported TikTok clips are provided in high-definition 1080p MP4 format, ensuring crisp video playback across all mobile devices, desktop computers, and video editing software.',
   },
   {
     id: 'faq-11',

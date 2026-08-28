@@ -72,12 +72,12 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
   },
   instagram: {
     path: '/instagram-downloader',
-    label: 'Instagram Reels',
-    title: 'Instagram Reels Downloader 1080p HD — Free iGram & SnapInst Alternative',
-    description: 'Download Instagram Reels, carousel photos, IGTV clips & video posts in original 1080p HD. Free online Instagram downloader for mobile and desktop.',
-    heroHeading: 'Instagram Reels & Video',
-    heroHighlight: 'Downloader HD',
-    heroSub: 'Save high-definition Instagram Reels, clips, and video posts directly to your phone or computer.',
+    label: 'Instagram Downloader',
+    title: 'Instagram Video Downloader 1080p HD — Instagram Reels Saver | SnapLoad',
+    description: 'Free online Instagram Video Downloader to save Instagram Reels, stories, video posts & carousel photos in 1080p Full HD. Fast iGram & SnapInst alternative.',
+    heroHeading: 'Instagram Video & Reels',
+    heroHighlight: 'Downloader 1080p HD',
+    heroSub: 'Paste any Instagram Reel, Video, Story, or Post link below to save original 1080p HD media instantly — 100% free with no login required.',
   },
   'youtube-shorts': {
     path: '/youtube-shorts-downloader',

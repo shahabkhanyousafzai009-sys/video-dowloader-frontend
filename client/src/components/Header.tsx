@@ -99,7 +99,7 @@ export function Header({
       label: 'Video to MP3',
       path: '/mp3-downloader',
       icon: '🎶',
-      desc: 'Universal high bitrate MP3 extractor',
+      desc: 'High bitrate 320kbps MP3 extractor',
     },
   ];
 
