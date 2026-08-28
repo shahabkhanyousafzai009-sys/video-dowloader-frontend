@@ -420,6 +420,26 @@ function App() {
       canonical.setAttribute('href', currentUrl);
     }
 
+    // Dynamic Open Graph Meta Tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', title);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', description);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', currentUrl);
+
+    // Dynamic Twitter Meta Tags
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', title);
+
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', description);
+
+    const twUrl = document.querySelector('meta[name="twitter:url"]');
+    if (twUrl) twUrl.setAttribute('content', currentUrl);
+
     // Dynamic hreflang tags for all 50 global languages for international SEO
     const supportedLangs = Object.keys(LANGUAGE_LABELS) as Language[];
     supportedLangs.forEach((lang) => {
