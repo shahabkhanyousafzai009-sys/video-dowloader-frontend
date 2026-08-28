@@ -5,6 +5,13 @@ Allow: /
 # Sitemap
 Sitemap: https://snaploaddownload.com/sitemap.xml
 
+# Bing Crawlers
+User-agent: Bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
 # AI & Search Engine Agents
 User-agent: GPTBot
 Allow: /
