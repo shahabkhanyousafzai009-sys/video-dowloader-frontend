@@ -46,10 +46,10 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
   all: {
     path: '/',
     label: 'All Platforms',
-    title: 'TikTok Downloader Without Watermark HD — TikTok Video Downloader | SnapLoad',
+    title: 'SnapLoad — TikTok Video Downloader No Watermark & MP3',
     description: 'Download TikTok videos without watermark in 1080p Full HD. Fast TikTok Downloader, TikTok Video Downloader & 320kbps MP3 Converter. Free online tiktok download.',
     heroHeading: 'TikTok Downloader &',
-    heroHighlight: 'TikTok Video Downloader HD',
+    heroHighlight: 'TikTok Video Saver HD',
     heroSub: 'Paste a link from TikTok or Instagram. Save watermark-free TikTok videos, HD Reels, and 320kbps MP3 audio instantly — 100% free and no account needed.',
   },
   tiktok: {
