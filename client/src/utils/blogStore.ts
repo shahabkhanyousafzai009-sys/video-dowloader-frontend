@@ -305,6 +305,32 @@ export function analyzeRankMathHeadings(
     }
   }
 
+  // Total Content Word Count Analysis
+  const totalWords = content.trim().length > 0 ? content.trim().split(/\s+/).filter(Boolean).length : 0;
+
+  if (totalWords >= 1500) {
+    diagnostics.push({
+      id: 'wordcount-pass',
+      type: 'pass',
+      title: 'Content Length (Long-Form Article)',
+      description: `Hurray! Your article is ${totalWords.toLocaleString()} words long. Rank Math recommends 1,500–2,500 words for top Google SERP ranking!`,
+    });
+  } else if (totalWords >= 600) {
+    diagnostics.push({
+      id: 'wordcount-ok',
+      type: 'pass',
+      title: 'Content Length (Good)',
+      description: `Article is ${totalWords.toLocaleString()} words long. Expand to 1,500+ words for maximum competitive rank.`,
+    });
+  } else if (totalWords > 0) {
+    diagnostics.push({
+      id: 'wordcount-short',
+      type: 'warning',
+      title: 'Content Length (Short)',
+      description: `Article is only ${totalWords} words. Rank Math recommends writing at least 1,000–2,000 words.`,
+    });
+  }
+
   if (tableOfContents.length >= 2) {
     diagnostics.push({
       id: 'toc-pass',
