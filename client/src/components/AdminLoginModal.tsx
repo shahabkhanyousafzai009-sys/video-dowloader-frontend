@@ -82,7 +82,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ onSuccess, onC
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="shahabkhanyousafzai009"
+                placeholder="Enter admin username or email"
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-dark-700/60 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm font-medium transition"
               />
             </div>
@@ -101,7 +101,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ onSuccess, onC
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="shahab@1009"
+                placeholder="••••••••"
                 className="w-full pl-10 pr-12 py-3 bg-gray-50 dark:bg-dark-700/60 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm font-medium transition"
               />
               <button
@@ -128,9 +128,9 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ onSuccess, onC
             <button
               type="button"
               onClick={handleFillDemo}
-              className="text-red-600 dark:text-red-400 font-bold hover:underline"
+              className="text-red-600 dark:text-red-400 font-bold hover:underline opacity-80 hover:opacity-100 transition"
             >
-              ⚡ Fill Admin Credentials
+              ⚡ Fill Saved Credentials
             </button>
           </div>
 
@@ -148,10 +148,6 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ onSuccess, onC
               </>
             )}
           </button>
-
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-1">
-            Admin Login: <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-red-600 dark:text-red-400 font-bold">shahabkhanyousafzai009</code> / <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-red-600 dark:text-red-400 font-bold">shahab@1009</code>
-          </p>
         </form>
       </div>
     </div>
