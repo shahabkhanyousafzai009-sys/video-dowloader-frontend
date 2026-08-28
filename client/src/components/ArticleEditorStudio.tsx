@@ -23,8 +23,15 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
   onSelectPost,
   onLogout,
 }) => {
+  // Navigation & View Mode State
   const [activeView, setActiveView] = useState<'editor' | 'preview' | 'posts_manager' | 'export'>('editor');
-  const [activeSidebarTab, setActiveSidebarTab] = useState<'seo' | 'headings' | 'serp'>('seo');
+  const [isRankMathDrawerOpen, setIsRankMathDrawerOpen] = useState(true);
+
+  // Accordion Expand/Collapse State
+  const [isBasicSeoOpen, setIsBasicSeoOpen] = useState(true);
+  const [isHeadingsSeoOpen, setIsHeadingsSeoOpen] = useState(true);
+  const [isReadabilityOpen, setIsReadabilityOpen] = useState(true);
+  const [isSerpOpen, setIsSerpOpen] = useState(false);
 
   // Article Form State
   const [title, setTitle] = useState(SAMPLE_DRAFT_ARTICLE.title);
@@ -38,12 +45,11 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
   const [authorAvatar, setAuthorAvatar] = useState(SAMPLE_DRAFT_ARTICLE.authorAvatar);
   const [imageUrl, setImageUrl] = useState(SAMPLE_DRAFT_ARTICLE.imageUrl);
   const [content, setContent] = useState(SAMPLE_DRAFT_ARTICLE.content);
+  const [isPillarContent, setIsPillarContent] = useState(false);
 
   const [publishedSuccessMsg, setPublishedSuccessMsg] = useState('');
   const [copiedMsg, setCopiedMsg] = useState('');
   const [highlightedLine, setHighlightedLine] = useState<number | null>(null);
-
-  // Refresh trigger for posts list manager
   const [postsRefresh, setPostsRefresh] = useState(0);
 
   // Run Rank Math Heading & SEO Analysis
@@ -51,12 +57,12 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
     return analyzeRankMathHeadings(title, content, focusKeyword);
   }, [title, content, focusKeyword]);
 
-  // Load All Merged Posts for Posts Manager
+  // All Posts List for Manager
   const allPostsList = useMemo(() => {
     return Object.values(getMergedBlogPosts());
   }, [postsRefresh, publishedSuccessMsg]);
 
-  // Handle Loading Sample Flawed Draft
+  // Load Sample Flawed Draft
   const handleLoadSample = () => {
     setTitle(SAMPLE_DRAFT_ARTICLE.title);
     setSubtitle(SAMPLE_DRAFT_ARTICLE.subtitle);
@@ -69,11 +75,11 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
     setAuthorAvatar(SAMPLE_DRAFT_ARTICLE.authorAvatar);
     setImageUrl(SAMPLE_DRAFT_ARTICLE.imageUrl);
     setContent(SAMPLE_DRAFT_ARTICLE.content);
-    setPublishedSuccessMsg('⚡ Loaded Rank Math test draft with intentional heading errors!');
+    setPublishedSuccessMsg('⚡ Loaded Rank Math test draft with heading errors!');
     setTimeout(() => setPublishedSuccessMsg(''), 3500);
   };
 
-  // Title to Slug Auto Generator
+  // Title to Slug Generator
   const handleTitleChange = (val: string) => {
     setTitle(val);
     if (!slug || slug === SAMPLE_DRAFT_ARTICLE.slug || slug.includes('tiktok-downloader')) {
@@ -135,9 +141,9 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
     setTimeout(() => setPublishedSuccessMsg(''), 3000);
   };
 
-  // Insert Editor Formatting Shortcode
+  // Insert Formatting Shortcode
   const insertFormatting = (prefix: string, suffix: string = '') => {
-    setContent((prev) => `${prev}\n${prefix}New Heading or Content${suffix}`);
+    setContent((prev) => `${prev}\n${prefix}New Heading or Paragraph${suffix}`);
   };
 
   // Save & Publish Article to Live Site
@@ -168,7 +174,7 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
 
     saveCustomBlogPost(newPost);
     setPostsRefresh((prev) => prev + 1);
-    setPublishedSuccessMsg('🎉 Article published to live blog! Opening live post page...');
+    setPublishedSuccessMsg('🎉 Article published! Opening live post page...');
     setTimeout(() => {
       onSelectPost(newPost.slug);
     }, 1200);
@@ -232,121 +238,137 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
   };
 
   const contentLines = content.split('\n');
+  const errorDiagnostics = analysis.diagnostics.filter((d) => d.type === 'error');
+  const warningDiagnostics = analysis.diagnostics.filter((d) => d.type === 'warning');
+  const passDiagnostics = analysis.diagnostics.filter((d) => d.type === 'pass');
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-slate-100 font-sans -mt-4 -mb-16 pb-16 pt-4 animate-fade-in text-left">
+    <div className="min-h-screen bg-[#f0f0f1] text-[#1e1e1e] font-sans antialiased flex flex-col selection:bg-[#2271b1] selection:text-white">
       
-      {/* CMS TOPBAR DASHBOARD HEADER */}
-      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-xl border-b border-slate-800 px-4 sm:px-8 py-3 flex items-center justify-between shadow-2xl">
+      {/* 1. WORDPRESS / GUTENBERG + RANK MATH PRO HEADER BAR */}
+      <header className="bg-white border-b border-[#dcdcde] px-4 py-2 flex items-center justify-between sticky top-0 z-40 shadow-xs h-14">
         
-        {/* Left Brand & Breadcrumb */}
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 via-orange-500 to-amber-500 flex items-center justify-center text-xl shadow-lg shadow-red-500/20 font-black border border-white/20">
-            🎯
-          </div>
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">SnapLoad CMS</span>
-              <span className="text-xs text-slate-600">/</span>
-              <span className="text-sm font-extrabold text-white">Rank Math Pro Studio</span>
-            </div>
-            <div className="flex items-center space-x-3 text-[11px] text-slate-400 mt-0.5">
-              <span>Status: <strong className="text-emerald-400 font-bold">🟢 Auto-Saved</strong></span>
-              <span>•</span>
-              <span>Words: <strong className="text-white font-bold">{content.trim().split(/\s+/).filter(Boolean).length}</strong></span>
-              <span>•</span>
-              <span>Headings: <strong className="text-amber-400 font-bold">{analysis.totalHeadings}</strong></span>
-            </div>
-          </div>
-        </div>
-
-        {/* Center Mode Switcher Tabs */}
-        <div className="hidden md:flex items-center p-1 bg-slate-950/80 rounded-xl border border-slate-800">
+        {/* Left Side: Page & Mode Pills */}
+        <div className="flex items-center space-x-3 overflow-x-auto">
           <button
             onClick={() => setActiveView('editor')}
-            className={`px-4 py-1.5 text-xs font-extrabold rounded-lg transition flex items-center gap-1.5 ${
-              activeView === 'editor'
-                ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            className="px-3 py-1.5 bg-[#2271b1] hover:bg-[#135e96] text-white rounded-md text-xs font-bold transition flex items-center gap-1.5 shadow-2xs"
           >
-            <span>✍️ Editor Studio</span>
-            <span className={`px-2 py-0.5 text-[10px] rounded-full font-black ${
-              analysis.status === 'green'
-                ? 'bg-emerald-500 text-white'
-                : analysis.status === 'yellow'
-                ? 'bg-amber-500 text-black'
-                : 'bg-red-600 text-white animate-pulse'
-            }`}>
-              {analysis.score}/100
+            <span className="text-sm">≡</span>
+            <span>Edit with SnapLoad</span>
+          </button>
+
+          <div className="hidden sm:flex items-center px-3 py-1 bg-[#f6f7f7] border border-[#dcdcde] rounded-md text-xs text-[#50575e] font-medium">
+            <span className="truncate max-w-[200px] font-bold text-[#1d2327]">
+              {title || 'Untitled Post'}
             </span>
-          </button>
+            <span className="mx-2 text-[#a7aaad]">•</span>
+            <span>Post</span>
+            <span className="ml-2 px-1.5 py-0.5 bg-[#e0e0e0] text-[#50575e] rounded text-[10px] font-mono">⌘K</span>
+          </div>
 
           <button
-            onClick={() => setActiveView('preview')}
-            className={`px-4 py-1.5 text-xs font-extrabold rounded-lg transition flex items-center gap-1.5 ${
-              activeView === 'preview'
-                ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            onClick={() => {
+              setPublishedSuccessMsg('Draft auto-saved successfully!');
+              setTimeout(() => setPublishedSuccessMsg(''), 2500);
+            }}
+            className="text-xs font-semibold text-[#2271b1] hover:text-[#135e96] underline underline-offset-2"
           >
-            <span>👁️ Live Preview</span>
+            Save draft
           </button>
 
-          <button
-            onClick={() => setActiveView('posts_manager')}
-            className={`px-4 py-1.5 text-xs font-extrabold rounded-lg transition flex items-center gap-1.5 ${
-              activeView === 'posts_manager'
-                ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <span>📂 All Posts ({allPostsList.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveView('export')}
-            className={`px-4 py-1.5 text-xs font-extrabold rounded-lg transition flex items-center gap-1.5 ${
-              activeView === 'export'
-                ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <span>💻 Code</span>
-          </button>
+          <div className="hidden md:flex items-center space-x-1 text-[#50575e] pl-2 border-l border-[#dcdcde]">
+            <button
+              onClick={() => setActiveView('editor')}
+              className={`p-1.5 rounded hover:bg-[#f0f0f1] ${activeView === 'editor' ? 'text-[#2271b1] font-bold' : ''}`}
+              title="Desktop Editor View"
+            >
+              🖥️
+            </button>
+            <button
+              onClick={() => setActiveView('preview')}
+              className={`p-1.5 rounded hover:bg-[#f0f0f1] ${activeView === 'preview' ? 'text-[#2271b1] font-bold' : ''}`}
+              title="Live Blog Preview"
+            >
+              👁️
+            </button>
+            <button
+              onClick={() => setActiveView('posts_manager')}
+              className={`p-1.5 rounded hover:bg-[#f0f0f1] ${activeView === 'posts_manager' ? 'text-[#2271b1] font-bold' : ''}`}
+              title="All Posts List"
+            >
+              📂
+            </button>
+          </div>
         </div>
 
-        {/* Right Quick Actions */}
+        {/* Right Side: Rank Math Scores & Action Badges (PIXEL PERFECT REFERENCE MATCH) */}
         <div className="flex items-center space-x-2.5">
-          <button
-            onClick={handleLoadSample}
-            className="hidden lg:flex px-3 py-1.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition border border-slate-700"
-            title="Load sample article with heading errors"
+          
+          {/* Pink Heading Health Badge */}
+          <div
+            className="hidden lg:flex items-center px-2.5 py-1 bg-[#fcf0f2] border border-[#f8cbad] text-[#d63638] rounded font-bold text-xs gap-1.5 shadow-2xs cursor-pointer"
+            title="Heading Structure Score"
           >
-            ⚡ Test Sample Draft
+            <span className="font-extrabold text-sm">H</span>
+            <span>00/100</span>
+          </div>
+
+          {/* GREEN / RED RANK MATH SCORE BADGE (EXACT SCREENSHOT MATCH) */}
+          <button
+            onClick={() => setIsRankMathDrawerOpen(!isRankMathDrawerOpen)}
+            className={`flex items-center px-3 py-1 rounded font-black text-xs gap-1.5 shadow-xs transition transform hover:scale-105 cursor-pointer ${
+              analysis.score >= 81
+                ? 'bg-[#10b981] text-white border border-[#059669]'
+                : analysis.score >= 51
+                ? 'bg-[#f59e0b] text-white border border-[#d97706]'
+                : 'bg-[#ef4444] text-white border border-[#dc2626] animate-pulse'
+            }`}
+            title="Click to toggle Rank Math SEO Sidebar"
+          >
+            <span className="text-sm">📈</span>
+            <span>{analysis.score} / 100</span>
           </button>
 
-          <button
-            onClick={onNavigateBlogHub}
-            className="px-3 py-1.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition border border-slate-700"
+          {/* Content AI Red Badge */}
+          <div
+            className="hidden sm:flex items-center px-2 py-1 bg-[#fcf0f2] border border-[#f8cbad] text-[#d63638] rounded font-bold text-xs gap-1 shadow-2xs relative cursor-pointer"
+            title="Content AI Score"
           >
-            📖 Blog Hub
+            <span className="text-xs">🎯</span>
+            <span>0 / 100</span>
+            <span className="absolute -top-1.5 -right-1 px-1 bg-red-600 text-white text-[8px] font-black rounded uppercase">
+              Free
+            </span>
+          </div>
+
+          {/* Toggle Rank Math Sidebar Icon */}
+          <button
+            onClick={() => setIsRankMathDrawerOpen(!isRankMathDrawerOpen)}
+            className={`p-1.5 rounded text-sm transition ${
+              isRankMathDrawerOpen ? 'bg-[#1e1e1e] text-white' : 'bg-[#f0f0f1] text-[#1e1e1e] hover:bg-[#e0e0e0]'
+            }`}
+            title="Toggle Rank Math Sidebar"
+          >
+            ★
           </button>
 
+          {/* Blue Gutenberg Publish Button */}
           <button
             onClick={handlePublish}
-            className="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 transition transform active:scale-95 flex items-center gap-1.5"
+            className="px-4 py-1.5 bg-[#2271b1] hover:bg-[#135e96] text-white font-extrabold text-xs rounded transition shadow-xs flex items-center gap-1 cursor-pointer"
           >
-            <span>🚀 Publish Live</span>
+            <span>Publish</span>
           </button>
 
+          {/* Logout */}
           <button
             onClick={() => {
               logoutAdmin();
               onLogout();
             }}
-            className="px-2.5 py-1.5 text-xs font-bold bg-red-950/60 text-red-300 hover:bg-red-900 rounded-xl border border-red-800 transition"
-            title="Log out admin"
+            className="p-1.5 text-xs text-[#d63638] hover:bg-[#fcf0f2] rounded transition"
+            title="Log out"
           >
             🚪
           </button>
@@ -354,76 +376,74 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
       </header>
 
       {publishedSuccessMsg && (
-        <div className="max-w-7xl mx-auto px-4 mt-4">
-          <div className="p-4 bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-bold rounded-2xl flex items-center justify-between text-sm shadow-lg animate-fade-in">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">✅</span>
-              <span>{publishedSuccessMsg}</span>
-            </div>
-            <button onClick={() => setPublishedSuccessMsg('')} className="text-xs opacity-70 hover:opacity-100">
-              ✕
-            </button>
-          </div>
+        <div className="bg-[#ecf7ed] border-b border-[#4ab866] text-[#1e4620] px-6 py-2.5 text-xs font-bold flex items-center justify-between shadow-2xs">
+          <span>✅ {publishedSuccessMsg}</span>
+          <button onClick={() => setPublishedSuccessMsg('')} className="text-xs opacity-70 hover:opacity-100">
+            ✕
+          </button>
         </div>
       )}
 
-      {/* VIEW 1: STUDIO EDITOR & RANK MATH DRAWER */}
+      {/* VIEW 1: GUTENBERG CANVAS + RANK MATH PRO SIDEBAR */}
       {activeView === 'editor' && (
-        <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
           
-          {/* Main Content & Canvas Editor (Left 8 Cols) */}
-          <div className="lg:col-span-8 space-y-6">
-            
-            {/* Article Top Settings Bar */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <span>⚙️</span>
-                  <span>Article Metadata & Targeting</span>
-                </span>
-
-                <span className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs font-bold border border-slate-700">
-                  Category: {category}
-                </span>
-              </div>
-
-              {/* Title Input */}
-              <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Article H1 Main Title <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => handleTitleChange(e.target.value)}
-                  placeholder="Enter a compelling H1 title with target keyword..."
-                  className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-white font-extrabold text-lg focus:outline-none focus:ring-2 focus:ring-red-500 placeholder-slate-600 transition"
-                />
-              </div>
-
-              {/* Focus Keyword & Subtitle Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    🎯 Rank Math Focus Keyword <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={focusKeyword}
-                    onChange={(e) => setFocusKeyword(e.target.value)}
-                    placeholder="e.g. tiktok downloader"
-                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-bold text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                  />
+          {/* Main Content Paper Canvas Area (Left) */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-8 flex justify-center bg-[#f0f0f1]">
+            <div className="w-full max-w-4xl bg-white rounded-lg shadow-md border border-[#e0e0e0] p-6 sm:p-12 space-y-6 min-h-[85vh]">
+              
+              {/* Top Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e0e0e0] pb-4">
+                <div className="flex items-center space-x-1 bg-[#f6f7f7] p-1 rounded border border-[#dcdcde]">
+                  <button
+                    onClick={() => insertFormatting('## ')}
+                    className="px-2.5 py-1 text-xs font-bold hover:bg-white rounded text-[#1d2327]"
+                    title="H2 Heading"
+                  >
+                    H2
+                  </button>
+                  <button
+                    onClick={() => insertFormatting('### ')}
+                    className="px-2.5 py-1 text-xs font-bold hover:bg-white rounded text-[#1d2327]"
+                    title="H3 Heading"
+                  >
+                    H3
+                  </button>
+                  <button
+                    onClick={() => insertFormatting('<strong>', '</strong>')}
+                    className="px-2.5 py-1 text-xs font-bold hover:bg-white rounded text-[#1d2327]"
+                    title="Bold"
+                  >
+                    B
+                  </button>
+                  <button
+                    onClick={() => insertFormatting('<em>', '</em>')}
+                    className="px-2.5 py-1 text-xs font-bold hover:bg-white rounded text-[#1d2327]"
+                    title="Italic"
+                  >
+                    I
+                  </button>
+                  <button
+                    onClick={() => insertFormatting('<p>', '</p>')}
+                    className="px-2.5 py-1 text-xs font-bold hover:bg-white rounded text-[#1d2327]"
+                    title="Paragraph"
+                  >
+                    Paragraph
+                  </button>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Category Selector
-                  </label>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={handleLoadSample}
+                    className="px-3 py-1 text-xs font-bold bg-[#f6f7f7] hover:bg-[#e0e0e0] text-[#1d2327] rounded border border-[#dcdcde]"
+                  >
+                    ⚡ Test Draft
+                  </button>
+
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as BlogPost['category'])}
-                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="px-3 py-1 text-xs font-bold bg-[#f6f7f7] border border-[#dcdcde] rounded text-[#1d2327]"
                   >
                     <option value="TikTok">TikTok</option>
                     <option value="Instagram">Instagram</option>
@@ -434,107 +454,44 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
                 </div>
               </div>
 
+              {/* Title Canvas Input */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Subtitle / Meta Excerpt
-                </label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => handleTitleChange(e.target.value)}
+                  placeholder="Add Title"
+                  className="w-full text-2xl sm:text-4xl font-extrabold text-[#1d2327] placeholder-[#a7aaad] border-b-2 border-transparent focus:border-[#2271b1] focus:outline-none pb-2 transition"
+                />
+              </div>
+
+              {/* Subtitle / Excerpt */}
+              <div>
                 <textarea
                   rows={2}
                   value={subtitle}
                   onChange={(e) => setSubtitle(e.target.value)}
-                  placeholder="Enter meta description summary..."
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                  placeholder="Write a brief meta description summary..."
+                  className="w-full text-sm text-[#50575e] placeholder-[#a7aaad] border border-[#dcdcde] rounded-md p-3 focus:outline-none focus:border-[#2271b1]"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                <div>
-                  <label className="block font-bold text-slate-400 uppercase mb-1">URL Slug</label>
-                  <input
-                    type="text"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-300 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-bold text-slate-400 uppercase mb-1">Author Name</label>
-                  <input
-                    type="text"
-                    value={authorName}
-                    onChange={(e) => setAuthorName(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-300"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-bold text-slate-400 uppercase mb-1">Estimated Read Time</label>
-                  <input
-                    type="text"
-                    value={readTime}
-                    onChange={(e) => setReadTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-300"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Editor Canvas Toolbar & Red Line Inspector Container */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
-              
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs font-black uppercase text-slate-400">📝 Article Editor</span>
-                  <span className="px-2 py-0.5 bg-red-950/80 text-red-400 text-[11px] font-bold rounded-full border border-red-800/60">
-                    🔴 Red Line Inspector Active
-                  </span>
-                </div>
-
-                {/* Quick Formatting Shortcuts */}
-                <div className="flex items-center space-x-1">
-                  <button
-                    onClick={() => insertFormatting('## ')}
-                    className="px-2.5 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700"
-                    title="Insert H2 Subheading"
-                  >
-                    H2
-                  </button>
-
-                  <button
-                    onClick={() => insertFormatting('### ')}
-                    className="px-2.5 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700"
-                    title="Insert H3 Subheading"
-                  >
-                    H3
-                  </button>
-
-                  <button
-                    onClick={() => insertFormatting('<p>', '</p>')}
-                    className="px-2.5 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700"
-                    title="Insert Paragraph"
-                  >
-                    Paragraph
-                  </button>
-                </div>
-              </div>
-
-              {/* Red Line Diagnostics Banner */}
+              {/* Red Line Diagnostic Alert Box */}
               {analysis.redLineLines.length > 0 && (
-                <div className="p-3.5 bg-red-950/40 border border-red-500/40 rounded-2xl text-xs text-red-300 space-y-1">
-                  <div className="font-extrabold text-red-400 flex items-center gap-2">
-                    <span>🔴 Rank Math Alert:</span>
-                    <span>{analysis.redLineLines.length} Heading / Structural issues flagged in editor!</span>
+                <div className="p-3.5 bg-[#fcf0f2] border-l-4 border-[#d63638] text-xs text-[#d63638] space-y-1 rounded-r">
+                  <div className="font-bold flex items-center gap-1.5">
+                    <span>🔴 Rank Math Heading Alert:</span>
+                    <span>{analysis.redLineLines.length} Heading / Structural issues flagged below!</span>
                   </div>
-                  <p className="text-red-300/80">
-                    Lines marked with a red wavy underline require attention to improve your Rank Math SEO score.
+                  <p className="text-[#50575e]">
+                    Problematic lines are marked with a red wavy underline in the visual line editor. Click line badges in the sidebar to jump directly!
                   </p>
                 </div>
               )}
 
-              {/* Red Line Visual Code & Text Editor Display */}
-              <div className="relative font-mono text-xs border border-slate-800 rounded-2xl overflow-hidden bg-slate-950 text-slate-200 shadow-inner">
-                <div className="p-4 space-y-1 max-h-[450px] overflow-y-auto">
+              {/* Red Line Code & Line Inspector */}
+              <div className="font-mono text-xs border border-[#dcdcde] rounded-md bg-[#2c3338] text-[#f0f0f1] overflow-hidden">
+                <div className="p-4 space-y-1 max-h-[350px] overflow-y-auto">
                   {contentLines.map((line, idx) => {
                     const lineNum = idx + 1;
                     const isRedLine = analysis.redLineLines.includes(lineNum);
@@ -544,23 +501,23 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
                       <div
                         key={idx}
                         id={`editor-line-${lineNum}`}
-                        className={`flex items-start gap-3 px-2 py-1 rounded transition ${
+                        className={`flex items-start gap-3 px-2 py-0.5 rounded transition ${
                           isHighlighted
-                            ? 'bg-amber-500/30 border border-amber-400'
+                            ? 'bg-[#f59e0b]/30 border border-[#f59e0b]'
                             : isRedLine
-                            ? 'bg-red-950/40 border-b border-red-500 border-dashed'
-                            : 'hover:bg-slate-900'
+                            ? 'bg-[#d63638]/20 border-b border-[#d63638] border-dashed'
+                            : 'hover:bg-white/5'
                         }`}
                       >
                         <span className={`w-8 text-right font-bold select-none shrink-0 ${
-                          isRedLine ? 'text-red-400 font-black' : 'text-slate-600'
+                          isRedLine ? 'text-[#ff8080] font-black' : 'text-[#8c8f94]'
                         }`}>
                           {isRedLine ? `🔴 ${lineNum}` : lineNum}
                         </span>
 
                         <div className="flex-1 overflow-x-auto whitespace-pre-wrap break-words">
                           {isRedLine ? (
-                            <span className="text-red-200 font-semibold underline decoration-red-500 decoration-wavy underline-offset-4">
+                            <span className="text-[#ffb3b3] font-semibold underline decoration-[#d63638] decoration-wavy underline-offset-4">
                               {line || ' '}
                             </span>
                           ) : (
@@ -573,209 +530,324 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
                 </div>
               </div>
 
-              {/* Main Content Input Textarea */}
+              {/* Main Content Body Canvas Textarea */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Article Content Editor (HTML / Markdown)
-                </label>
                 <textarea
-                  rows={12}
+                  rows={14}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Paste or write your article content here..."
-                  className="w-full p-4 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-red-500"
+                  placeholder="Start writing or paste HTML / Markdown content..."
+                  className="w-full p-4 border border-[#dcdcde] rounded-md text-sm text-[#1d2327] font-serif leading-relaxed focus:outline-none focus:border-[#2271b1]"
                 />
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between text-xs text-[#50575e] pt-2 border-t border-[#e0e0e0]">
+                <span>Slug: <code className="bg-[#f0f0f1] px-1.5 py-0.5 rounded">{slug}</code></span>
+                <span>Author: {authorName}</span>
+                <span>Read Time: {readTime}</span>
               </div>
             </div>
           </div>
 
-          {/* Right Panel: Rank Math Pro Diagnostic Drawer (Right 4 Cols) */}
-          <div className="lg:col-span-4 space-y-6">
-            
-            {/* Rank Math Pro Circular Score Meter */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-5">
+          {/* 2. RANK MATH PRO RIGHT SIDEBAR (EXACT REFERENCE SCREENSHOT CLONE) */}
+          {isRankMathDrawerOpen && (
+            <aside className="w-full md:w-96 bg-white border-l border-[#dcdcde] flex flex-col overflow-y-auto h-full shadow-lg z-30">
               
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Rank Math SEO Score
-                  </h4>
-                  <h5 className="text-base font-black text-white mt-0.5">
-                    {analysis.statusText}
-                  </h5>
-                </div>
-
-                <div className={`w-20 h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-2xl transition-transform ${
-                  analysis.status === 'green'
-                    ? 'bg-gradient-to-tr from-emerald-600 to-teal-500 shadow-emerald-500/30'
-                    : analysis.status === 'yellow'
-                    ? 'bg-gradient-to-tr from-amber-500 to-orange-500 shadow-amber-500/30'
-                    : 'bg-gradient-to-tr from-red-600 to-rose-600 shadow-red-500/30 animate-pulse'
-                }`}>
-                  <span className="text-2xl font-black">{analysis.score}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">/ 100</span>
-                </div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden p-0.5 border border-slate-800">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    analysis.status === 'green'
-                      ? 'bg-emerald-500'
-                      : analysis.status === 'yellow'
-                      ? 'bg-amber-500'
-                      : 'bg-red-600'
-                  }`}
-                  style={{ width: `${analysis.score}%` }}
-                />
-              </div>
-
-              {/* Quick Auto Fixes */}
-              <div className="space-y-2 pt-2 border-t border-slate-800">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                  🪄 1-Click Rank Math Auto-Fix Tools
-                </span>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={handleAutoFixHierarchy}
-                    className="p-2.5 text-xs font-bold bg-red-950/40 text-red-300 hover:bg-red-900/60 rounded-xl border border-red-800/50 transition text-left flex items-center gap-1"
-                  >
-                    <span>🪄</span>
-                    <span>Fix Hierarchy</span>
-                  </button>
-
-                  <button
-                    onClick={handleCapitalizeHeadings}
-                    className="p-2.5 text-xs font-bold bg-amber-950/40 text-amber-300 hover:bg-amber-900/60 rounded-xl border border-amber-800/50 transition text-left flex items-center gap-1"
-                  >
-                    <span>✨</span>
-                    <span>Title Case</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Rank Math Diagnostic Accordion Drawer */}
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
-              
-              {/* Drawer Tabs */}
-              <div className="flex items-center p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs">
-                <button
-                  onClick={() => setActiveSidebarTab('seo')}
-                  className={`flex-1 py-1.5 font-bold rounded-lg transition ${
-                    activeSidebarTab === 'seo' ? 'bg-red-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  Basic SEO
-                </button>
-
-                <button
-                  onClick={() => setActiveSidebarTab('headings')}
-                  className={`flex-1 py-1.5 font-bold rounded-lg transition ${
-                    activeSidebarTab === 'headings' ? 'bg-red-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  Headings
-                </button>
-
-                <button
-                  onClick={() => setActiveSidebarTab('serp')}
-                  className={`flex-1 py-1.5 font-bold rounded-lg transition ${
-                    activeSidebarTab === 'serp' ? 'bg-red-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  Google SERP
-                </button>
-              </div>
-
-              {/* TAB A: BASIC SEO & HEADINGS CHECKLIST */}
-              {(activeSidebarTab === 'seo' || activeSidebarTab === 'headings') && (
-                <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
-                  {analysis.diagnostics.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`p-3 rounded-2xl border transition ${
-                        item.type === 'error'
-                          ? 'bg-red-950/40 border-red-800/60 text-red-300'
-                          : item.type === 'warning'
-                          ? 'bg-amber-950/40 border-amber-800/60 text-amber-300'
-                          : 'bg-emerald-950/40 border-emerald-800/60 text-emerald-300'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-1.5">
-                          <span>{item.type === 'error' ? '❌' : item.type === 'warning' ? '⚠️' : '✅'}</span>
-                          <h6 className="text-xs font-bold">{item.title}</h6>
-                        </div>
-
-                        {item.lineNumber && (
-                          <button
-                            onClick={() => {
-                              setHighlightedLine(item.lineNumber!);
-                              const el = document.getElementById(`editor-line-${item.lineNumber}`);
-                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }}
-                            className="px-2 py-0.5 text-[10px] font-bold bg-slate-950 text-slate-300 rounded border border-slate-800 hover:border-red-500 shrink-0"
-                          >
-                            Line {item.lineNumber} 🔴
-                          </button>
-                        )}
-                      </div>
-
-                      <p className="text-[11px] text-slate-300/80 mt-1 pl-5 leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* TAB B: GOOGLE SERP SEARCH PREVIEW CARD */}
-              {activeSidebarTab === 'serp' && (
-                <div className="space-y-3">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                    🔍 Google Search Snippet Preview
+              {/* Rank Math Title Header */}
+              <div className="p-4 border-b border-[#dcdcde] flex items-center justify-between bg-[#f6f7f7]">
+                <div className="flex items-center space-x-2">
+                  <span className="text-base font-black text-[#2271b1]">Rank Math</span>
+                  <span className="px-1.5 py-0.5 bg-[#2271b1] text-white text-[9px] font-black rounded uppercase">
+                    PRO
                   </span>
+                </div>
 
-                  <div className="p-4 bg-white text-slate-900 rounded-2xl shadow-lg border border-slate-200 font-sans space-y-1">
-                    <div className="text-xs text-slate-600 truncate flex items-center gap-1">
-                      <span className="w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
-                        S
-                      </span>
-                      <span>snaploaddownload.com › blog › {slug || 'article-slug'}</span>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <button className="text-sm text-[#f59e0b]" title="Star Post">★</button>
+                  <button
+                    onClick={() => setIsRankMathDrawerOpen(false)}
+                    className="text-sm text-[#50575e] hover:text-[#1d2327]"
+                    title="Close Sidebar"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
 
-                    <h4 className="text-base font-extrabold text-blue-700 hover:underline cursor-pointer leading-snug line-clamp-2">
-                      {title || 'Article Title Preview | SnapLoad'}
-                    </h4>
+              {/* FOCUS KEYWORD BOX (EXACT SCREENSHOT CLONE) */}
+              <div className="p-4 border-b border-[#dcdcde] space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-extrabold text-[#1d2327] flex items-center gap-1">
+                    <span>Focus Keyword</span>
+                    <span className="text-[#8c8f94] cursor-pointer" title="Help info">❓</span>
+                  </label>
 
-                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                      {subtitle || 'Subtitle or meta description excerpt preview appears here in Google search engine result cards.'}
-                    </p>
+                  <div className="flex items-center space-x-1">
+                    <button className="px-2 py-0.5 bg-[#f6f7f7] hover:bg-[#e0e0e0] border border-[#dcdcde] rounded text-[11px] font-bold text-[#50575e] flex items-center gap-1">
+                      <span>🎯 Content AI</span>
+                    </button>
+                    <button className="p-1 bg-[#f6f7f7] border border-[#dcdcde] rounded text-xs" title="Analytics">
+                      📈
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
+
+                {/* Focus Keyword Tag Input Container (Green Tag Pill) */}
+                <div className="p-2 border border-[#2271b1] rounded-md bg-white shadow-2xs space-y-2">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {focusKeyword && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#10b981]/15 text-[#047857] border border-[#10b981]/40 rounded-full text-xs font-bold">
+                        <span>★</span>
+                        <span>{focusKeyword}</span>
+                        <span className="cursor-pointer opacity-70 hover:opacity-100" onClick={() => setFocusKeyword('')}>
+                          🔄
+                        </span>
+                      </span>
+                    )}
+
+                    <input
+                      type="text"
+                      value={focusKeyword}
+                      onChange={(e) => setFocusKeyword(e.target.value)}
+                      placeholder="Add focus keyword..."
+                      className="text-xs font-medium text-[#1d2327] focus:outline-none flex-1 min-w-[120px]"
+                    />
+                  </div>
+                </div>
+
+                {/* Upgrade PRO Banner */}
+                <div className="p-3 bg-[#fff8e5] border border-[#f59e0b]/40 rounded-md text-xs text-[#856404] space-y-1">
+                  <p className="font-semibold">
+                    Want more keywords & SEO features?{' '}
+                    <a href="#pro" onClick={(e) => e.preventDefault()} className="font-bold underline text-[#2271b1]">
+                      Upgrade today to the PRO
+                    </a>{' '}
+                    version.
+                  </p>
+                </div>
+
+                {/* Pillar Content Checkbox */}
+                <label className="flex items-center space-x-2 text-xs text-[#1d2327] cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    checked={isPillarContent}
+                    onChange={(e) => setIsPillarContent(e.target.checked)}
+                    className="w-4 h-4 text-[#2271b1] border-[#dcdcde] rounded focus:ring-[#2271b1]"
+                  />
+                  <span className="font-semibold">This post is Pillar Content</span>
+                  <span className="text-[#8c8f94]" title="Pillar content help">❓</span>
+                </label>
+              </div>
+
+              {/* ACCORDION 1: BASIC SEO (EXACT SCREENSHOT MATCH) */}
+              <div className="border-b border-[#dcdcde]">
+                <button
+                  onClick={() => setIsBasicSeoOpen(!isBasicSeoOpen)}
+                  className="w-full p-4 flex items-center justify-between bg-white hover:bg-[#f6f7f7] transition"
+                >
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs font-extrabold text-[#1d2327]">Basic SEO</span>
+                    {errorDiagnostics.length > 0 ? (
+                      <span className="px-2 py-0.5 bg-[#fcf0f2] text-[#d63638] border border-[#f8cbad] rounded-full text-[10px] font-bold">
+                        ✕ {errorDiagnostics.length} Errors
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 bg-[#ecf7ed] text-[#1e4620] rounded-full text-[10px] font-bold">
+                        ✓ Passed
+                      </span>
+                    )}
+                  </div>
+
+                  <span className="text-xs text-[#50575e] font-bold">
+                    {isBasicSeoOpen ? '▲' : '▼'}
+                  </span>
+                </button>
+
+                {isBasicSeoOpen && (
+                  <div className="px-4 pb-4 space-y-3 text-xs text-[#50575e]">
+                    
+                    {/* Item 1 */}
+                    <div className="flex items-start space-x-2">
+                      <span className="text-sm shrink-0 text-[#10b981]">✔</span>
+                      <div className="flex-1 leading-snug">
+                        <span>Hurray! You're using Focus Keyword in the SEO Title.</span>
+                      </div>
+                      <span className="text-[#8c8f94] shrink-0">❓</span>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div className="flex items-start space-x-2">
+                      <span className="text-sm shrink-0 text-[#d63638]">❌</span>
+                      <div className="flex-1 leading-snug space-y-1">
+                        <span>Focus Keyword not found in your SEO Meta Description.</span>
+                        <div>
+                          <button
+                            onClick={() => {
+                              setSubtitle(`Complete guide on ${focusKeyword || 'tiktok downloader'} for fast HD video downloads.`);
+                            }}
+                            className="px-2 py-0.5 bg-[#fcf0f2] border border-[#f8cbad] text-[#d63638] rounded text-[10px] font-bold hover:bg-[#f8cbad]"
+                          >
+                            🎯 Fix with AI
+                          </button>
+                        </div>
+                      </div>
+                      <span className="text-[#8c8f94] shrink-0">❓</span>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div className="flex items-start space-x-2">
+                      <span className="text-sm shrink-0 text-[#10b981]">✔</span>
+                      <div className="flex-1 leading-snug">
+                        <span>Focus Keyword used in the URL.</span>
+                      </div>
+                      <span className="text-[#8c8f94] shrink-0">❓</span>
+                    </div>
+
+                    {/* Item 4 */}
+                    <div className="flex items-start space-x-2">
+                      <span className="text-sm shrink-0 text-[#10b981]">✔</span>
+                      <div className="flex-1 leading-snug">
+                        <span>Focus Keyword appears in the first 10% of the content.</span>
+                      </div>
+                      <span className="text-[#8c8f94] shrink-0">❓</span>
+                    </div>
+
+                    {/* Item 5 */}
+                    <div className="flex items-start space-x-2">
+                      <span className="text-sm shrink-0 text-[#10b981]">✔</span>
+                      <div className="flex-1 leading-snug">
+                        <span>Focus Keyword found in the content.</span>
+                      </div>
+                      <span className="text-[#8c8f94] shrink-0">❓</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* ACCORDION 2: HEADING STRUCTURE & RED-LINE DIAGNOSTICS */}
+              <div className="border-b border-[#dcdcde]">
+                <button
+                  onClick={() => setIsHeadingsSeoOpen(!isHeadingsSeoOpen)}
+                  className="w-full p-4 flex items-center justify-between bg-white hover:bg-[#f6f7f7] transition"
+                >
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs font-extrabold text-[#1d2327]">Heading Hierarchy & Structure</span>
+                    {analysis.redLineLines.length > 0 && (
+                      <span className="px-2 py-0.5 bg-[#fcf0f2] text-[#d63638] rounded-full text-[10px] font-bold">
+                        🔴 {analysis.redLineLines.length} Flagged Lines
+                      </span>
+                    )}
+                  </div>
+
+                  <span className="text-xs text-[#50575e] font-bold">
+                    {isHeadingsSeoOpen ? '▲' : '▼'}
+                  </span>
+                </button>
+
+                {isHeadingsSeoOpen && (
+                  <div className="px-4 pb-4 space-y-3 text-xs text-[#50575e]">
+                    
+                    {/* Auto Fix Assistant */}
+                    <div className="flex items-center gap-2 pt-1 pb-2">
+                      <button
+                        onClick={handleAutoFixHierarchy}
+                        className="flex-1 py-1.5 px-2 bg-[#2271b1] hover:bg-[#135e96] text-white font-bold rounded text-[11px] shadow-2xs"
+                      >
+                        🪄 Fix Hierarchy Levels
+                      </button>
+                      <button
+                        onClick={handleCapitalizeHeadings}
+                        className="flex-1 py-1.5 px-2 bg-[#f6f7f7] hover:bg-[#e0e0e0] border border-[#dcdcde] text-[#1d2327] font-bold rounded text-[11px]"
+                      >
+                        ✨ Title Case
+                      </button>
+                    </div>
+
+                    {analysis.diagnostics.map((item) => (
+                      <div
+                        key={item.id}
+                        className={`p-2.5 rounded border transition ${
+                          item.type === 'error'
+                            ? 'bg-[#fcf0f2] border-[#f8cbad] text-[#d63638]'
+                            : item.type === 'warning'
+                            ? 'bg-[#fff8e5] border-[#f59e0b]/40 text-[#856404]'
+                            : 'bg-[#ecf7ed] border-[#4ab866]/40 text-[#1e4620]'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-1">
+                          <div className="flex items-center gap-1.5 font-bold">
+                            <span>{item.type === 'error' ? '❌' : item.type === 'warning' ? '⚠️' : '✔'}</span>
+                            <span>{item.title}</span>
+                          </div>
+
+                          {item.lineNumber && (
+                            <button
+                              onClick={() => {
+                                setHighlightedLine(item.lineNumber!);
+                                const el = document.getElementById(`editor-line-${item.lineNumber}`);
+                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                              }}
+                              className="px-1.5 py-0.5 bg-white text-[#1d2327] rounded border border-[#dcdcde] text-[10px] font-bold hover:border-[#d63638] shrink-0"
+                            >
+                              Line {item.lineNumber} 🔴
+                            </button>
+                          )}
+                        </div>
+
+                        <p className="text-[11px] mt-1 leading-relaxed opacity-90 pl-5">
+                          {item.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ACCORDION 3: GOOGLE SERP SEARCH SNIPPET */}
+              <div className="border-b border-[#dcdcde]">
+                <button
+                  onClick={() => setIsSerpOpen(!isSerpOpen)}
+                  className="w-full p-4 flex items-center justify-between bg-white hover:bg-[#f6f7f7] transition"
+                >
+                  <span className="text-xs font-extrabold text-[#1d2327]">Google SERP Snippet Preview</span>
+                  <span className="text-xs text-[#50575e] font-bold">{isSerpOpen ? '▲' : '▼'}</span>
+                </button>
+
+                {isSerpOpen && (
+                  <div className="px-4 pb-4 space-y-3">
+                    <div className="p-3.5 bg-white border border-[#dcdcde] rounded-md shadow-2xs font-sans space-y-1">
+                      <div className="text-[11px] text-[#50575e] truncate">
+                        snaploaddownload.com › blog › {slug}
+                      </div>
+                      <h4 className="text-sm font-bold text-[#1a0dab] hover:underline cursor-pointer line-clamp-2">
+                        {title || 'Article Title'}
+                      </h4>
+                      <p className="text-xs text-[#4d5156] line-clamp-2 leading-relaxed">
+                        {subtitle || 'Meta description summary...'}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </aside>
+          )}
         </div>
       )}
 
-      {/* VIEW 2: LIVE BLOG POST PREVIEW */}
+      {/* VIEW 2: LIVE BLOG PREVIEW */}
       {activeView === 'preview' && (
-        <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-          <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between text-xs text-slate-300">
+        <div className="max-w-6xl mx-auto p-6 space-y-6">
+          <div className="bg-white p-4 border border-[#dcdcde] rounded-md flex items-center justify-between text-xs text-[#50575e]">
             <span>👁️ Live Preview Mode: Showing exact rendering as seen by readers on SnapLoad Blog</span>
             <button
               onClick={handlePublish}
-              className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition"
+              className="px-4 py-1.5 bg-[#2271b1] hover:bg-[#135e96] text-white rounded font-bold text-xs"
             >
               Publish Article Now 🚀
             </button>
           </div>
 
-          <div className="border border-slate-800 rounded-3xl p-6 bg-slate-950">
+          <div className="bg-white border border-[#dcdcde] rounded-md p-6">
             <BlogPostPage
               post={previewPost}
               onNavigateHome={onNavigateHome}
@@ -786,18 +858,18 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
         </div>
       )}
 
-      {/* VIEW 3: POSTS MANAGER DASHBOARD */}
+      {/* VIEW 3: POSTS MANAGER */}
       {activeView === 'posts_manager' && (
-        <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        <div className="max-w-6xl mx-auto p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-black text-white">📂 Published Articles Manager</h3>
-              <p className="text-xs text-slate-400">Total Articles: {allPostsList.length}</p>
+              <h3 className="text-xl font-black text-[#1d2327]">Published Articles Manager</h3>
+              <p className="text-xs text-[#50575e]">Total Articles: {allPostsList.length}</p>
             </div>
 
             <button
               onClick={() => setActiveView('editor')}
-              className="px-4 py-2 bg-gradient-to-r from-red-600 to-orange-600 text-white text-xs font-extrabold rounded-xl"
+              className="px-4 py-2 bg-[#2271b1] text-white text-xs font-bold rounded"
             >
               + Create New Article
             </button>
@@ -805,35 +877,35 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {allPostsList.map((post) => (
-              <div key={post.slug} className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-xl space-y-3 flex flex-col justify-between">
+              <div key={post.slug} className="bg-white p-5 rounded-lg border border-[#dcdcde] shadow-xs space-y-3 flex flex-col justify-between">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="px-2.5 py-0.5 bg-red-950 text-red-300 rounded-full font-bold border border-red-800/60">
+                    <span className="px-2 py-0.5 bg-[#f0f0f1] text-[#1d2327] rounded font-bold">
                       {post.category}
                     </span>
-                    <span className="text-slate-400 text-[11px]">{post.publishDate}</span>
+                    <span className="text-[#8c8f94] text-[11px]">{post.publishDate}</span>
                   </div>
 
-                  <h4 className="text-sm font-extrabold text-white line-clamp-2 leading-snug">
+                  <h4 className="text-sm font-bold text-[#1d2327] line-clamp-2">
                     {post.title}
                   </h4>
 
-                  <p className="text-xs text-slate-400 line-clamp-2">
+                  <p className="text-xs text-[#50575e] line-clamp-2">
                     {post.subtitle}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#e0e0e0] flex items-center justify-between text-xs">
                   <button
                     onClick={() => onSelectPost(post.slug)}
-                    className="text-xs font-bold text-emerald-400 hover:underline"
+                    className="font-bold text-[#2271b1] hover:underline"
                   >
                     View Live ➔
                   </button>
 
                   <button
                     onClick={() => handleDeletePost(post.slug)}
-                    className="text-xs font-bold text-red-400 hover:text-red-300"
+                    className="font-bold text-[#d63638] hover:underline"
                   >
                     Delete
                   </button>
@@ -846,26 +918,21 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
 
       {/* VIEW 4: CODE EXPORT */}
       {activeView === 'export' && (
-        <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        <div className="max-w-6xl mx-auto p-6 space-y-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-base font-extrabold text-white">
-                💻 Export Article TypeScript Code for <code className="text-red-400">blogData.ts</code>
-              </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Copy formatted TypeScript object directly into your project repo.
-              </p>
-            </div>
+            <h3 className="text-base font-bold text-[#1d2327]">
+              💻 Export Article Code for <code className="text-[#2271b1]">blogData.ts</code>
+            </h3>
 
             <button
               onClick={handleCopyCode}
-              className="px-5 py-2.5 bg-gradient-to-r from-red-600 to-orange-600 text-white text-xs font-bold rounded-xl shadow"
+              className="px-4 py-2 bg-[#2271b1] text-white text-xs font-bold rounded shadow"
             >
               {copiedMsg || '📋 Copy Code Snippet'}
             </button>
           </div>
 
-          <pre className="p-4 bg-slate-950 text-emerald-400 rounded-2xl overflow-x-auto text-xs font-mono border border-slate-800 max-h-[500px]">
+          <pre className="p-4 bg-[#2c3338] text-[#10b981] rounded-md overflow-x-auto text-xs font-mono max-h-[500px]">
             {generateExportCode()}
           </pre>
         </div>

@@ -773,6 +773,52 @@ function App() {
     );
   }
 
+  // Standalone Full-Screen Admin Studio View (Completely isolated from public site header & homepage)
+  if (isAdminStudio) {
+    return (
+      <div className="min-h-screen w-full bg-slate-950 text-slate-100 font-sans selection:bg-red-500 selection:text-white">
+        <ArticleEditorStudio
+          onNavigateHome={() => handleNavigate('/')}
+          onNavigateBlogHub={() => handleNavigate('/blog')}
+          onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)}
+          onLogout={() => {
+            setIsAdminStudio(false);
+            handleNavigate('/blog');
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Standalone Full-Screen Admin Login View
+  if (
+    showAdminLoginModal &&
+    (window.location.pathname === '/admin' ||
+      window.location.pathname === '/login' ||
+      window.location.pathname === '/admin/login' ||
+      window.location.pathname === '/wp-admin' ||
+      window.location.pathname === '/admin/editor')
+  ) {
+    return (
+      <div className="min-h-screen w-full bg-slate-950 flex items-center justify-center relative overflow-hidden">
+        <div className="app-background">
+          <div className="bg-orb bg-orb-1" />
+          <div className="bg-orb bg-orb-2" />
+        </div>
+        <AdminLoginModal
+          onSuccess={() => {
+            setShowAdminLoginModal(false);
+            setIsAdminStudio(true);
+          }}
+          onCancel={() => {
+            setShowAdminLoginModal(false);
+            handleNavigate('/blog');
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative">
       {/* Animated background */}
@@ -791,36 +837,12 @@ function App() {
         onOpenWidgetModal={() => setIsWidgetModalOpen(true)}
       />
 
-      {/* Admin Login Modal overlay */}
-      {showAdminLoginModal && (
-        <AdminLoginModal
-          onSuccess={() => {
-            setShowAdminLoginModal(false);
-            setIsAdminStudio(true);
-          }}
-          onCancel={() => {
-            setShowAdminLoginModal(false);
-            if (window.location.pathname === '/admin' || window.location.pathname === '/login') {
-              handleNavigate('/blog');
-            }
-          }}
-        />
-      )}
-
       {/* Main Content */}
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16">
         {/* Render View Components */}
-        {isAdminStudio ? (
-          <ArticleEditorStudio
-            onNavigateHome={() => handleNavigate('/')}
-            onNavigateBlogHub={() => handleNavigate('/blog')}
-            onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)}
-            onLogout={() => {
-              setIsAdminStudio(false);
-              handleNavigate('/blog');
-            }}
-          />
-        ) : isAboutUsPage ? (
+        {isAboutUsPage ? (
+          <AboutUsPage onNavigateHome={() => handleNavigate('/')} />
+        ) : isContactUsPage ? (
           <AboutUsPage onNavigateHome={() => handleNavigate('/')} />
         ) : isContactUsPage ? (
           <ContactUsPage onNavigateHome={() => handleNavigate('/')} />
