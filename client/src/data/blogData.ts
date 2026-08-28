@@ -15,6 +15,7 @@ export interface BlogPost {
   };
   content: string;
   tableOfContents: { id: string; title: string }[];
+  tags?: string[];
 }
 
 export const BLOG_POSTS: Record<string, BlogPost> = {

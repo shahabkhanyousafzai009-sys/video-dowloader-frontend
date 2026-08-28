@@ -122,11 +122,12 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
   return matchedKey ? merged[matchedKey] : null;
 }
 
-// Rank Math Heading Diagnostic Engine
+// Rank Math Heading & Tags Diagnostic Engine
 export function analyzeRankMathHeadings(
   title: string,
   content: string,
-  focusKeyword: string = ''
+  focusKeyword: string = '',
+  tags: string[] = []
 ): HeadingAnalysisResult {
   const diagnostics: RankMathDiagnosticItem[] = [];
   const redLineLines: number[] = [];
@@ -345,6 +346,30 @@ export function analyzeRankMathHeadings(
       title: 'Table of Contents Missing',
       description: 'Add H2 subheadings so readers can navigate using an automated Table of Contents.',
       fixType: 'toc',
+    });
+  }
+
+  // Tags Optimization Analysis
+  if (tags && tags.length >= 2) {
+    diagnostics.push({
+      id: 'tags-pass',
+      type: 'pass',
+      title: 'Article Topic Tags Configured',
+      description: `Article includes ${tags.length} topic tags (#${tags.slice(0, 3).join(', #')}).`,
+    });
+  } else if (tags && tags.length === 1) {
+    diagnostics.push({
+      id: 'tags-warning',
+      type: 'warning',
+      title: 'More Topic Tags Recommended',
+      description: 'Add 2–4 target topic tags (e.g. #tiktok, #videodownloader) for higher search rank.',
+    });
+  } else {
+    diagnostics.push({
+      id: 'tags-missing',
+      type: 'warning',
+      title: 'Article Topic Tags Missing',
+      description: 'Add target topic tags below to enhance search engine categorization.',
     });
   }
 
