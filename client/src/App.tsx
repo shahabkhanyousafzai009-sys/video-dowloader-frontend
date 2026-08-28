@@ -23,6 +23,9 @@ import { LegalPage, LegalPageType } from './components/LegalPage';
 import { BlogHub } from './components/BlogHub';
 import { BlogPostPage } from './components/BlogPostPage';
 import { BLOG_POSTS } from './data/blogData';
+import { AdminLoginModal } from './components/AdminLoginModal';
+import { ArticleEditorStudio } from './components/ArticleEditorStudio';
+import { checkIsAdminAuthenticated, getBlogPostBySlug, getMergedBlogPosts } from './utils/blogStore';
 import { AboutUsPage } from './components/AboutUsPage';
 import { ContactUsPage } from './components/ContactUsPage';
 import { FaqPage } from './components/FaqPage';
@@ -111,11 +114,12 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
 const findBlogPostSlug = (rawSlug: string): string | null => {
   if (!rawSlug) return null;
   try {
+    const merged = getMergedBlogPosts();
     const decoded = decodeURIComponent(rawSlug).trim().toLowerCase();
-    if (BLOG_POSTS[decoded]) return decoded;
+    if (merged[decoded]) return decoded;
     const normalized = decoded.replace(/[\s_]+/g, '-');
-    if (BLOG_POSTS[normalized]) return normalized;
-    const matched = Object.keys(BLOG_POSTS).find(
+    if (merged[normalized]) return normalized;
+    const matched = Object.keys(merged).find(
       (key) => key.toLowerCase() === normalized || key.toLowerCase() === decoded
     );
     return matched || null;
@@ -156,6 +160,8 @@ function App() {
   const [isAboutUsPage, setIsAboutUsPage] = useState<boolean>(false);
   const [isContactUsPage, setIsContactUsPage] = useState<boolean>(false);
   const [isFaqPage, setIsFaqPage] = useState<boolean>(false);
+  const [isAdminStudio, setIsAdminStudio] = useState<boolean>(false);
+  const [showAdminLoginModal, setShowAdminLoginModal] = useState<boolean>(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('snapload_lang') as Language;
@@ -205,6 +211,8 @@ function App() {
     setIsAboutUsPage(false);
     setIsContactUsPage(false);
     setIsFaqPage(false);
+    setIsAdminStudio(false);
+    setShowAdminLoginModal(false);
   };
 
   // Detect route path on initial mount and browser back/forward buttons
@@ -234,6 +242,16 @@ function App() {
       if (cleanPath === '/youtube-downloader') {
         window.history.replaceState({}, '', '/');
         setCurrentPlatform('all');
+        return;
+      }
+
+      // Admin Portal & Login Routes (/admin, /login, /wp-admin, /admin/editor)
+      if (cleanPath === '/admin' || cleanPath === '/login' || cleanPath === '/admin/login' || cleanPath === '/wp-admin' || cleanPath === '/admin/editor') {
+        if (checkIsAdminAuthenticated()) {
+          setIsAdminStudio(true);
+        } else {
+          setShowAdminLoginModal(true);
+        }
         return;
       }
 
@@ -622,6 +640,15 @@ function App() {
 
     resetAllViews();
 
+    if (targetPath === '/admin' || targetPath === '/login' || targetPath === '/admin/login' || targetPath === '/wp-admin' || targetPath === '/admin/editor') {
+      if (checkIsAdminAuthenticated()) {
+        setIsAdminStudio(true);
+      } else {
+        setShowAdminLoginModal(true);
+      }
+      return;
+    }
+
     if (targetPath === '/about-us' || targetPath === '/about' || targetPath === '/information' || targetPath === '/information-about-snapload') {
       setIsAboutUsPage(true);
       return;
@@ -764,20 +791,50 @@ function App() {
         onOpenWidgetModal={() => setIsWidgetModalOpen(true)}
       />
 
+      {/* Admin Login Modal overlay */}
+      {showAdminLoginModal && (
+        <AdminLoginModal
+          onSuccess={() => {
+            setShowAdminLoginModal(false);
+            setIsAdminStudio(true);
+          }}
+          onCancel={() => {
+            setShowAdminLoginModal(false);
+            if (window.location.pathname === '/admin' || window.location.pathname === '/login') {
+              handleNavigate('/blog');
+            }
+          }}
+        />
+      )}
+
       {/* Main Content */}
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16">
         {/* Render View Components */}
-        {isAboutUsPage ? (
+        {isAdminStudio ? (
+          <ArticleEditorStudio
+            onNavigateHome={() => handleNavigate('/')}
+            onNavigateBlogHub={() => handleNavigate('/blog')}
+            onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)}
+            onLogout={() => {
+              setIsAdminStudio(false);
+              handleNavigate('/blog');
+            }}
+          />
+        ) : isAboutUsPage ? (
           <AboutUsPage onNavigateHome={() => handleNavigate('/')} />
         ) : isContactUsPage ? (
           <ContactUsPage onNavigateHome={() => handleNavigate('/')} />
         ) : isFaqPage ? (
           <FaqPage onNavigateHome={() => handleNavigate('/')} onNavigateContact={() => handleNavigate('/contact-us')} />
         ) : isBlogHub ? (
-          <BlogHub onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)} onNavigateHome={() => handleNavigate('/')} />
-        ) : activeBlogPostSlug && BLOG_POSTS[activeBlogPostSlug] ? (
+          <BlogHub
+            onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)}
+            onNavigateHome={() => handleNavigate('/')}
+            onOpenAdminStudio={() => handleNavigate('/admin')}
+          />
+        ) : activeBlogPostSlug && getBlogPostBySlug(activeBlogPostSlug) ? (
           <BlogPostPage
-            post={BLOG_POSTS[activeBlogPostSlug]}
+            post={getBlogPostBySlug(activeBlogPostSlug)!}
             onBack={() => handleNavigate('/blog')}
             onNavigateHome={() => handleNavigate('/')}
             onSelectPost={(slug) => handleNavigate(`/blog/${slug}`)}

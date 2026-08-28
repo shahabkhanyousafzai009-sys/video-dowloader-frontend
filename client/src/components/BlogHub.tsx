@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { BLOG_POSTS } from '../data/blogData';
+import { getMergedBlogPosts } from '../utils/blogStore';
 import { BlogThumbnail } from './BlogThumbnail';
 
 interface BlogHubProps {
   onSelectPost: (slug: string) => void;
   onNavigateHome: () => void;
+  onOpenAdminStudio?: () => void;
 }
 
-export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome }) => {
+export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome, onOpenAdminStudio }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -79,7 +81,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome }
     };
   }, []);
 
-  const posts = Object.values(BLOG_POSTS);
+  const posts = Object.values(getMergedBlogPosts());
   const categories = ['All', 'TikTok', 'Instagram', 'MP3 Conversion', 'YouTube Shorts', 'Legal & Security'];
 
   const filteredPosts = posts.filter((post) => {
@@ -98,18 +100,40 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome }
     <div className="w-full max-w-6xl mx-auto px-4 py-8 animate-fade-in space-y-10 text-left">
       
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs font-semibold dark:text-white/50 text-slate-500">
-        <button onClick={onNavigateHome} className="hover:text-primary-400 transition-colors cursor-pointer">
-          Home
-        </button>
-        <span>/</span>
-        <span className="dark:text-white text-slate-900 font-bold">Blog &amp; Knowledge Base</span>
-      </nav>
+      <div className="flex items-center justify-between gap-4">
+        <nav className="flex items-center gap-2 text-xs font-semibold dark:text-white/50 text-slate-500">
+          <button onClick={onNavigateHome} className="hover:text-primary-400 transition-colors cursor-pointer">
+            Home
+          </button>
+          <span>/</span>
+          <span className="dark:text-white text-slate-900 font-bold">Blog &amp; Knowledge Base</span>
+        </nav>
+
+        {onOpenAdminStudio && (
+          <button
+            onClick={onOpenAdminStudio}
+            className="px-3.5 py-1.5 text-xs font-extrabold bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white rounded-xl shadow-md transition flex items-center gap-1.5"
+          >
+            <span>🔐 Rank Math Admin Studio</span>
+          </button>
+        )}
+      </div>
 
       {/* Hero Header */}
       <header className="glass-strong rounded-3xl p-8 sm:p-12 border border-slate-200/80 dark:border-white/10 shadow-2xl space-y-6 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 text-xs font-extrabold">
-          <span>📚 SnapLoad Knowledge Base</span>
+        <div className="flex items-center justify-center gap-2">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 text-xs font-extrabold">
+            <span>📚 SnapLoad Knowledge Base</span>
+          </div>
+
+          {onOpenAdminStudio && (
+            <button
+              onClick={onOpenAdminStudio}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-extrabold hover:bg-red-500/20 transition cursor-pointer"
+            >
+              <span>✍️ Write Article & Rank Math Check</span>
+            </button>
+          )}
         </div>
 
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">

@@ -246,6 +246,20 @@ export function Header({
             <span>Blog</span>
           </a>
 
+          {/* Admin Studio Route Link */}
+          <a
+            href="/admin"
+            onClick={(e) => handleLinkClick(e, '/admin')}
+            className={`text-sm px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+              currentPath === '/admin' || currentPath.startsWith('/admin') || currentPath === '/login'
+                ? 'font-extrabold bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/40 shadow-xs'
+                : 'font-semibold text-red-600 dark:text-red-400 hover:bg-red-500/10 border border-red-500/20'
+            }`}
+            title="Rank Math Admin Upload Studio"
+          >
+            <span>🔐 Admin Studio</span>
+          </a>
+
           {/* FAQ Navigation Link */}
           <a
             href="/faq"
