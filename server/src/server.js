@@ -96,6 +96,17 @@ app.use('/api/info', infoRouter);
 app.use('/api/download', downloadRouter);
 app.use('/api/blog', blogRouter);
 
+// ===== Serve ads.txt for Google AdSense Crawler =====
+app.get('/ads.txt', (req, res) => {
+  const adsTxtPath = path.join(__dirname, '../../client/public/ads.txt');
+  if (fs.existsSync(adsTxtPath)) {
+    res.header('Content-Type', 'text/plain');
+    return res.sendFile(adsTxtPath);
+  }
+  res.header('Content-Type', 'text/plain');
+  res.send('google.com, pub-9601240294629728, DIRECT, f0082457d0754d40\n');
+});
+
 // ===== Dynamic Sitemap Generator (Auto-includes newly published studio articles) =====
 app.get('/sitemap.xml', (req, res) => {
   try {
