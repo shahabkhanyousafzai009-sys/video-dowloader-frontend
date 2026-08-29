@@ -90,9 +90,11 @@ app.use((req, res, next) => {
 // ===== API Routes =====
 const infoRouter = require('./routes/info');
 const downloadRouter = require('./routes/download');
+const blogRouter = require('./routes/blog');
 
 app.use('/api/info', infoRouter);
 app.use('/api/download', downloadRouter);
+app.use('/api/blog', blogRouter);
 
 // ===== Health Check =====
 app.get('/api/health', (req, res) => {

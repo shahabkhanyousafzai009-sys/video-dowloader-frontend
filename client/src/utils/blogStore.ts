@@ -72,11 +72,29 @@ export function logoutAdmin(): void {
   sessionStorage.removeItem(ADMIN_AUTH_KEY);
 }
 
+let remoteServerPostsCache: Record<string, BlogPost> = {};
+
+// Fetch server-synced custom posts on startup
+if (typeof window !== 'undefined') {
+  fetch('/api/blog/posts')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.success && data.posts) {
+        remoteServerPostsCache = data.posts;
+        const existing = getCustomBlogPosts();
+        const merged = { ...existing, ...data.posts };
+        localStorage.setItem(CUSTOM_BLOG_POSTS_KEY, JSON.stringify(merged));
+      }
+    })
+    .catch(() => {});
+}
+
 // Get all blog posts (static + custom created)
 export function getMergedBlogPosts(): Record<string, BlogPost> {
   const customPosts = getCustomBlogPosts();
   return {
     ...BLOG_POSTS,
+    ...remoteServerPostsCache,
     ...customPosts,
   };
 }
@@ -92,11 +110,18 @@ export function getCustomBlogPosts(): Record<string, BlogPost> {
   }
 }
 
-// Save a custom post
+// Save a custom post (Saves locally & uploads directly to server for all devices)
 export function saveCustomBlogPost(post: BlogPost): void {
   const existing = getCustomBlogPosts();
   existing[post.slug] = post;
   localStorage.setItem(CUSTOM_BLOG_POSTS_KEY, JSON.stringify(existing));
+
+  // Sync directly to backend server so all mobiles and browsers see it immediately
+  fetch('/api/blog/posts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(post),
+  }).catch((err) => console.log('Remote blog API sync failed:', err));
 }
 
 // Delete a custom post
@@ -104,6 +129,10 @@ export function deleteCustomBlogPost(slug: string): void {
   const existing = getCustomBlogPosts();
   delete existing[slug];
   localStorage.setItem(CUSTOM_BLOG_POSTS_KEY, JSON.stringify(existing));
+
+  fetch(`/api/blog/posts/${slug}`, {
+    method: 'DELETE',
+  }).catch((err) => console.log('Remote blog API delete failed:', err));
 }
 
 // Get post by slug
