@@ -48,7 +48,7 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
   const [isPillarContent, setIsPillarContent] = useState(false);
 
   // Tags System State
-  const [tags, setTags] = useState<string[]>(['tiktok', 'videodownloader', 'laptop', 'nowatermark', 'guide']);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
 
   const [publishedSuccessMsg, setPublishedSuccessMsg] = useState('');
@@ -608,7 +608,7 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                   type="text"
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  placeholder="How to Download TikTok Videos on a Laptop: Complete 2026 Guide"
+                  placeholder="Enter main article title here..."
                   className="w-full text-xl sm:text-3xl font-extrabold text-[#1d2327] placeholder-[#a7aaad] border-b-2 border-[#2271b1] focus:outline-none pb-2 transition"
                 />
               </div>
