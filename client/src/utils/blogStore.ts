@@ -207,12 +207,13 @@ export function analyzeRankMathHeadings(
       }
 
       // Check Heading Length & Generic titles
-      if (lineWordCount < 3) {
+      const headingWordsCount = headingText.trim().split(/[\s-]+/).filter(Boolean).length;
+      if (headingWordsCount < 3) {
         diagnostics.push({
           id: `short-heading-${lineNumber}`,
           type: 'warning',
           title: 'Heading Too Short',
-          description: `Line ${lineNumber}: "${headingText}" is only ${lineWordCount} word(s). Rank Math recommends informative headings with at least 3 words.`,
+          description: `Line ${lineNumber}: "${headingText}" is only ${headingWordsCount} word(s). Rank Math recommends informative headings with at least 3 words.`,
           lineNumber,
           targetText: headingText,
           fixType: 'capitalize',
