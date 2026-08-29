@@ -996,28 +996,29 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                   </div>
                 </div>
 
-                {/* Upgrade PRO Banner */}
-                <div className="p-3 bg-[#fff8e5] border border-[#f59e0b]/40 rounded-md text-xs text-[#856404] space-y-1">
-                  <p className="font-semibold">
-                    Want more keywords & SEO features?{' '}
-                    <a href="#pro" onClick={(e) => e.preventDefault()} className="font-bold underline text-[#2271b1]">
-                      Upgrade today to the PRO
-                    </a>{' '}
-                    version.
-                  </p>
+                {/* PRO Active Status Banner */}
+                <div className="p-2.5 bg-[#ecf7ed] border border-[#4ab866]/40 rounded-md text-xs text-[#1e4620] flex items-center justify-between shadow-2xs">
+                  <div className="flex items-center space-x-1.5 font-bold">
+                    <span>⚡ Rank Math PRO Active</span>
+                  </div>
+                  <span className="px-1.5 py-0.5 bg-[#10b981] text-white text-[9px] font-black rounded uppercase">UNLOCKED</span>
                 </div>
 
-                {/* Pillar Content Checkbox */}
-                <label className="flex items-center space-x-2 text-xs text-[#1d2327] cursor-pointer pt-1">
-                  <input
-                    type="checkbox"
-                    checked={isPillarContent}
-                    onChange={(e) => setIsPillarContent(e.target.checked)}
-                    className="w-4 h-4 text-[#2271b1] border-[#dcdcde] rounded focus:ring-[#2271b1]"
-                  />
-                  <span className="font-semibold">This post is Pillar Content</span>
-                  <span className="text-[#8c8f94]" title="Pillar content help">❓</span>
-                </label>
+                {/* Pillar / Cornerstone Content Option */}
+                <div className="p-3 bg-[#f6f7f7] border border-[#dcdcde] rounded-md space-y-1.5">
+                  <label className="flex items-center space-x-2 text-xs text-[#1d2327] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={isPillarContent}
+                      onChange={(e) => setIsPillarContent(e.target.checked)}
+                      className="w-4 h-4 text-[#2271b1] border-[#dcdcde] rounded focus:ring-[#2271b1]"
+                    />
+                    <span className="font-bold text-[#1d2327]">🏛️ Mark as Pillar / Cornerstone Article</span>
+                  </label>
+                  <p className="text-[11px] text-[#50575e] leading-snug pl-6">
+                    Pillar content is an authoritative 1,500+ word master guide that serves as the central hub for internal linking and boosts overall site domain authority.
+                  </p>
+                </div>
               </div>
 
               {/* ACCORDION 1: BASIC SEO (DYNAMIC DISMISSAL UPON FIXING) */}
