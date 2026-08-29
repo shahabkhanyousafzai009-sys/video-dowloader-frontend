@@ -96,6 +96,46 @@ app.use('/api/info', infoRouter);
 app.use('/api/download', downloadRouter);
 app.use('/api/blog', blogRouter);
 
+// ===== Dynamic Sitemap Generator (Auto-includes newly published studio articles) =====
+app.get('/sitemap.xml', (req, res) => {
+  try {
+    const staticSitemapPath = path.join(__dirname, '../../client/public/sitemap.xml');
+    let xmlContent = '';
+    if (fs.existsSync(staticSitemapPath)) {
+      xmlContent = fs.readFileSync(staticSitemapPath, 'utf8');
+    } else {
+      xmlContent = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>`;
+    }
+
+    // Read server-stored custom blog posts
+    const customPostsFile = path.join(__dirname, './data/custom_blog_posts.json');
+    if (fs.existsSync(customPostsFile)) {
+      const customPosts = JSON.parse(fs.readFileSync(customPostsFile, 'utf8') || '{}');
+      const today = new Date().toISOString().split('T')[0];
+
+      const customXmlEntries = Object.values(customPosts)
+        .map(
+          (post) => `  <url>
+    <loc>https://snaploaddownload.com/blog/${post.slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>`
+        )
+        .join('\n');
+
+      if (customXmlEntries && xmlContent.includes('</urlset>')) {
+        xmlContent = xmlContent.replace('</urlset>', `${customXmlEntries}\n</urlset>`);
+      }
+    }
+
+    res.header('Content-Type', 'application/xml');
+    res.send(xmlContent);
+  } catch (e) {
+    res.status(500).send('Error generating dynamic sitemap');
+  }
+});
+
 // ===== Health Check =====
 app.get('/api/health', (req, res) => {
   const cookiesEnvSet = !!process.env.COOKIES_CONTENT;
