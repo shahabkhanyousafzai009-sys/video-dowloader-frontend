@@ -207,8 +207,34 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavi
 
         {/* Article Content Body */}
         <div
-          className="prose prose-invert max-w-none dark:text-white/85 text-dark-800 leading-relaxed space-y-6 text-sm sm:text-base"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          className="blog-article-content prose prose-invert max-w-none dark:text-white/90 text-dark-800 leading-relaxed text-sm sm:text-base space-y-4"
+          dangerouslySetInnerHTML={{
+            __html: (() => {
+              if (!post.content) return '';
+              let c = post.content.trim();
+              // Parse markdown headings if present
+              if (c.includes('## ') || c.includes('### ') || c.includes('#### ')) {
+                c = c
+                  .split('\n')
+                  .map((line) => {
+                    const tr = line.trim();
+                    if (tr.startsWith('#### ')) return `<h4>${tr.replace(/^####\s+/, '')}</h4>`;
+                    if (tr.startsWith('### ')) return `<h3>${tr.replace(/^###\s+/, '')}</h3>`;
+                    if (tr.startsWith('## ')) return `<h2>${tr.replace(/^##\s+/, '')}</h2>`;
+                    if (tr.startsWith('# ')) return `<h2>${tr.replace(/^#\s+/, '')}</h2>`;
+                    if (tr && !tr.startsWith('<')) return `<p>${tr}</p>`;
+                    return tr;
+                  })
+                  .join('\n');
+              } else if (!c.includes('<h2') && !c.includes('<h3') && !c.includes('<p')) {
+                c = c
+                  .split(/\n\s*\n|\n/)
+                  .map((p) => (p.trim() ? `<p>${p.trim()}</p>` : ''))
+                  .join('\n');
+              }
+              return c;
+            })(),
+          }}
         />
 
         {/* Policy-Compliant Bottom Ad Banner (strictly below publisher text) */}
