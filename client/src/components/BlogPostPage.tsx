@@ -184,6 +184,17 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onBack, onNavi
           </div>
         </header>
 
+        {/* Article Featured Banner Image (Full View) */}
+        {post.imageUrl && (
+          <div className="rounded-2xl overflow-hidden border border-white/10 my-4 max-h-[480px] bg-slate-900/50 flex items-center justify-center p-2">
+            <img
+              src={post.imageUrl}
+              alt={post.title}
+              className="w-full h-auto max-h-[460px] object-contain rounded-xl shadow-lg"
+            />
+          </div>
+        )}
+
         {/* Table of Contents */}
         {post.tableOfContents && post.tableOfContents.length > 0 && (
           <nav className="glass-subtle rounded-2xl p-5 border border-white/10 space-y-3">

@@ -44,6 +44,8 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
   const [authorRole, setAuthorRole] = useState('Senior Digital Media Analyst');
   const [authorAvatar, setAuthorAvatar] = useState('📝');
   const [imageUrl, setImageUrl] = useState('');
+  const [thumbnailFit, setThumbnailFit] = useState<'contain' | 'cover'>('contain');
+  const [thumbnailHeight, setThumbnailHeight] = useState<'auto' | 'medium' | 'large'>('auto');
   const [content, setContent] = useState('');
   const [isPillarContent, setIsPillarContent] = useState(false);
 
@@ -672,31 +674,113 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                   )}
                 </div>
 
-                {/* Thumbnail Preview Area */}
+                {/* Thumbnail Preview Area with Full View & Adjustments */}
                 {imageUrl ? (
-                  <div className="relative rounded-lg overflow-hidden border border-[#dcdcde] bg-black/5 max-h-56 group">
-                    <img
-                      src={imageUrl}
-                      alt="Article Thumbnail Preview"
-                      className="w-full h-48 object-cover transition transform group-hover:scale-105 duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
-                      <label className="px-3 py-1.5 bg-white text-[#1d2327] rounded text-xs font-bold shadow cursor-pointer hover:bg-gray-100">
-                        🔄 Change Image
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageFileUpload}
-                          className="hidden"
-                        />
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => setImageUrl('')}
-                        className="px-3 py-1.5 bg-[#d63638] text-white rounded text-xs font-bold shadow hover:bg-[#b32d2e]"
-                      >
-                        🗑️ Delete
-                      </button>
+                  <div className="space-y-2">
+                    {/* Interactive Adjustment Control Bar */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 p-2 bg-white border border-[#dcdcde] rounded-md text-xs">
+                      {/* Image Fit Mode */}
+                      <div className="flex items-center space-x-1">
+                        <span className="font-bold text-[#1d2327] mr-1">🔍 Fit Mode:</span>
+                        <button
+                          type="button"
+                          onClick={() => setThumbnailFit('contain')}
+                          className={`px-2.5 py-1 rounded text-[11px] font-bold border transition ${
+                            thumbnailFit === 'contain'
+                              ? 'bg-[#2271b1] text-white border-[#2271b1]'
+                              : 'bg-[#f6f7f7] text-[#1d2327] border-[#dcdcde] hover:bg-[#e0e0e0]'
+                          }`}
+                          title="Show 100% full picture without cropping top or bottom"
+                        >
+                          🖼️ Show Full Pic (Contain)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setThumbnailFit('cover')}
+                          className={`px-2.5 py-1 rounded text-[11px] font-bold border transition ${
+                            thumbnailFit === 'cover'
+                              ? 'bg-[#2271b1] text-white border-[#2271b1]'
+                              : 'bg-[#f6f7f7] text-[#1d2327] border-[#dcdcde] hover:bg-[#e0e0e0]'
+                          }`}
+                          title="Crop to fill container box"
+                        >
+                          📐 Fill Crop (Cover)
+                        </button>
+                      </div>
+
+                      {/* Height Adjustment */}
+                      <div className="flex items-center space-x-1">
+                        <span className="font-bold text-[#1d2327] mr-1">📏 Height:</span>
+                        <button
+                          type="button"
+                          onClick={() => setThumbnailHeight('auto')}
+                          className={`px-2.5 py-1 rounded text-[11px] font-bold border transition ${
+                            thumbnailHeight === 'auto'
+                              ? 'bg-[#10b981] text-white border-[#10b981]'
+                              : 'bg-[#f6f7f7] text-[#1d2327] border-[#dcdcde] hover:bg-[#e0e0e0]'
+                          }`}
+                        >
+                          ✨ Full Auto
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setThumbnailHeight('medium')}
+                          className={`px-2.5 py-1 rounded text-[11px] font-bold border transition ${
+                            thumbnailHeight === 'medium'
+                              ? 'bg-[#10b981] text-white border-[#10b981]'
+                              : 'bg-[#f6f7f7] text-[#1d2327] border-[#dcdcde] hover:bg-[#e0e0e0]'
+                          }`}
+                        >
+                          Medium
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setThumbnailHeight('large')}
+                          className={`px-2.5 py-1 rounded text-[11px] font-bold border transition ${
+                            thumbnailHeight === 'large'
+                              ? 'bg-[#10b981] text-white border-[#10b981]'
+                              : 'bg-[#f6f7f7] text-[#1d2327] border-[#dcdcde] hover:bg-[#e0e0e0]'
+                          }`}
+                        >
+                          Large
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Image Preview Box */}
+                    <div className="relative rounded-lg overflow-hidden border border-[#dcdcde] bg-[#0f172a] group p-2 flex items-center justify-center min-h-[160px]">
+                      <img
+                        src={imageUrl}
+                        alt="Article Thumbnail Preview"
+                        className={`w-full rounded-md transition duration-300 ${
+                          thumbnailFit === 'contain' ? 'object-contain' : 'object-cover'
+                        } ${
+                          thumbnailHeight === 'auto'
+                            ? 'max-h-[420px] h-auto'
+                            : thumbnailHeight === 'medium'
+                            ? 'h-52'
+                            : 'h-72'
+                        }`}
+                      />
+
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                        <label className="px-3 py-1.5 bg-white text-[#1d2327] rounded text-xs font-bold shadow cursor-pointer hover:bg-gray-100">
+                          🔄 Change Image
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageFileUpload}
+                            className="hidden"
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => setImageUrl('')}
+                          className="px-3 py-1.5 bg-[#d63638] text-white rounded text-xs font-bold shadow hover:bg-[#b32d2e]"
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ) : (
