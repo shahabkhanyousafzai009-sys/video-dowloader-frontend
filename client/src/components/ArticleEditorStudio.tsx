@@ -94,6 +94,33 @@ export const ArticleEditorStudio: React.FC<ArticleEditorStudioProps> = ({
     setTags(tags.filter((t) => t !== tagToRemove));
   };
 
+  // Preset Featured Image Banners for 1-Click Selection
+  const presetThumbnails = [
+    { label: '🎵 TikTok Dark', url: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80' },
+    { label: '💻 Laptop Workspace', url: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' },
+    { label: '📱 Mobile Video', url: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1200&q=80' },
+    { label: '🎬 Video Editing', url: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80' },
+  ];
+
+  // Local File Upload Handler for Article Thumbnail
+  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+      alert('Selected image file is too large! Please choose an image under 8MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        setImageUrl(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   // SMART AUTO-STRUCTURE ARTICLE PARSER (Converts plain unformatted text into H2, H3 headings and P paragraphs)
   const handleAutoStructureArticle = (rawTextToFormat?: string) => {
     let raw = (rawTextToFormat || content).trim();
@@ -625,6 +652,106 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                   placeholder="Write a brief meta description summary..."
                   className="w-full text-sm text-[#50575e] placeholder-[#a7aaad] border border-[#dcdcde] rounded-md p-3 focus:outline-none focus:border-[#2271b1]"
                 />
+              </div>
+
+              {/* FEATURED THUMBNAIL IMAGE UPLOAD & SELECTION SECTION */}
+              <div className="space-y-3 p-4 bg-[#f6f7f7] border border-[#dcdcde] rounded-md">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-[#1d2327] uppercase tracking-wider flex items-center gap-1.5">
+                    <span>🖼️ Article Featured Thumbnail</span>
+                    <span className="text-[11px] font-normal text-[#50575e] normal-case">(Upload device file or paste URL)</span>
+                  </label>
+                  {imageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setImageUrl('')}
+                      className="text-xs text-[#d63638] font-bold hover:underline"
+                    >
+                      ✕ Remove Thumbnail
+                    </button>
+                  )}
+                </div>
+
+                {/* Thumbnail Preview Area */}
+                {imageUrl ? (
+                  <div className="relative rounded-lg overflow-hidden border border-[#dcdcde] bg-black/5 max-h-56 group">
+                    <img
+                      src={imageUrl}
+                      alt="Article Thumbnail Preview"
+                      className="w-full h-48 object-cover transition transform group-hover:scale-105 duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                      <label className="px-3 py-1.5 bg-white text-[#1d2327] rounded text-xs font-bold shadow cursor-pointer hover:bg-gray-100">
+                        🔄 Change Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageFileUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setImageUrl('')}
+                        className="px-3 py-1.5 bg-[#d63638] text-white rounded text-xs font-bold shadow hover:bg-[#b32d2e]"
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-[#2271b1]/40 rounded-lg p-6 bg-white text-center space-y-3 hover:border-[#2271b1] transition">
+                    <div className="text-3xl">🖼️</div>
+                    <div>
+                      <p className="text-xs font-bold text-[#1d2327]">Upload a thumbnail image from your computer / phone</p>
+                      <p className="text-[11px] text-[#50575e] mt-0.5">Supports PNG, JPG, WebP, GIF (Max 8MB)</p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                      <label className="px-4 py-2 bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-bold rounded cursor-pointer shadow-2xs transition">
+                        📁 Browse Device Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageFileUpload}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                )}
+
+                {/* Direct Image URL & Presets */}
+                <div className="space-y-2 pt-2 border-t border-[#e0e0e0]">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      value={imageUrl}
+                      onChange={(e) => setImageUrl(e.target.value)}
+                      placeholder="Or paste direct image URL (https://example.com/thumbnail.png)..."
+                      className="w-full text-xs text-[#1d2327] bg-white border border-[#dcdcde] rounded p-2 focus:outline-none focus:border-[#2271b1]"
+                    />
+                  </div>
+
+                  {/* 1-Click Preset Images */}
+                  <div className="flex items-center space-x-1.5 flex-wrap gap-y-1 pt-1">
+                    <span className="text-[11px] font-bold text-[#50575e]">⚡ HD Presets:</span>
+                    {presetThumbnails.map((preset) => (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => setImageUrl(preset.url)}
+                        className={`px-2 py-0.5 border rounded text-[10px] font-bold transition ${
+                          imageUrl === preset.url
+                            ? 'bg-[#2271b1] text-white border-[#2271b1]'
+                            : 'bg-white text-[#1d2327] border-[#dcdcde] hover:bg-gray-100'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* TAGS SYSTEM INPUT BAR */}
