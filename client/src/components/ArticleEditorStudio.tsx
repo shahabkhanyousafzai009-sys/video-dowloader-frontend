@@ -316,8 +316,8 @@ Mastering how to download TikTok videos on a laptop gives you total control over
   };
 
   // Insert Formatting Shortcode
-  const insertFormatting = (prefix: string, suffix: string = '') => {
-    setContent((prev) => `${prev}\n${prefix}New Heading or Paragraph${suffix}`);
+  const insertFormatting = (prefix: string, suffix: string = '', defaultText: string = 'Your Heading or Text Here') => {
+    setContent((prev) => `${prev}\n${prefix}${defaultText}${suffix}`);
   };
 
   // Save & Publish Article to Live Site
@@ -669,7 +669,7 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                     <span className="text-xs font-extrabold text-[#1d2327] mr-1">Insert Tags:</span>
                     <button
                       type="button"
-                      onClick={() => insertFormatting('<h2>', '</h2>')}
+                      onClick={() => insertFormatting('<h2>', '</h2>', 'Your Major Section Heading')}
                       className="px-2.5 py-1 bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-bold rounded shadow-2xs cursor-pointer"
                       title="Insert H2 Major Section Heading"
                     >
@@ -677,7 +677,7 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                     </button>
                     <button
                       type="button"
-                      onClick={() => insertFormatting('<h3>', '</h3>')}
+                      onClick={() => insertFormatting('<h3>', '</h3>', 'Your Subsection Heading')}
                       className="px-2.5 py-1 bg-[#10b981] hover:bg-[#059669] text-white text-xs font-bold rounded shadow-2xs cursor-pointer"
                       title="Insert H3 Sub-section Heading"
                     >
@@ -685,7 +685,7 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                     </button>
                     <button
                       type="button"
-                      onClick={() => insertFormatting('<p>', '</p>')}
+                      onClick={() => insertFormatting('<p>', '</p>', 'Your paragraph text goes here...')}
                       className="px-2.5 py-1 bg-white hover:bg-[#e0e0e0] border border-[#dcdcde] text-[#1d2327] text-xs font-bold rounded cursor-pointer"
                       title="Insert Paragraph"
                     >
