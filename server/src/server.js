@@ -98,7 +98,10 @@ app.use('/api/blog', blogRouter);
 
 // ===== Serve ads.txt for Google AdSense Crawler =====
 app.get('/ads.txt', (req, res) => {
-  const adsTxtPath = path.join(__dirname, '../../client/public/ads.txt');
+  const distAdsPath = path.join(__dirname, '../../client/dist/ads.txt');
+  const publicAdsPath = path.join(__dirname, '../../client/public/ads.txt');
+  const adsTxtPath = fs.existsSync(distAdsPath) ? distAdsPath : publicAdsPath;
+
   if (fs.existsSync(adsTxtPath)) {
     res.header('Content-Type', 'text/plain');
     return res.sendFile(adsTxtPath);
@@ -110,12 +113,48 @@ app.get('/ads.txt', (req, res) => {
 // ===== Dynamic Sitemap Generator (Auto-includes newly published studio articles) =====
 app.get('/sitemap.xml', (req, res) => {
   try {
-    const staticSitemapPath = path.join(__dirname, '../../client/public/sitemap.xml');
+    const distSitemapPath = path.join(__dirname, '../../client/dist/sitemap.xml');
+    const publicSitemapPath = path.join(__dirname, '../../client/public/sitemap.xml');
+    
+    let staticSitemapPath = '';
+    if (fs.existsSync(distSitemapPath)) {
+      staticSitemapPath = distSitemapPath;
+    } else if (fs.existsSync(publicSitemapPath)) {
+      staticSitemapPath = publicSitemapPath;
+    }
+
     let xmlContent = '';
-    if (fs.existsSync(staticSitemapPath)) {
+    if (staticSitemapPath) {
       xmlContent = fs.readFileSync(staticSitemapPath, 'utf8');
     } else {
-      xmlContent = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>`;
+      const today = new Date().toISOString().split('T')[0];
+      xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://snaploaddownload.com/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://snaploaddownload.com/tiktok-downloader</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaploaddownload.com/instagram-downloader</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaploaddownload.com/mp3-downloader</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>`;
     }
 
     // Read server-stored custom blog posts
