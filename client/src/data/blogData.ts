@@ -28,7 +28,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '7 min read',
     publishDate: 'August 30, 2026',
     lastUpdated: 'August 30, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/tiktok-hd-mp4-download-banner.jpg',
     author: {
       name: 'SnapLoad Editorial Team',
       role: 'Senior Digital Media Analysts',
