@@ -28,7 +28,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '8 min read',
     publishDate: 'August 30, 2026',
     lastUpdated: 'August 30, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/instagram-reels-download-banner.jpg',
     author: {
       name: 'SnapLoad Media Team',
       role: 'Senior Digital Media Analysts',
@@ -312,7 +312,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '10 min read',
     publishDate: 'August 29, 2026',
     lastUpdated: 'August 29, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/tiktok-hd-mp4-download-banner.jpg',
     author: {
       name: 'SnapLoad Editorial Team',
       role: 'Senior Digital Media Analysts',
@@ -867,7 +867,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '8 min read',
     publishDate: 'August 15, 2026',
     lastUpdated: 'August 21, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/tiktok-hd-mp4-download-banner.jpg',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -939,7 +939,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '7 min read',
     publishDate: 'August 16, 2026',
     lastUpdated: 'August 21, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1611262588024-d12430b98920?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/instagram-reels-download-banner.jpg',
     author: {
       name: 'Media Engineering Team',
       role: 'Senior Digital Media Analysts',
@@ -985,7 +985,7 @@ export const BLOG_POSTS: Record<string, BlogPost> = {
     readTime: '6 min read',
     publishDate: 'August 17, 2026',
     lastUpdated: 'August 21, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/mp3-audio-converter-banner.jpg',
     author: {
       name: 'Audio DSP Specialist',
       role: 'Digital Signal Processing Lead',
