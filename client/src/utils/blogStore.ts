@@ -93,9 +93,9 @@ if (typeof window !== 'undefined') {
 export function getMergedBlogPosts(): Record<string, BlogPost> {
   const customPosts = getCustomBlogPosts();
   return {
-    ...BLOG_POSTS,
-    ...remoteServerPostsCache,
     ...customPosts,
+    ...remoteServerPostsCache,
+    ...BLOG_POSTS,
   };
 }
 

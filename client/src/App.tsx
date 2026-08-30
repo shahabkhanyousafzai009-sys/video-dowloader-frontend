@@ -284,6 +284,9 @@ function App() {
         const rawSlug = cleanPath.replace('/blog/', '');
         const matchedSlug = findBlogPostSlug(rawSlug);
         if (matchedSlug) {
+          if (rawSlug !== matchedSlug) {
+            window.history.replaceState({}, '', `/blog/${matchedSlug}`);
+          }
           setActiveBlogPostSlug(matchedSlug);
           return;
         }
