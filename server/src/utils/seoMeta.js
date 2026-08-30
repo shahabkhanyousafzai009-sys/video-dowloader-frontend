@@ -108,6 +108,11 @@ const ROUTE_META = {
     description: 'In-depth articles, tutorials, and technical manuals on downloading TikTok videos without watermark, saving 1080p Instagram Reels, and 320kbps MP3 conversion.',
     canonical: `${BASE_URL}/blog`,
   },
+  '/blog/instagram-video-download-without-watermark': {
+    title: 'Instagram Video Download Without Watermark | Snapload',
+    description: 'Get fast, HD Instagram video download without watermark using Snapload. No app, no signup, just paste a link and save in seconds.',
+    canonical: `${BASE_URL}/blog/instagram-video-download-without-watermark`,
+  },
   '/blog/download-tiktok-video-without-watermark': {
     title: 'Download TikTok Video Without Watermark – Snapload',
     description: 'Download TikTok video without watermark in full HD using Snapload. Fast, free, and safe — works directly in your mobile or desktop browser, no app needed.',
