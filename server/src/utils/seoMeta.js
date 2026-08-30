@@ -108,6 +108,21 @@ const ROUTE_META = {
     description: 'In-depth articles, tutorials, and technical manuals on downloading TikTok videos without watermark, saving 1080p Instagram Reels, and 320kbps MP3 conversion.',
     canonical: `${BASE_URL}/blog`,
   },
+  '/blog/how-to-download-tiktok-videos-on-laptop': {
+    title: 'How to Download TikTok Videos on a Laptop: Complete 2026 Guide | SnapLoad',
+    description: 'Learn how to download TikTok videos on a laptop without watermark directly in your browser or using free tools.',
+    canonical: `${BASE_URL}/blog/how-to-download-tiktok-videos-on-laptop`,
+  },
+  '/blog/tiktok-downloader-complete-guide': {
+    title: 'tiktok downloader: Complete Guide to Fast No Watermark Downloads | SnapLoad',
+    description: 'Use a fast tiktok downloader to save watermark-free HD videos and MP3 audio clips. Discover safe, free tools for Android, iPhone, and PC.',
+    canonical: `${BASE_URL}/blog/tiktok-downloader-complete-guide`,
+  },
+  '/blog/baixar-video-do-tiktok-complete-guide': {
+    title: 'baixar video do tiktok: Complete Guide for HD Downloads Online | SnapLoad',
+    description: 'Learn how to baixar video do tiktok quickly without watermarks. Discover fast, safe, and free HD download tools for mobile and desktop.',
+    canonical: `${BASE_URL}/blog/baixar-video-do-tiktok-complete-guide`,
+  },
   '/blog/ultimate-guide-tiktok-video-downloader-no-watermark-2026': {
     title: 'The Ultimate Guide to Downloading TikTok Videos Without Watermark in 2026',
     description: 'A technical, step-by-step masterclass on saving full 1080p HD TikTok videos across iOS Safari, Android Chrome, and PC without creator logo overlays.',
