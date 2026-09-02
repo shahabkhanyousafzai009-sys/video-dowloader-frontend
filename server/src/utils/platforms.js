@@ -95,8 +95,19 @@ function buildInfoArgs(url, platform) {
     args.push('--cookies', cookiesPath);
   }
 
-  // Strip query parameters from TikTok and Instagram URLs — they cause yt-dlp extraction failures
-  const cleanUrl = ['tiktok', 'instagram'].includes(platform) ? url.split('?')[0] : url;
+  // Strip query parameters and clean URL based on platform
+  let cleanUrl = url;
+  if (platform === 'facebook') {
+    const fbId = extractFacebookVideoId(url);
+    if (fbId && (url.includes('_rdc') || url.includes('_rdr') || url.includes('refsrc') || url.includes('_wt_next') || url.includes('m.facebook.com'))) {
+      cleanUrl = `https://www.facebook.com/reel/${fbId}`;
+      console.log(`[buildInfoArgs] Cleaned Facebook URL to canonical Reel: ${cleanUrl}`);
+    } else {
+      cleanUrl = url.replace(/([?&])(refsrc|wtsid|_rdc|_rdr|_wt_next)=[^&]*/g, '').replace(/[?&]$/, '');
+    }
+  } else if (['tiktok', 'instagram'].includes(platform)) {
+    cleanUrl = url.split('?')[0];
+  }
 
   // Dynamic User-Agent to reduce blocking (except on TikTok where we use --impersonate)
   if (platform !== 'tiktok') {
@@ -267,18 +278,29 @@ function guessQualityLabel(height) {
 }
 
 /**
- * Resolve shortened TikTok / Instagram mobile redirect URLs (vt.tiktok.com, vm.tiktok.com)
+ * Extract clean numeric video ID from Facebook URLs
+ */
+function extractFacebookVideoId(url) {
+  if (!url || typeof url !== 'string') return null;
+  const match = url.match(/(?:fullscreen_video%2F|videos%2F|video%2F|reel%2F|v=|\/videos\/|\/reel\/)(\d{8,})/i) ||
+                url.match(/facebook\.com\/watch\/?\?v=(\d{8,})/i) ||
+                url.match(/\/(\d{10,})\b/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Resolve shortened TikTok / Instagram mobile redirect URLs (vt.tiktok.com, vm.tiktok.com, fb.watch)
  * to full video permalinks before passing to extractors
  */
 function resolveShortUrl(url, depth = 0) {
   return new Promise((resolve) => {
     if (!url || typeof url !== 'string' || depth > 5) return resolve(url);
 
+    // Note: facebook.com/share/ is handled directly by yt-dlp and should not be HEAD-intercepted
     const isShort = /^https?:\/\/(vm|vt|v)\.tiktok\.com\/[\w-]+/i.test(url) ||
                     /^https?:\/\/(www\.)?tiktok\.com\/t\/[\w-]+/i.test(url) ||
                     /^https?:\/\/(www\.)?instagr\.am\//i.test(url) ||
-                    /^https?:\/\/(www\.)?fb\.watch\/[\w-]+/i.test(url) ||
-                    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/share\//i.test(url);
+                    /^https?:\/\/(www\.)?fb\.watch\/[\w-]+/i.test(url);
 
     if (!isShort) return resolve(url);
 
@@ -335,4 +357,5 @@ module.exports = {
   buildDownloadArgs,
   parseFormats,
   resolveShortUrl,
+  extractFacebookVideoId,
 };

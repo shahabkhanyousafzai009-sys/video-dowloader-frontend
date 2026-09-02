@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { buildInfoArgs, buildDownloadArgs, detectPlatform, parseFormats, PLATFORM_META, resolveShortUrl } = require('./platforms');
+const { buildInfoArgs, buildDownloadArgs, detectPlatform, parseFormats, PLATFORM_META, resolveShortUrl, extractFacebookVideoId } = require('./platforms');
 
 function getCookiesPath() {
   if (process.env.COOKIES_FILE) {
@@ -25,19 +25,7 @@ const FFMPEG_BIN = (() => {
   }
 })();
 
-async function getVideoInfo(rawUrl) {
-  let url = await resolveShortUrl(rawUrl);
-  const platform = detectPlatform(url);
-  if (!platform) {
-    return Promise.reject(new Error('Unsupported platform'));
-  }
-
-  // Strip TikTok tracking params early — they break yt-dlp and all fallback APIs
-  if (platform === 'tiktok') {
-    url = url.split('?')[0];
-    console.log(`[getVideoInfo] TikTok URL cleaned: ${url}`);
-  }
-
+function executeYtDlpInfo(url, platform, originalUrl) {
   return new Promise((resolve, reject) => {
     const args = buildInfoArgs(url, platform);
     const proc = spawn(YTDLP_BIN, args, {
@@ -82,7 +70,7 @@ async function getVideoInfo(rawUrl) {
             icon: meta.icon,
           },
           formats,
-          originalUrl: url,
+          originalUrl: originalUrl || url,
         });
       } catch (parseErr) {
         reject(new Error('Failed to parse video metadata'));
@@ -92,7 +80,34 @@ async function getVideoInfo(rawUrl) {
     proc.on('error', (err) => {
       reject(new Error(`yt-dlp not found. Ensure yt-dlp is installed and in PATH. (${err.message})`));
     });
-  }).catch((err) => {
+  });
+}
+
+async function getVideoInfo(rawUrl) {
+  let url = await resolveShortUrl(rawUrl);
+  const platform = detectPlatform(url) || detectPlatform(rawUrl);
+  if (!platform) {
+    return Promise.reject(new Error('Unsupported platform'));
+  }
+
+  // Strip TikTok tracking params early — they break yt-dlp and all fallback APIs
+  if (platform === 'tiktok') {
+    url = url.split('?')[0];
+    console.log(`[getVideoInfo] TikTok URL cleaned: ${url}`);
+  }
+
+  // Normalize messy Facebook redirect URLs
+  if (platform === 'facebook') {
+    const fbId = extractFacebookVideoId(url) || extractFacebookVideoId(rawUrl);
+    if (fbId && (url.includes('_rdc') || url.includes('_rdr') || url.includes('refsrc') || url.includes('_wt_next') || url.includes('m.facebook.com'))) {
+      url = `https://www.facebook.com/reel/${fbId}`;
+      console.log(`[getVideoInfo] Normalized Facebook URL to canonical Reel: ${url}`);
+    }
+  }
+
+  try {
+    return await executeYtDlpInfo(url, platform, rawUrl);
+  } catch (err) {
     if (platform === 'tiktok') {
       console.log(`[yt-dlp info] Failed. Attempting TikTok fallback extraction for: ${url}`);
       return getTikTokInfoFallback(url);
@@ -102,11 +117,30 @@ async function getVideoInfo(rawUrl) {
       return getInstagramInfoFallback(url);
     }
     if (platform === 'facebook') {
-      console.log(`[yt-dlp info] Failed. Attempting Facebook fallback extraction for: ${url}`);
+      console.log(`[yt-dlp info] First Facebook extraction failed (${err.message}). Retrying with alternate canonical formats...`);
+      const fbId = extractFacebookVideoId(rawUrl) || extractFacebookVideoId(url);
+      const candidates = [];
+      if (fbId) {
+        candidates.push(`https://www.facebook.com/reel/${fbId}`);
+        candidates.push(`https://www.facebook.com/watch/?v=${fbId}`);
+      }
+      if (rawUrl && rawUrl !== url && !candidates.includes(rawUrl)) {
+        candidates.push(rawUrl);
+      }
+
+      for (const candidate of candidates) {
+        try {
+          console.log(`[yt-dlp info] Retrying Facebook extraction with: ${candidate}`);
+          const res = await executeYtDlpInfo(candidate, platform, rawUrl);
+          if (res) return res;
+        } catch (retryErr) {
+          console.warn(`[yt-dlp info] Retry candidate ${candidate} failed: ${retryErr.message}`);
+        }
+      }
       return getFacebookInfoFallback(url);
     }
     throw err;
-  });
+  }
 }
 
 function streamDirect(url, formatId, headers, res) {
