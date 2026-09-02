@@ -149,6 +149,12 @@ app.get('/sitemap.xml', (req, res) => {
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://snaploaddownload.com/facebook-downloader</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://snaploaddownload.com/mp3-downloader</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>

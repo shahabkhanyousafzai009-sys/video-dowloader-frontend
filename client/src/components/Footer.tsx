@@ -41,6 +41,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
             </a>
             <span className="dark:text-white/20 text-slate-300">•</span>
             <a
+              href="/facebook-downloader"
+              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
+              title="Facebook Video Downloader HD — Save FB Reels & Watch"
+            >
+              Facebook Video Downloader
+            </a>
+            <span className="dark:text-white/20 text-slate-300">•</span>
+            <a
               href="/youtube-shorts-downloader"
               className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
               title="YouTube Shorts Downloader MP4 & MP3"
@@ -95,11 +103,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
               'TikTok Downloader',
               'TikTok Video Downloader',
               'Baixar Video TikTok',
+              'Facebook Video Downloader',
+              'FB Reels Downloader',
               'TikTok Download',
               'Descargar Videos de TikTok',
               'Baixar Video do TikTok',
               'Descargar Video TikTok',
               'TikTok Video Download',
+              'Facebook Downloader HD',
               'TikTok Downloader Without Watermark',
               'Baixar Musica do TikTok',
               'Descargar TikTok Sin Marca de Agua',
@@ -208,7 +219,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           </div>
 
           <div className="flex items-center gap-6">
-            {['TikTok', 'Instagram'].map((platform) => (
+            {['TikTok', 'Instagram', 'Facebook'].map((platform) => (
               <span key={platform} className="text-[11px] font-extrabold uppercase tracking-wider dark:text-slate-400 text-slate-600">
                 {platform}
               </span>

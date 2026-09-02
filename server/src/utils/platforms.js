@@ -28,12 +28,24 @@ const PLATFORM_PATTERNS = {
     /^https?:\/\/(www\.)?instagram\.com\/(p|reel|reels|tv)\/[\w-]+/i,
     /^https?:\/\/(www\.)?instagram\.com\/stories\/[\w.-]+\/\d+/i,
   ],
+  facebook: [
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/watch\/?\?v=\d+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/watch/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/reel\/\d+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/share\/(v|r|p)?\/?[a-zA-Z0-9_-]+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/[\w.-]+\/(videos|posts|reel)\/\d+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/[\w.-]+\/videos\/[a-zA-Z0-9_-]+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/story\.php/i,
+    /^https?:\/\/(www\.)?fb\.watch\/[\w-]+/i,
+    /^https?:\/\/(www\.)?fb\.gg\/v\/[\w-]+/i,
+  ],
 };
 
 // Platform display metadata
 const PLATFORM_META = {
   tiktok: { name: 'TikTok', color: '#00F2EA', icon: '♪' },
   instagram: { name: 'Instagram', color: '#E4405F', icon: '📷' },
+  facebook: { name: 'Facebook', color: '#1877F2', icon: '📘' },
 };
 
 /**
@@ -111,7 +123,11 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
   } else {
     // Video download mode
     if (formatId) {
-      args.push('-f', formatId);
+      if (platform === 'facebook' && formatId.endsWith('v')) {
+        args.push('-f', `${formatId}+bestaudio/best[ext=mp4]/best`);
+      } else {
+        args.push('-f', formatId);
+      }
     } else {
       // Platform-specific format selection
       switch (platform) {
@@ -123,6 +139,11 @@ function buildDownloadArgs(url, platform, formatId, type = 'video') {
         case 'instagram':
           // Prefer clean progressive MP4 with audio to avoid video corruption / green line artifacts
           args.push('-f', 'best[ext=mp4]/b/best');
+          args.push('--remux-video', 'mp4');
+          break;
+        case 'facebook':
+          // Prefer best progressive or merged MP4 for Facebook
+          args.push('-f', 'hd/sd/best[ext=mp4]/b/best');
           args.push('--remux-video', 'mp4');
           break;
         default:
@@ -196,13 +217,12 @@ function parseFormats(info, platform) {
     if (f.format_note === 'storyboard') continue;
     if (f.protocol === 'm3u8_native') continue;
 
-    const height = f.height || 0;
-    const hasVideo = f.vcodec && f.vcodec !== 'none';
-    const hasAudio = f.acodec && f.acodec !== 'none';
+    const height = f.height || (f.format_id === 'hd' ? 1080 : f.format_id === 'sd' ? 480 : 0);
+    const hasVideo = Boolean((f.vcodec && f.vcodec !== 'none') || f.format_id === 'sd' || f.format_id === 'hd' || (f.width && f.width > 0));
+    const hasAudio = Boolean((f.acodec && f.acodec !== 'none') || f.format_id === 'sd' || f.format_id === 'hd' || (f.asr && f.asr > 0) || (f.audio_channels && f.audio_channels > 0));
 
-    // For TikTok and Instagram, include both merged and split formats
-    // For other platforms, prefer merged formats
-    if (!['tiktok', 'instagram'].includes(platform) && !hasVideo) continue;
+    // Keep audio streams for platforms that need audio extraction or merging
+    if (!['tiktok', 'instagram', 'facebook', 'youtube'].includes(platform) && !hasVideo) continue;
 
     const qualityLabel = guessQualityLabel(height);
     const key = `${height}-${hasVideo}-${hasAudio}-${f.ext}`;
@@ -256,7 +276,9 @@ function resolveShortUrl(url, depth = 0) {
 
     const isShort = /^https?:\/\/(vm|vt|v)\.tiktok\.com\/[\w-]+/i.test(url) ||
                     /^https?:\/\/(www\.)?tiktok\.com\/t\/[\w-]+/i.test(url) ||
-                    /^https?:\/\/(www\.)?instagr\.am\//i.test(url);
+                    /^https?:\/\/(www\.)?instagr\.am\//i.test(url) ||
+                    /^https?:\/\/(www\.)?fb\.watch\/[\w-]+/i.test(url) ||
+                    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/share\//i.test(url);
 
     if (!isShort) return resolve(url);
 

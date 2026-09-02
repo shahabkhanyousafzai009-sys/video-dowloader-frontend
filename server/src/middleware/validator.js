@@ -29,8 +29,8 @@ function validateUrl(req, res, next) {
   if (!isSupportedUrl(cleanUrl)) {
     return res.status(400).json({
       error: 'Unsupported platform',
-      message: 'Only TikTok and Instagram URLs are supported.',
-      supportedPlatforms: ['tiktok.com', 'instagram.com'],
+      message: 'Only TikTok, Instagram, and Facebook URLs are supported.',
+      supportedPlatforms: ['tiktok.com', 'instagram.com', 'facebook.com', 'fb.watch'],
     });
   }
 

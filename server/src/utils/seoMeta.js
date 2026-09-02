@@ -22,9 +22,14 @@ const ROUTE_META = {
     description: 'Download Instagram Reels, videos, IGTV clips & photos in original high definition. Free online Instagram downloader for mobile and desktop.',
     canonical: `${BASE_URL}/instagram-downloader`,
   },
+  '/facebook-downloader': {
+    title: 'Facebook Video Downloader 1080p HD — Save FB Reels & Watch Clips | SnapLoad',
+    description: 'Download Facebook Reels, Watch videos, live broadcasts, and clips in 1080p Full HD MP4 or 320kbps MP3 audio for free with zero registration.',
+    canonical: `${BASE_URL}/facebook-downloader`,
+  },
   '/mp3-downloader': {
     title: 'Video to MP3 Converter Online — High Quality Audio Extraction | SnapLoad',
-    description: 'Convert video links from TikTok & Instagram into 320kbps MP3 audio files. Free, fast audio extractor with no registration required.',
+    description: 'Convert video links from TikTok, Instagram & Facebook into 320kbps MP3 audio files. Free, fast audio extractor with no registration required.',
     canonical: `${BASE_URL}/mp3-downloader`,
   },
   '/tiktok-mp3-downloader': {
@@ -76,6 +81,11 @@ const ROUTE_META = {
     title: 'How to Download Instagram Stories & Highlights Anonymously',
     description: 'Learn how to download Instagram stories, video posts, and highlights anonymously in high definition.',
     canonical: `${BASE_URL}/guides/how-to-save-instagram-stories-anonymously`,
+  },
+  '/guides/how-to-download-facebook-videos-hd': {
+    title: 'How to Download Facebook Videos & Reels in 1080p HD (Android, iPhone & PC)',
+    description: 'Learn how to download public Facebook videos, Reels, and Watch clips in 1080p HD quality directly in your browser without software or registration.',
+    canonical: `${BASE_URL}/guides/how-to-download-facebook-videos-hd`,
   },
   // ===== Standalone Legal & Policy Routes =====
   '/privacy-policy': {
@@ -224,6 +234,11 @@ const ROUTE_META = {
     description: 'Baixe Reels, vídeos e fotos do Instagram em resolução original HD. Downloader online gratuito para celular e computador.',
     canonical: `${BASE_URL}/pt/instagram-downloader`,
   },
+  '/pt/facebook-downloader': {
+    title: 'Baixar Vídeos do Facebook HD 1080p Grátis | SnapLoad',
+    description: 'Baixe vídeos e Reels do Facebook em alta definição 1080p MP4 ou converta em áudio MP3 rapidamente sem cadastro.',
+    canonical: `${BASE_URL}/pt/facebook-downloader`,
+  },
   '/pt/mp3-downloader': {
     title: 'Conversor de Vídeo para MP3 Online Grátis | SnapLoad',
     description: 'Extraia e baixe músicas do TikTok e Instagram em formato MP3 de 320kbps com alta qualidade de áudio.',
@@ -244,6 +259,11 @@ const ROUTE_META = {
     title: 'Descargar Instagram Reels 1080p HD Gratis | SnapLoad',
     description: 'Guarda Instagram Reels, videos e IGTV en alta definición original. Descargador gratis para móvil y computadora.',
     canonical: `${BASE_URL}/es/instagram-downloader`,
+  },
+  '/es/facebook-downloader': {
+    title: 'Descargar Videos de Facebook 1080p HD Gratis | SnapLoad',
+    description: 'Descarga videos y Reels de Facebook en Full HD 1080p MP4 o extrae audio MP3 de 320kbps gratis sin registros.',
+    canonical: `${BASE_URL}/es/facebook-downloader`,
   },
   '/es/mp3-downloader': {
     title: 'Convertidor de Video a MP3 Online Gratis | SnapLoad',
@@ -266,6 +286,11 @@ const ROUTE_META = {
     description: 'Speichern Sie Instagram Reels, Videos und IGTV-Clips in originaler HD-Auflösung. Kostenloser Downloader.',
     canonical: `${BASE_URL}/de/instagram-downloader`,
   },
+  '/de/facebook-downloader': {
+    title: 'Facebook Video Downloader 1080p HD Gratis | SnapLoad',
+    description: 'Facebook Videos und Reels in bester Full HD 1080p Qualität oder als 320kbps MP3 Audio kostenlos herunterladen.',
+    canonical: `${BASE_URL}/de/facebook-downloader`,
+  },
   '/de/mp3-downloader': {
     title: 'Video zu MP3 Konverter Online Gratis | SnapLoad',
     description: 'Konvertieren Sie Videolinks von TikTok & Instagram in 320kbps MP3-Audiodateien. Kostenloser Audio-Extractor.',
@@ -286,6 +311,11 @@ const ROUTE_META = {
     title: 'Télécharger Instagram Reels 1080p HD Gratuit | SnapLoad',
     description: 'Enregistrez des Reels Instagram, vidéos et clips IGTV en haute définition originale. Téléchargeur gratuit mobile et PC.',
     canonical: `${BASE_URL}/fr/instagram-downloader`,
+  },
+  '/fr/facebook-downloader': {
+    title: 'Télécharger Vidéo Facebook 1080p HD Gratuit | SnapLoad',
+    description: 'Téléchargez des vidéos et Reels Facebook en Full HD 1080p MP4 ou convertissez en MP3 gratuitement sans compte.',
+    canonical: `${BASE_URL}/fr/facebook-downloader`,
   },
   '/fr/mp3-downloader': {
     title: 'Convertisseur Vidéo en MP3 Audio En Ligne | SnapLoad',

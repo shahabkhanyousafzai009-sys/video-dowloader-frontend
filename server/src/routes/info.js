@@ -59,6 +59,36 @@ router.get('/', infoLimiter, validateUrl, async (req, res) => {
 function buildSuggestions(formats, platform) {
   const suggestions = [];
 
+  // For Facebook & progressive platforms, add direct HD/SD formats first for fast download
+  if (platform === 'facebook') {
+    const hdFormat = formats.find(f => f.formatId === 'hd');
+    const sdFormat = formats.find(f => f.formatId === 'sd');
+
+    if (hdFormat) {
+      suggestions.push({
+        qualityLabel: '1080p Full HD',
+        formatId: 'hd',
+        audioFormatId: null,
+        needsMerge: false,
+        ext: 'mp4',
+        filesize: hdFormat.filesize,
+        resolution: '1080p HD',
+      });
+    }
+
+    if (sdFormat) {
+      suggestions.push({
+        qualityLabel: '720p SD',
+        formatId: 'sd',
+        audioFormatId: null,
+        needsMerge: false,
+        ext: 'mp4',
+        filesize: sdFormat.filesize,
+        resolution: '720p SD',
+      });
+    }
+  }
+
   // Add Lovetik fallback formats directly if present
   const fallbackFormats = formats.filter(f => f.formatId && f.formatId.startsWith('fb_'));
   if (fallbackFormats.length > 0) {
@@ -77,9 +107,12 @@ function buildSuggestions(formats, platform) {
     });
   }
 
-  const qualityTiers = ['4K', '1440p', '1080p', '720p', '480p', '360p'];
+  const qualityTiers = ['1080p', '720p', '480p', '360p', '4K', '1440p'];
 
   for (const tier of qualityTiers) {
+    // If Facebook already added hd/sd, skip adding duplicate quality labels
+    if (platform === 'facebook' && suggestions.some(s => s.qualityLabel.includes(tier))) continue;
+
     // Prefer formats with embedded audio (merged) over video-only DASH formats
     // This avoids silent videos when audio merge fails
     const match = formats.find(
@@ -92,9 +125,6 @@ function buildSuggestions(formats, platform) {
       let audioFormatId = null;
 
       if (needsMerge) {
-        // Find the best matching audio stream for video-only formats
-        // Prefer AAC audio (widest player compatibility) over Opus
-        // Sort by bitrate (descending) to pick the highest quality
         const audioStream = formats
           .filter((f) => !f.hasVideo && f.hasAudio && f.acodec && f.acodec.includes('aac'))
           .sort((a, b) => (b.abr || 0) - (a.abr || 0))[0]

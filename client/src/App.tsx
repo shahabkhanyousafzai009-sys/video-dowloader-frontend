@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Header } from './components/Header';
 import { UrlInput } from './components/UrlInput';
 import { VideoPreview } from './components/VideoPreview';
@@ -33,7 +33,7 @@ import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
 
-type Platform = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
+type Platform = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
 
 interface PlatformSEO {
   path: string;
@@ -49,11 +49,11 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
   all: {
     path: '/',
     label: 'All Platforms',
-    title: 'SnapLoad — TikTok Video Downloader No Watermark & MP3',
-    description: 'Free online TikTok video downloader & Instagram Reels saver in 1080p HD. Save watermark-free videos & 320kbps MP3 audio free with no account needed.',
-    heroHeading: 'TikTok Downloader &',
-    heroHighlight: 'TikTok Video Saver HD',
-    heroSub: 'Paste a link from TikTok or Instagram. Save watermark-free TikTok videos, HD Reels, and 320kbps MP3 audio instantly — 100% free and no account needed.',
+    title: 'SnapLoad — TikTok, Instagram & Facebook Video Downloader HD',
+    description: 'Free online video downloader for TikTok (no watermark), Instagram Reels, and Facebook videos in 1080p HD. Save videos & 320kbps MP3 audio free with no account needed.',
+    heroHeading: 'Social Video Downloader &',
+    heroHighlight: 'HD Video Saver',
+    heroSub: 'Paste a link from TikTok, Instagram, or Facebook. Save watermark-free TikTok videos, HD Reels, Facebook Watch clips, and 320kbps MP3 audio instantly — 100% free and no account needed.',
   },
   tiktok: {
     path: '/tiktok-downloader',
@@ -82,6 +82,15 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
     heroHighlight: 'Downloader 1080p HD',
     heroSub: 'Paste any Instagram Reel, Video, Story, or Post link below to save original 1080p HD media instantly — 100% free with no login required.',
   },
+  facebook: {
+    path: '/facebook-downloader',
+    label: 'Facebook Downloader',
+    title: 'Facebook Video Downloader 1080p HD — Save FB Reels & Watch Clips | SnapLoad',
+    description: 'Free online Facebook video downloader to save Facebook Reels, Watch clips, and public videos in 1080p HD or MP3 audio. 100% free with zero registration.',
+    heroHeading: 'Facebook Video & Reels',
+    heroHighlight: 'Downloader 1080p HD',
+    heroSub: 'Paste any Facebook video, Reel, Watch, or public post link below to save original 1080p HD media or extract 320kbps MP3 audio instantly — 100% free with no login required.',
+  },
   'youtube-shorts': {
     path: '/youtube-shorts-downloader',
     label: 'YouTube Shorts',
@@ -95,10 +104,10 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
     path: '/mp3-downloader',
     label: 'MP3 Converter',
     title: 'Video to MP3 Converter Online — High Quality 320kbps Audio Extraction | SnapLoad',
-    description: 'Convert video links from TikTok & Instagram into 320kbps MP3 audio files. Free online audio extractor with no registration required.',
+    description: 'Convert video links from TikTok, Instagram & Facebook into 320kbps MP3 audio files. Free online audio extractor with no registration required.',
     heroHeading: 'Video to MP3',
     heroHighlight: 'Audio Converter',
-    heroSub: 'Extract high-bitrate MP3 audio tracks directly from TikTok or Instagram video links.',
+    heroSub: 'Extract high-bitrate MP3 audio tracks directly from TikTok, Instagram, or Facebook video links.',
   },
   widget: {
     path: '/widget',
@@ -148,6 +157,7 @@ function App() {
   const { videoInfo, loading, error, fetchInfo, reset: resetInfo } = useVideoInfo();
   const { downloading, progress, error: downloadError, startDownload, reset: resetDownload } = useDownload();
   const [selectedFormatIndex, setSelectedFormatIndex] = useState<number | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const [isLegalOpen, setIsLegalOpen] = useState<boolean>(false);
   const [isWidgetModalOpen, setIsWidgetModalOpen] = useState<boolean>(false);
   const [legalTab, setLegalTab] = useState<LegalTab>('privacy');
@@ -162,6 +172,28 @@ function App() {
   const [isFaqPage, setIsFaqPage] = useState<boolean>(false);
   const [isAdminStudio, setIsAdminStudio] = useState<boolean>(false);
   const [showAdminLoginModal, setShowAdminLoginModal] = useState<boolean>(false);
+
+  // Auto-select top format option (1080p HD) and auto-scroll to results for mobile & desktop UX
+  useEffect(() => {
+    if (videoInfo) {
+      if (videoInfo.suggestions && videoInfo.suggestions.length > 0) {
+        setSelectedFormatIndex(0);
+      }
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    }
+  }, [videoInfo]);
+
+  // When user clicks fetch, auto-scroll viewport so mobile users immediately see loading skeleton
+  useEffect(() => {
+    if (loading || error) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [loading, error]);
+
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('snapload_lang') as Language;
@@ -535,6 +567,12 @@ function App() {
           '@id': 'https://snaploaddownload.com/#nav-instagram',
           'name': 'Instagram Reels Downloader HD',
           'url': 'https://snaploaddownload.com/instagram-downloader'
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          '@id': 'https://snaploaddownload.com/#nav-facebook',
+          'name': 'Facebook Video Downloader HD',
+          'url': 'https://snaploaddownload.com/facebook-downloader'
         },
         {
           '@type': 'SiteNavigationElement',
@@ -917,79 +955,82 @@ function App() {
           </>
         )}
 
-        {/* Loading Skeleton */}
-        {loading && (
-          <div className="space-y-4 animate-fade-in my-6">
-            <div className="glass rounded-2xl overflow-hidden">
-              <div className="flex flex-col sm:flex-row">
-                <div className="sm:w-72 w-full aspect-video sm:aspect-auto skeleton rounded-none" />
-                <div className="flex-1 p-5 space-y-3">
-                  <div className="h-4 w-20 skeleton rounded-full" />
-                  <div className="h-6 w-3/4 skeleton rounded-lg" />
-                  <div className="h-4 w-1/3 skeleton rounded-lg" />
-                  <div className="h-3 w-1/4 skeleton rounded-lg" />
+        {/* Results Container with Smooth Auto-Scroll Anchor for Mobile & Desktop */}
+        <div ref={resultsRef} id="results-section" className="scroll-mt-24">
+          {/* Loading Skeleton */}
+          {loading && (
+            <div className="space-y-4 animate-fade-in my-6">
+              <div className="glass rounded-2xl overflow-hidden">
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-72 w-full aspect-video sm:aspect-auto skeleton rounded-none" />
+                  <div className="flex-1 p-5 space-y-3">
+                    <div className="h-4 w-20 skeleton rounded-full" />
+                    <div className="h-6 w-3/4 skeleton rounded-lg" />
+                    <div className="h-4 w-1/3 skeleton rounded-lg" />
+                    <div className="h-3 w-1/4 skeleton rounded-lg" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="grid grid-cols-3 gap-2.5">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-20 skeleton rounded-xl" />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Error Message */}
-        {error && !loading && (
-          <div className="mb-6">
-            <ErrorMessage message={error} onDismiss={handleReset} />
-          </div>
-        )}
-
-        {/* Video Preview & Format Selection (Strictly No AdSense Ads on Tool Result State) */}
-        {videoInfo && !loading && !error && (
-          <div className="space-y-6">
-            {/* Preview Card */}
-            <VideoPreview info={videoInfo} />
-
-            {/* Format Selector */}
-            <FormatSelector
-              suggestions={videoInfo.suggestions}
-              selectedIndex={selectedFormatIndex}
-              onSelect={setSelectedFormatIndex}
-            />
-
-            {/* Download Error */}
-            {downloadError && (
-              <div className="mb-4">
-                <ErrorMessage message={downloadError} onDismiss={() => resetDownload()} />
+              <div className="grid grid-cols-3 gap-2.5">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-20 skeleton rounded-xl" />
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Progress Bar */}
-            <ProgressBar progress={progress} isActive={downloading} />
+          {/* Error Message */}
+          {error && !loading && (
+            <div className="mb-6">
+              <ErrorMessage message={error} onDismiss={handleReset} />
+            </div>
+          )}
 
-            {/* Download Button */}
-            <DownloadButton
-              onClick={handleDownload}
-              disabled={selectedFormatIndex === null}
-              downloading={downloading}
-              isAudio={selectedSuggestion?.isAudio || false}
-            />
+          {/* Video Preview & Format Selection (Strictly No AdSense Ads on Tool Result State) */}
+          {videoInfo && !loading && !error && (
+            <div className="space-y-6">
+              {/* Preview Card */}
+              <VideoPreview info={videoInfo} />
 
-            {/* Cancel / Download Another */}
-            {downloading && (
-              <div className="text-center mt-4">
-                <button
-                  onClick={handleReset}
-                  className="text-sm dark:text-white/40 text-dark-400 hover:text-red-400 transition-colors underline underline-offset-2 cursor-pointer"
-                >
-                  Cancel &amp; Start Over
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+              {/* Format Selector */}
+              <FormatSelector
+                suggestions={videoInfo.suggestions}
+                selectedIndex={selectedFormatIndex}
+                onSelect={setSelectedFormatIndex}
+              />
+
+              {/* Download Error */}
+              {downloadError && (
+                <div className="mb-4">
+                  <ErrorMessage message={downloadError} onDismiss={() => resetDownload()} />
+                </div>
+              )}
+
+              {/* Progress Bar */}
+              <ProgressBar progress={progress} isActive={downloading} />
+
+              {/* Download Button */}
+              <DownloadButton
+                onClick={handleDownload}
+                disabled={selectedFormatIndex === null}
+                downloading={downloading}
+                isAudio={selectedSuggestion?.isAudio || false}
+              />
+
+              {/* Cancel / Download Another */}
+              {downloading && (
+                <div className="text-center mt-4">
+                  <button
+                    onClick={handleReset}
+                    className="text-sm dark:text-white/40 text-dark-400 hover:text-red-400 transition-colors underline underline-offset-2 cursor-pointer"
+                  >
+                    Cancel &amp; Start Over
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Platform-Specific SEO & FAQ Content (When Idle on Main Downloader Routes) */}
         {!isAboutUsPage && !isContactUsPage && !isBlogHub && !activeBlogPostSlug && !activeLegalPage && !isGuidesHub && !activeGuideSlug && !videoInfo && !loading && !error && (

@@ -27,6 +27,13 @@ const PLATFORM_META: Record<string, PlatformInfo> = {
     gradient: 'linear-gradient(135deg, #833AB4, #E4405F, #FCAF45)',
     icon: '📸',
   },
+  facebook: {
+    id: 'facebook',
+    name: 'Facebook',
+    color: '#1877F2',
+    gradient: 'linear-gradient(135deg, #1877F2, #0866FF, #0044BB)',
+    icon: '📘',
+  },
 };
 
 export function detectPlatform(url: string): PlatformInfo | null {

@@ -101,6 +101,10 @@ async function getVideoInfo(rawUrl) {
       console.log(`[yt-dlp info] Failed. Attempting Instagram fallback extraction for: ${url}`);
       return getInstagramInfoFallback(url);
     }
+    if (platform === 'facebook') {
+      console.log(`[yt-dlp info] Failed. Attempting Facebook fallback extraction for: ${url}`);
+      return getFacebookInfoFallback(url);
+    }
     throw err;
   });
 }
@@ -163,6 +167,10 @@ function streamDirect(url, formatId, headers, res) {
       if (platform === 'instagram') {
         console.log(`[yt-dlp stream] Attempting Instagram download fallback for: ${url}`);
         return handleInstagramDownloadFallback(url, formatId, headers, res);
+      }
+      if (platform === 'facebook') {
+        console.log(`[yt-dlp stream] Attempting Facebook download fallback for: ${url}`);
+        return handleFacebookDownloadFallback(url, formatId, headers, res);
       }
       if (!res.headersSent) {
         res.status(500).json({ success: false, error: 'Download process failed' });
@@ -1024,3 +1032,14 @@ function handleInstagramDownloadFallback(url, formatId, headers, res) {
     res.status(500).json({ success: false, error: 'Download failed. The Instagram video may be private or restricted.' });
   }
 }
+
+function getFacebookInfoFallback(url) {
+  return Promise.reject(new Error('Unable to extract Facebook video info. Please verify that the video or Reel is public and accessible.'));
+}
+
+function handleFacebookDownloadFallback(url, formatId, headers, res) {
+  if (!res.headersSent) {
+    res.status(500).json({ success: false, error: 'Download failed. The Facebook video may be private or restricted.' });
+  }
+}
+

@@ -90,6 +90,12 @@ export function Header({
       desc: 'Download Reels & Video posts',
     },
     {
+      label: 'Facebook Video HD',
+      path: '/facebook-downloader',
+      icon: '📘',
+      desc: 'Save FB Reels & Watch clips in 1080p',
+    },
+    {
       label: 'YouTube Shorts',
       path: '/youtube-shorts-downloader',
       icon: '▶️',

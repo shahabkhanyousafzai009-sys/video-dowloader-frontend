@@ -12,6 +12,17 @@ export const PLATFORM_PATTERNS: Record<string, RegExp[]> = {
     /^https?:\/\/(www\.)?instagram\.com\/(p|reel|reels|tv)\/[\w-]+/i,
     /^https?:\/\/(www\.)?instagram\.com\/stories\/[\w.-]+\/\d+/i,
   ],
+  facebook: [
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/watch\/?\?v=\d+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/watch/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/reel\/\d+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/share\/(v|r|p)?\/?[a-zA-Z0-9_-]+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/[\w.-]+\/(videos|posts|reel)\/\d+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/[\w.-]+\/videos\/[a-zA-Z0-9_-]+/i,
+    /^https?:\/\/(www\.|web\.|m\.)?facebook\.com\/story\.php/i,
+    /^https?:\/\/(www\.)?fb\.watch\/[\w-]+/i,
+    /^https?:\/\/(www\.)?fb\.gg\/v\/[\w-]+/i,
+  ],
 };
 
 export function isValidUrl(url: string): boolean {
@@ -37,6 +48,6 @@ export function isSupportedUrl(url: string): boolean {
 export function getValidationMessage(url: string): string | null {
   if (!url.trim()) return null;
   if (!isValidUrl(url)) return 'Please enter a valid URL';
-  if (!isSupportedUrl(url)) return 'Only TikTok and Instagram URLs are supported';
+  if (!isSupportedUrl(url)) return 'Only TikTok, Instagram, and Facebook URLs are supported';
   return null;
 }

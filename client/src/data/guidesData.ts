@@ -14,7 +14,7 @@ export interface GuideArticle {
   title: string;
   subtitle: string;
   description: string;
-  platform: 'tiktok' | 'instagram' | 'mp3';
+  platform: 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'youtube';
   readTime: string;
   updatedDate: string;
   targetKeyword: string;
@@ -654,6 +654,49 @@ export const GUIDES_DATA: Record<string, GuideArticle> = {
       {
         question: 'Does SnapLoad store personal IP addresses or download histories?',
         answer: 'No. SnapLoad stores zero personal history, zero video logs, and processes stream conversion in volatile memory.',
+      },
+    ],
+  },
+  'how-to-download-facebook-videos-hd': {
+    slug: 'how-to-download-facebook-videos-hd',
+    title: 'How to Download Facebook Videos & Reels in 1080p HD (Android, iPhone & PC)',
+    subtitle: 'Comprehensive guide to saving Facebook Watch videos, public posts, and Reels in Full HD 1080p MP4 or 320kbps MP3.',
+    description: 'Learn how to download public Facebook videos, Reels, and Watch clips in 1080p HD quality directly in your browser without software or registration.',
+    platform: 'facebook',
+    readTime: '4 min read',
+    updatedDate: 'August 14, 2026',
+    targetKeyword: 'how to download facebook video 1080p hd',
+    heroHeading: 'How to Download Facebook',
+    heroHighlight: 'Videos & Reels in 1080p HD',
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Copy Facebook Video or Reel URL',
+        description: 'Open Facebook, locate the video or Reel, tap the Share button, and select "Copy Link".',
+      },
+      {
+        stepNumber: 2,
+        title: 'Paste into SnapLoad Search Bar',
+        description: 'Open SnapLoad in Safari, Chrome, or any browser and paste the link into the search box.',
+      },
+      {
+        stepNumber: 3,
+        title: 'Download Full HD 1080p Video',
+        description: 'Click "Fetch Video", select your desired resolution (1080p HD or 720p SD) or 320kbps MP3 audio, and save directly to your gallery.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I download private Facebook videos?',
+        answer: 'No, SnapLoad only processes public videos and Reels. Videos from private accounts or closed groups cannot be fetched.',
+      },
+      {
+        question: 'Is it free to download Facebook videos on SnapLoad?',
+        answer: 'Yes! SnapLoad is 100% free with unlimited downloads and no account required.',
+      },
+      {
+        question: 'How do I save Facebook videos to my iPhone Camera Roll?',
+        answer: 'After downloading the video in Safari, tap the Downloads icon in the address bar, open the file in the Files app, tap the Share icon, and select "Save Video".',
       },
     ],
   },

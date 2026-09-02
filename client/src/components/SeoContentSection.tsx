@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Language } from '../utils/i18n';
 import { AdBanner } from './AdBanner';
 
-type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
+type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
 
 interface SeoContentProps {
   platform: PlatformKey;
@@ -139,6 +139,46 @@ const MASTER_EN_DATA: Record<PlatformKey, ContentData> = {
     },
     faqs: [
       { question: 'Can I download Instagram Reels in 1080p HD?', answer: 'Yes! SnapLoad extracts the highest available 1080p HD video file directly from Instagram servers.' },
+    ],
+  },
+  facebook: {
+    heading: 'Facebook Video Downloader 1080p HD — Free FB Reels & Watch Saver',
+    subheading: 'Download Facebook Reels, Watch videos, live broadcasts, and public video clips in crystal-clear 1080p Full HD MP4 format or convert to 320kbps MP3 audio for free with zero registration.',
+    whyTitle: 'Why Choose SnapLoad Facebook Video Downloader?',
+    faqTitle: 'Facebook Downloader FAQ',
+    steps: [
+      { number: '01', title: 'Copy Facebook Video Link', desc: 'Open Facebook, tap the Share button on any public video, Reel, or Watch clip, and choose "Copy Link".' },
+      { number: '02', title: 'Paste into Search Bar', desc: 'Paste the copied Facebook link into SnapLoad search box above and click "Fetch Video".' },
+      { number: '03', title: 'Save HD Video or MP3', desc: 'Select your preferred video quality (1080p HD, 720p SD) or 320kbps MP3 audio to download instantly.' },
+    ],
+    features: [
+      { title: '1080p Full HD Quality', desc: 'Preserve high resolution and crisp bitrate for Facebook Reels and Watch clips.', icon: '🎬' },
+      { title: 'Reels, Watch & Stories', desc: 'Full support for public Facebook Reels, Watch videos, and timeline clips.', icon: '📱' },
+      { title: '320kbps MP3 Extractor', desc: 'Extract background songs, speeches, and podcast audio directly from Facebook videos.', icon: '🎵' },
+      { title: '100% Free & Anonymous', desc: 'Zero login or Facebook account access required. Safe, fast, and secure.', icon: '🔒' },
+    ],
+    deepTechnicalBreakdown: {
+      title: 'Facebook Video Stream Manifest Extraction',
+      paragraphs: [
+        'Facebook delivers streaming video using progressive MP4 endpoints and dynamic adaptive streaming protocols. Different quality streams (such as 1080p HD, 720p SD, and low bitrate mobile streams) are referenced inside origin metadata payloads.',
+        'SnapLoad parses Facebook video link parameters, resolves mobile redirects (including fb.watch and share links), and identifies the highest available video container stream on Meta CDN servers.',
+        'The video file is then streamed directly to your browser memory and saved to your device with zero intermediate server storage, ensuring blazing speed and total privacy.',
+      ],
+    },
+    troubleshooting: {
+      title: 'Facebook Download Best Practices',
+      items: [
+        { title: 'Public Videos Only', desc: 'Ensure the Facebook video is posted with a Public (globe icon) privacy setting. Private videos or closed group posts cannot be accessed.' },
+        { title: 'Supported URL Formats', desc: 'Works with facebook.com/watch, facebook.com/reel, facebook.com/share, and fb.watch short links.' },
+        { title: 'Mobile Browser Saving', desc: 'On iOS devices, files download to the Files app where you can tap "Save Video" to transfer to Photos.' },
+      ],
+    },
+    faqs: [
+      { question: 'Is SnapLoad Facebook Video Downloader free to use?', answer: 'Yes! SnapLoad is 100% free with unlimited downloads. You do not need to register, provide credentials, or pay any fees.' },
+      { question: 'Can I download Facebook Reels in 1080p HD?', answer: 'Yes! SnapLoad extracts original 1080p Full HD and 720p HD MP4 video streams whenever the creator uploaded the clip in high definition.' },
+      { question: 'How do I download Facebook videos on mobile (Android or iPhone)?', answer: 'Copy the video link from the Facebook app, open SnapLoad in Safari or Chrome, paste the link into the search box, and tap Download. On iPhone, save the downloaded file to your Camera Roll via the Files app.' },
+      { question: 'Do I need to log into my Facebook account?', answer: 'No, you never need to log in or share any Facebook credentials. SnapLoad only requires the public URL of the video.' },
+      { question: 'Can I convert Facebook videos to MP3 audio?', answer: 'Yes! Simply paste any Facebook video link and select the "MP3 Audio (320kbps)" format option to download studio-quality sound tracks.' },
     ],
   },
   mp3: {
@@ -685,14 +725,19 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
         });
       }
 
-      let scriptTag = document.getElementById(`seo-content-schema-${platform}`);
+      let scriptTag = document.getElementById('seo-content-schema');
       if (!scriptTag) {
         scriptTag = document.createElement('script');
-        scriptTag.id = `seo-content-schema-${platform}`;
+        scriptTag.id = 'seo-content-schema';
         scriptTag.setAttribute('type', 'application/ld+json');
         document.head.appendChild(scriptTag);
       }
       scriptTag.textContent = JSON.stringify(schemas);
+
+      return () => {
+        const tag = document.getElementById('seo-content-schema');
+        if (tag) tag.remove();
+      };
     }
   }, [platform, content]);
 

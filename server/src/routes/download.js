@@ -54,11 +54,16 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
           'tikwm.com',
           'lovetik.com',
           'akamaized.net',
+          'akamaihd.net',
           'ssstik.io',
           'tikcdn.io',
           'douyin.com',
           'tiktokv.com',
           'tiktokv.us',
+          'fbcdn.net',
+          'fbsbx.com',
+          'facebook.com',
+          'fb.watch',
         ];
         const isAllowed = allowedDomains.some(domain => parsed.hostname.endsWith(domain));
         if (!isAllowed) {
@@ -86,11 +91,16 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
         'tikwm.com',
         'lovetik.com',
         'akamaized.net',
+        'akamaihd.net',
         'ssstik.io',
         'tikcdn.io',
         'douyin.com',
         'tiktokv.com',
         'tiktokv.us',
+        'fbcdn.net',
+        'fbsbx.com',
+        'facebook.com',
+        'fb.watch',
       ];
       const isAllowed = allowedDomains.some(domain => parsed.hostname.endsWith(domain));
       if (!isAllowed) {
@@ -128,6 +138,10 @@ router.get('/', downloadLimiter, validateUrl, (req, res) => {
       let targetFormatId = formatId;
       if (['instagram', 'tiktok'].includes(platform)) {
         targetFormatId = null;
+      } else if (platform === 'facebook') {
+        if (!targetFormatId || targetFormatId === 'best') {
+          targetFormatId = 'hd/sd/best[ext=mp4]/best';
+        }
       }
 
       processes = streamDirect(url, targetFormatId || 'best', {
