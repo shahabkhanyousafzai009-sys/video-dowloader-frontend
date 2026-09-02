@@ -358,6 +358,10 @@ function App() {
         return;
       }
 
+      if (cleanPath === '/facebook_downloader' || cleanPath === '/facebook') {
+        cleanPath = '/facebook-downloader';
+      }
+
       const matchedKey = (Object.keys(PLATFORMS) as Platform[]).find(
         (key) => PLATFORMS[key].path === cleanPath
       ) || 'all';

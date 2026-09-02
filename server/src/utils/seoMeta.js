@@ -27,6 +27,16 @@ const ROUTE_META = {
     description: 'Download Facebook Reels, Watch videos, live broadcasts, and clips in 1080p Full HD MP4 or 320kbps MP3 audio for free with zero registration.',
     canonical: `${BASE_URL}/facebook-downloader`,
   },
+  '/facebook_downloader': {
+    title: 'Facebook Video Downloader 1080p HD — Save FB Reels & Watch Clips | SnapLoad',
+    description: 'Download Facebook Reels, Watch videos, live broadcasts, and clips in 1080p Full HD MP4 or 320kbps MP3 audio for free with zero registration.',
+    canonical: `${BASE_URL}/facebook-downloader`,
+  },
+  '/facebook': {
+    title: 'Facebook Video Downloader 1080p HD — Save FB Reels & Watch Clips | SnapLoad',
+    description: 'Download Facebook Reels, Watch videos, live broadcasts, and clips in 1080p Full HD MP4 or 320kbps MP3 audio for free with zero registration.',
+    canonical: `${BASE_URL}/facebook-downloader`,
+  },
   '/mp3-downloader': {
     title: 'Video to MP3 Converter Online — High Quality Audio Extraction | SnapLoad',
     description: 'Convert video links from TikTok, Instagram & Facebook into 320kbps MP3 audio files. Free, fast audio extractor with no registration required.',
