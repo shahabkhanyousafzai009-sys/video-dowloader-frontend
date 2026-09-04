@@ -621,8 +621,9 @@ Mastering how to download TikTok videos on a laptop gives you total control over
                   >
                     <option value="TikTok">TikTok</option>
                     <option value="Instagram">Instagram</option>
+                    <option value="Facebook">Facebook</option>
                     <option value="MP3 Conversion">MP3 Conversion</option>
-                    <option value="YouTube Shorts">YouTube Shorts</option>
+                    <option value="Social Media Guides">Social Media Guides</option>
                     <option value="Legal & Security">Legal & Security</option>
                   </select>
                 </div>

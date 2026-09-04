@@ -244,7 +244,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type, onNavigate }) => {
             </header>
 
             <p>
-              <strong>SnapLoad</strong> is a leading online media utility and educational resource dedicated to helping users save, back up, and convert online short-form videos from major social media platforms including TikTok, Instagram Reels, and YouTube Shorts into crystal clear 1080p HD video and 320kbps MP3 audio files.
+              <strong>SnapLoad</strong> is a leading online media utility and educational resource dedicated to helping users save, back up, and convert online short-form videos from major social media platforms including TikTok, Instagram Reels, and Facebook into crystal clear 1080p HD video and 320kbps MP3 audio files.
             </p>
 
             <h2 className="text-xl font-bold dark:text-white text-dark-900 pt-4 border-t border-white/10">

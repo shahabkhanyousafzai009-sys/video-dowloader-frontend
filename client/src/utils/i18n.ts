@@ -5,7 +5,7 @@ export type Language =
   | 'hr' | 'sr' | 'sl' | 'lt' | 'lv' | 'et' | 'sq' | 'mk' | 'bs' | 'is'
   | 'no' | 'bn' | 'ta' | 'te' | 'mr' | 'ur' | 'fa' | 'sw' | 'kk' | 'uz';
 
-export type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
+export type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'widget';
 
 export interface HeroTranslation {
   heading: string;
@@ -94,7 +94,6 @@ const BASE_EN_TRANSLATION: TranslationSchema = {
     'tiktok-mp3': 'TikTok MP3',
     instagram: 'Instagram Reels',
     facebook: 'Facebook Video',
-    'youtube-shorts': 'YouTube Shorts',
     mp3: 'MP3 Converter',
     widget: 'Embed Widget',
   },
@@ -123,11 +122,6 @@ const BASE_EN_TRANSLATION: TranslationSchema = {
       heading: 'Facebook Video Downloader',
       highlight: 'Reels & Watch 1080p HD',
       sub: 'Paste any Facebook video, Reel, Watch, or public post link below to save original 1080p HD videos or extract 320kbps MP3 audio for free.',
-    },
-    'youtube-shorts': {
-      heading: 'YouTube Shorts',
-      highlight: 'Downloader HD & MP3',
-      sub: 'Download YouTube Shorts clips in full 1080p HD resolution or convert to MP3 audio files.',
     },
     mp3: {
       heading: 'Video to MP3',
@@ -161,42 +155,39 @@ const BASE_EN_TRANSLATION: TranslationSchema = {
 // Key localized overrides for high volume languages
 const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>> = {
   pt: {
-    nav: { all: 'Todas as Plataformas', tiktok: 'Baixar Video TikTok', 'tiktok-mp3': 'TikTok MP3', instagram: 'Instagram Reels', facebook: 'Baixar Video Facebook', 'youtube-shorts': 'YouTube Shorts', mp3: 'Conversor MP3', widget: 'Widget Embed' },
+    nav: { all: 'Todas as Plataformas', tiktok: 'Baixar Video TikTok', 'tiktok-mp3': 'TikTok MP3', instagram: 'Instagram Reels', facebook: 'Baixar Video Facebook', mp3: 'Conversor MP3', widget: 'Widget Embed' },
     hero: {
       all: { heading: 'Baixar Vídeo Online &', highlight: 'TikTok, Instagram e Facebook HD', sub: 'SnapLoad é a ferramenta online gratuita para baixar vídeo do TikTok sem marca d\'água, salvar Reels do Instagram e Facebook em Full HD 1080p e converter vídeos para áudio MP3 de 320kbps.' },
       tiktok: { heading: 'Baixar Video TikTok', highlight: 'Sem Marca d\'Água', sub: 'Cole o link do seu vídeo do TikTok abaixo para baixar vídeos do TikTok em alta definição sem marca d\'água e grátis.' },
       'tiktok-mp3': { heading: 'Baixar Música do TikTok', highlight: 'Converter Áudio MP3', sub: 'Extraia e baixe áudios e músicas do TikTok em qualidade MP3 de 320kbps diretamente para o seu celular ou PC.' },
       instagram: { heading: 'Baixar Reels do Instagram', highlight: 'Downloader HD', sub: 'Baixe vídeos, Reels, fotos e histórias do Instagram em alta resolução sem perda de qualidade.' },
       facebook: { heading: 'Baixar Vídeos do Facebook', highlight: 'Reels e Watch 1080p HD', sub: 'Cole qualquer link de vídeo ou Reel do Facebook para baixar em alta qualidade 1080p ou extrair áudio MP3 grátis.' },
-      'youtube-shorts': { heading: 'Baixar YouTube Shorts', highlight: 'Downloader HD e MP3', sub: 'Baixe vídeos do YouTube Shorts em formato MP4 1080p HD ou converta para MP3 gratuitamente.' },
       mp3: { heading: 'Conversor de Vídeo para MP3', highlight: 'Extrair Áudio HD', sub: 'Converta links de vídeos do TikTok, Instagram e Facebook em áudio MP3 de alta fidelidade em segundos.' },
       widget: { heading: 'Widget de Download', highlight: 'Incorpore no seu Site', sub: 'Ofereça aos visitantes do seu site um baixador de vídeos do TikTok rápido e gratuito.' },
     },
     input: { placeholder: 'Cole o link do vídeo do TikTok, Instagram ou Facebook aqui...', paste: 'Colar', fetch: 'Baixar', fetching: 'Carregando...', trySample: 'Testar Exemplo:' },
   },
   es: {
-    nav: { all: 'Todas las Plataformas', tiktok: 'TikTok Sin Marca de Agua', 'tiktok-mp3': 'TikTok MP3', instagram: 'Instagram Reels', facebook: 'Descargar Video Facebook', 'youtube-shorts': 'YouTube Shorts', mp3: 'Convertidor MP3', widget: 'Embed Widget' },
+    nav: { all: 'Todas las Plataformas', tiktok: 'TikTok Sin Marca de Agua', 'tiktok-mp3': 'TikTok MP3', instagram: 'Instagram Reels', facebook: 'Descargar Video Facebook', mp3: 'Convertidor MP3', widget: 'Embed Widget' },
     hero: {
       all: { heading: 'Descargador de Videos Online', highlight: 'TikTok, Instagram y Facebook HD', sub: 'Descarga videos de TikTok sin marca de agua, Reels de Instagram y videos de Facebook en Full HD 1080p y convierte a MP3 de 320kbps gratis.' },
       tiktok: { heading: 'Descargar Video TikTok', highlight: 'Sin Marca de Agua', sub: 'Pega tu enlace de video de TikTok a continuación para descargar videos de TikTok limpios sin marca de agua.' },
       'tiktok-mp3': { heading: 'Audio de TikTok a MP3', highlight: 'Convertidor de Audio', sub: 'Extrae y descarga música y audios de TikTok en MP3 de 320kbps gratis.' },
       instagram: { heading: 'Instagram Reels y Video', highlight: 'Descargador HD', sub: 'Guarda Reels, clips y publicaciones de video de Instagram en alta definición directamente en tu teléfono o computadora.' },
       facebook: { heading: 'Descargar Videos de Facebook', highlight: 'Reels y Watch 1080p HD', sub: 'Pega cualquier enlace de video o Reel de Facebook para guardar en 1080p HD o extraer audio MP3 gratis.' },
-      'youtube-shorts': { heading: 'YouTube Shorts', highlight: 'Descargador HD y MP3', sub: 'Descarga clips de YouTube Shorts en HD 1080p o conviértelos a audio MP3.' },
       mp3: { heading: 'Video a MP3', highlight: 'Convertidor de Audio', sub: 'Extrae pistas de audio MP3 de alta calidad directamente desde enlaces de video de TikTok, Instagram o Facebook.' },
       widget: { heading: 'Incrustar Widget', highlight: 'En Tu Sitio Web', sub: 'Ofrece a los visitantes de tu sitio web un descargador de video gratuito.' },
     },
     input: { placeholder: 'Pega un enlace de video de TikTok, Instagram o Facebook...', paste: 'Pegar', fetch: 'Obtener', fetching: 'Cargando...', trySample: 'Probar ejemplo:' },
   },
   ur: {
-    nav: { all: 'تمام پلیٹ فارمز', tiktok: 'ٹک ٹاک بغیر واٹر مارک', 'tiktok-mp3': 'ٹک ٹاک ایم پی 3', instagram: 'انسٹاگرام ریلز', facebook: 'فیس بک ویڈیو ڈاؤنلوڈر', 'youtube-shorts': 'یوٹیوب شارٹس', mp3: 'ایم پی 3 کنورٹر', widget: 'ویجیٹ' },
+    nav: { all: 'تمام پلیٹ فارمز', tiktok: 'ٹک ٹاک بغیر واٹر مارک', 'tiktok-mp3': 'ٹک ٹاک ایم پی 3', instagram: 'انسٹاگرام ریلز', facebook: 'فیس بک ویڈیو ڈاؤنلوڈر', mp3: 'ایم پی 3 کنورٹر', widget: 'ویجیٹ' },
     hero: {
       all: { heading: 'آن لائن ویڈیو ڈاؤنلوڈر', highlight: 'ٹک ٹاک، انسٹاگرام اور فیس بک ایچ ڈی', sub: 'ٹک ٹاک سے بغیر واٹر مارک، انسٹاگرام ریلز، اور فیس بک ویڈیوز 1080p ایچ ڈی کوالٹی میں بالکل مفت ڈاؤن لوڈ کریں۔' },
       tiktok: { heading: 'ٹک ٹاک ویڈیو ڈاؤنلوڈر', highlight: 'بغیر واٹر مارک', sub: 'ٹک ٹاک ویڈیو لنک یہاں پیسٹ کریں اور بغیر لوگو ایچ ڈی ویڈیو محفوظ کریں۔' },
       'tiktok-mp3': { heading: 'ٹک ٹاک آڈیو ایم پی 3', highlight: 'آڈیو کنورٹر', sub: 'ٹک ٹاک ویڈیوز سے 320kbps ہائی کوالٹی ایم پی 3 آڈیو نکالیں۔' },
       instagram: { heading: 'انسٹاگرام ریلز ڈاؤنلوڈر', highlight: '1080p ایچ ڈی', sub: 'انسٹاگرام ریلز اور ویڈیوز کو فل ایچ ڈی ریزولوشن میں ڈاؤن لوڈ کریں۔' },
       facebook: { heading: 'فیس بک ویڈیو ڈاؤنلوڈر', highlight: 'ریلز اور واچ ویڈیوز ایچ ڈی', sub: 'فیس بک ریلز اور ویڈیوز کا لنک پیسٹ کریں اور فل ایچ ڈی 1080p میں باآسانی ڈاؤن لوڈ کریں۔' },
-      'youtube-shorts': { heading: 'یوٹیوب شارٹس ڈاؤنلوڈر', highlight: 'ایچ ڈی اور ایم پی 3', sub: 'یوٹیوب شارٹس کلپس کو 1080p ایم پی 4 یا ایم پی 3 میں محفوظ کریں۔' },
       mp3: { heading: 'ویڈیو سے ایم پی 3 کنورٹر', highlight: 'ہائی کوالٹی آڈیو', sub: 'کسی بھی ویڈیو لنک کو 320kbps ایم پی 3 آڈیو میں تبدیل کریں۔' },
       widget: { heading: 'ویڈیو ڈاؤنلوڈر ویجیٹ', highlight: 'اپنی ویب سائٹ پر لگائیں', sub: 'اپنی ویب سائٹ کے صارفین کو مفت ویڈیو ڈاؤنلوڈر کی سہولت فراہم کریں۔' },
     },
@@ -209,7 +200,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'TikTok Sound zu MP3', highlight: 'Audio Konverter', sub: 'Extrahierten Sie erstklassige MP3-Audiospuren direkt aus TikTok-Videolinks.' },
       instagram: { heading: 'Instagram Reels & Video', highlight: 'Downloader HD', sub: 'Speichern Sie hochauflösende Instagram Reels direkt auf Ihrem Gerät.' },
       facebook: { heading: 'Facebook Video Downloader', highlight: 'Reels & Watch 1080p HD', sub: 'Laden Sie Facebook-Videos und Reels in bester HD-Qualität kostenlos herunter.' },
-      'youtube-shorts': { heading: 'YouTube Shorts', highlight: 'Downloader HD & MP3', sub: 'Laden Sie YouTube Shorts Clips in HD herunter oder konvertieren Sie sie in MP3.' },
       mp3: { heading: 'Video zu MP3', highlight: 'Audio Konverter', sub: 'Extrahierten Sie erstklassige MP3-Audiospuren.' },
       widget: { heading: 'Embed Downloader', highlight: 'Widget auf Ihrer Website', sub: 'Kostenloser Downloader für Ihre Website.' },
     },
@@ -222,7 +212,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'Son TikTok en MP3', highlight: 'Convertisseur Audio', sub: 'Extrayez des pistes audio MP3 haute qualité à partir de liens TikTok.' },
       instagram: { heading: 'Instagram Reels & Vidéo', highlight: 'Téléchargeur HD', sub: 'Enregistrez des Reels Instagram en haute définition.' },
       facebook: { heading: 'Téléchargeur Vidéo Facebook', highlight: 'Reels & Watch HD', sub: 'Téléchargez les vidéos et Reels Facebook en qualité HD 1080p gratuitement.' },
-      'youtube-shorts': { heading: 'YouTube Shorts', highlight: 'Téléchargeur HD & MP3', sub: 'Téléchargez des clips YouTube Shorts en HD 1080p.' },
       mp3: { heading: 'Vidéo en MP3', highlight: 'Convertisseur Audio', sub: 'Extrayez des pistes audio MP3.' },
       widget: { heading: 'Intégrer le Widget', highlight: 'Sur Votre Site Web', sub: 'Offrez un outil de téléchargement vidéo gratuit.' },
     },
@@ -235,7 +224,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'Musik TikTok ke MP3', highlight: 'Konverter Audio', sub: 'Ekstrak lagu dan suara MP3 dari TikTok dengan cepat.' },
       instagram: { heading: 'Pengunduh Reels Instagram', highlight: 'Kualitas HD', sub: 'Simpan Reels dan video Instagram dalam resolusi tinggi.' },
       facebook: { heading: 'Pengunduh Video Facebook', highlight: 'Reels & Watch HD', sub: 'Unduh video dan Reels Facebook dalam kualitas Full HD 1080p gratis.' },
-      'youtube-shorts': { heading: 'Pengunduh YouTube Shorts', highlight: 'MP4 & MP3', sub: 'Unduh klip YouTube Shorts 1080p MP4 atau konversi ke MP3.' },
       mp3: { heading: 'Konverter Video ke MP3', highlight: 'Ekstrak Audio HD', sub: 'Ubah link video TikTok, Instagram, dan Facebook menjadi MP3 320kbps.' },
       widget: { heading: 'Widget Pengunduh Video', highlight: 'Pasang di Situs Anda', sub: 'Berikan pengunjung situs Anda fitur unduh video gratis.' },
     },
@@ -248,7 +236,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'TikTok Müzik İndirme', highlight: 'MP3 Dönüştürücü', sub: 'TikTok videolarındaki sesleri 320kbps MP3 olarak indirin.' },
       instagram: { heading: 'Instagram Reels İndir', highlight: '1080p HD', sub: 'Instagram Reels ve videolarını yüksek kalitede kaydedin.' },
       facebook: { heading: 'Facebook Video İndirici', highlight: 'Reels & Watch 1080p HD', sub: 'Facebook videolarını ve Reels kliplerini en yüksek 1080p kalitede ücretsiz indirin.' },
-      'youtube-shorts': { heading: 'YouTube Shorts İndir', highlight: 'HD & MP3', sub: 'YouTube Shorts videolarını MP4 veya MP3 olarak indirin.' },
       mp3: { heading: 'Videoyu MP3 Yapma', highlight: 'Ses Çıkarıcı', sub: 'TikTok, Instagram ve Facebook video bağlantılarını yüksek kaliteli MP3 yapın.' },
       widget: { heading: 'Video İndirme Widget\'ı', highlight: 'Sitenize Ekleyin', sub: 'Web sitenizin ziyaretçilerine ücretsiz video indirme aracı sunun.' },
     },
@@ -261,7 +248,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'Скачать Музыку из TikTok', highlight: 'Конвертер в MP3', sub: 'Извлекайте аудио и песни из TikTok в формате MP3 320kbps.' },
       instagram: { heading: 'Скачать Reels Instagram', highlight: 'в HD Качестве', sub: 'Сохраняйте Reels и видео из Instagram в оригинальном разрешении.' },
       facebook: { heading: 'Скачать Видео с Facebook', highlight: 'Reels & Watch 1080p HD', sub: 'Скачивайте видео и Reels из Facebook в максимальном качестве 1080p Full HD бесплатно.' },
-      'youtube-shorts': { heading: 'Скачать YouTube Shorts', highlight: 'MP4 & MP3', sub: 'Скачивайте ролик Shorts в 1080p MP4 или конвертируйте в MP3.' },
       mp3: { heading: 'Конвертер Видео в MP3', highlight: 'Извлечение Звука', sub: 'Конвертируйте ссылки TikTok, Instagram и Facebook в высококачественный MP3.' },
       widget: { heading: 'Виджет Скачивания Видео', highlight: 'Встроить на Сайт', sub: 'Предоставьте пользователям вашего сайта бесплатный инструмент.' },
     },
@@ -274,7 +260,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'تحميل صوت تيك توك', highlight: 'محول MP3', sub: 'استخرج الأصوات والموسيقى من تيك توك بصيغة MP3 عالية الجودة.' },
       instagram: { heading: 'تحميل إنستغرام ريلز', highlight: 'بجودة عالية HD', sub: 'احفظ فيديوهات وريلز إنستغرام مباشرة على هاتفك أو حاسوبك.' },
       facebook: { heading: 'تحميل فيديو فيسبوك', highlight: 'ريلز وفيديوهات 1080p HD', sub: 'احفظ فيديوهات وريلز فيسبوك بجودة Full HD 1080p مجاناً وبكل سهولة.' },
-      'youtube-shorts': { heading: 'تحميل شورتس يوتيوب', highlight: 'HD و MP3', sub: 'حمل مقاطع شورتس يوتيوب بصيغة MP4 أو حولها إلى MP3.' },
       mp3: { heading: 'تحويل الفيديو إلى MP3', highlight: 'استخراج الصوت', sub: 'حول روابط فيديوهات تيك توك، إنستغرام وفيسبوك إلى ملفات صوتية 320kbps.' },
       widget: { heading: 'ودجة تحميل الفيديو', highlight: 'أضفها لموقعك', sub: 'امنح زوار موقعك إمكانية تحميل الفيديوهات مجاناً.' },
     },
@@ -287,7 +272,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'टिकटक साउंड MP3', highlight: 'ऑडियो कनवर्टर', sub: 'टिकटक वीडियो से 320kbps MP3 ऑडियो तुरंत निकालें।' },
       instagram: { heading: 'इंस्टाग्राम रील्स डाउनलोड', highlight: 'HD 1080p', sub: 'इंस्टाग्राम रील्स और वीडियो अपने फ़ोन या कंप्यूटर में सेव करें।' },
       facebook: { heading: 'फेसबुक वीडियो डाउनलोडर', highlight: 'रील्स और वॉच वीडियो HD', sub: 'फेसबुक वीडियो या रील्स लिंक पेस्ट करें और 1080p Full HD में मुफ़्त डाउनलोड करें।' },
-      'youtube-shorts': { heading: 'यूट्यूब शॉर्ट्स डाउनलोडर', highlight: 'HD & MP3', sub: 'यूट्यूब शॉर्ट्स 1080p MP4 या MP3 ऑडियो में डाउनलोड करें।' },
       mp3: { heading: 'वीडियो से MP3 कनवर्टر', highlight: 'ऑडियो निष्कर्षण', sub: 'टिकटक, इंस्टाग्राम और फेसबुक वीडियो लिंक को MP3 में बदलें।' },
       widget: { heading: 'वीडियो डाउनलोडर विजेट', highlight: 'साइट में जोड़ें', sub: 'अपनी वेबसाइट के विज़िटर्स को मुफ़्त डाउनलोड सुविधा दें।' },
     },
@@ -300,7 +284,6 @@ const CUSTOM_TRANSLATIONS: Partial<Record<Language, Partial<TranslationSchema>>>
       'tiktok-mp3': { heading: 'TikTok音源 MP3抽出', highlight: '音声変換', sub: 'TikTok動画から高音質な320kbps MP3音源を抽出して保存。' },
       instagram: { heading: 'Instagramリール保存', highlight: '1080p HD', sub: 'Instagramのリールや動画を元の画質のまま保存できます。' },
       facebook: { heading: 'Facebook動画保存', highlight: 'リール & Watch 1080p HD', sub: 'Facebookの動画やリールリンクを貼り付けて、最高画質1080pで無料保存。' },
-      'youtube-shorts': { heading: 'YouTube Shorts保存', highlight: 'MP4 & MP3', sub: 'YouTube Shorts動画を1080p MP4またはMP3で保存。' },
       mp3: { heading: '動画 MP3 変換', highlight: '音声抽出', sub: 'TikTok、Instagram、Facebookの動画リンクから音声のみを抽出。' },
       widget: { heading: '動画保存ウィジェット', highlight: 'サイトに埋め込み', sub: 'あなたのウェブサイトに無料の動画保存ツールを追加。' },
     },
@@ -322,7 +305,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = (Object.keys(LA
           tiktok: { ...BASE_EN_TRANSLATION.hero.tiktok, ...(custom.hero?.tiktok || {}) },
           'tiktok-mp3': { ...BASE_EN_TRANSLATION.hero['tiktok-mp3'], ...(custom.hero?.['tiktok-mp3'] || {}) },
           instagram: { ...BASE_EN_TRANSLATION.hero.instagram, ...(custom.hero?.instagram || {}) },
-          'youtube-shorts': { ...BASE_EN_TRANSLATION.hero['youtube-shorts'], ...(custom.hero?.['youtube-shorts'] || {}) },
+          facebook: { ...BASE_EN_TRANSLATION.hero.facebook, ...(custom.hero?.facebook || {}) },
           mp3: { ...BASE_EN_TRANSLATION.hero.mp3, ...(custom.hero?.mp3 || {}) },
           widget: { ...BASE_EN_TRANSLATION.hero.widget, ...(custom.hero?.widget || {}) },
         },

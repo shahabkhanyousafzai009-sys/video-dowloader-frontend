@@ -2,6 +2,13 @@
 User-agent: *
 Allow: /
 
+# Google AdSense & Publisher Crawlers
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Google-Display-Ads-Bot
+Allow: /
+
 # Sitemap
 Sitemap: https://snaploaddownload.com/sitemap.xml
 

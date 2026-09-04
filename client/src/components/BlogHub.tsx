@@ -82,7 +82,7 @@ export const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onNavigateHome, 
   }, []);
 
   const posts = Object.values(getMergedBlogPosts());
-  const categories = ['All', 'TikTok', 'Instagram', 'MP3 Conversion', 'YouTube Shorts', 'Legal & Security'];
+  const categories = ['All', 'TikTok', 'Instagram', 'Facebook', 'MP3 Conversion', 'Social Media Guides', 'Legal & Security'];
 
   const filteredPosts = posts.filter((post) => {
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;

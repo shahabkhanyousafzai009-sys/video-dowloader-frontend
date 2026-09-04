@@ -14,7 +14,7 @@ export interface GuideArticle {
   title: string;
   subtitle: string;
   description: string;
-  platform: 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'youtube';
+  platform: 'tiktok' | 'instagram' | 'facebook' | 'mp3';
   readTime: string;
   updatedDate: string;
   targetKeyword: string;
@@ -150,45 +150,7 @@ export const GUIDES_DATA: Record<string, GuideArticle> = {
       },
     ],
   },
-  'how-to-download-youtube-shorts-hd': {
-    slug: 'how-to-download-youtube-shorts-hd',
-    title: 'How to Download YouTube Shorts Videos & Audio in 1080p HD Quality',
-    subtitle: 'Save YouTube Shorts clips directly to your phone or PC with zero quality loss and fast processing.',
-    description: 'Learn how to download YouTube Shorts videos in MP4 format or extract 320kbps MP3 audio quickly and safely using SnapLoad.',
-    platform: 'mp3',
-    readTime: '3 min read',
-    updatedDate: 'August 12, 2026',
-    targetKeyword: 'how to download youtube shorts video',
-    heroHeading: 'How to Download YouTube Shorts',
-    heroHighlight: 'in 1080p HD & MP3',
-    steps: [
-      {
-        stepNumber: 1,
-        title: 'Copy the YouTube Shorts URL',
-        description: 'Open the YouTube app or website, navigate to the Shorts video, tap Share, and select "Copy Link".',
-      },
-      {
-        stepNumber: 2,
-        title: 'Paste URL into SnapLoad Downloader',
-        description: 'Open SnapLoad in your browser and paste the YouTube Shorts link into the input box.',
-      },
-      {
-        stepNumber: 3,
-        title: 'Select Format and Download',
-        description: 'Click Fetch Video, choose your desired quality (1080p MP4 or 320kbps MP3 audio), and click Download.',
-      },
-    ],
-    faqs: [
-      {
-        question: 'Can I convert YouTube Shorts to MP3 audio on SnapLoad?',
-        answer: 'Yes! SnapLoad allows you to download both high-definition MP4 video files and extracted 320kbps MP3 audio tracks from any YouTube Shorts link.',
-      },
-      {
-        question: 'Does downloading YouTube Shorts require installing software?',
-        answer: 'No installation or browser extension is required. SnapLoad works completely inside your web browser on mobile and desktop.',
-      },
-    ],
-  },
+
   'how-to-download-tiktok-slideshow-photos': {
     slug: 'how-to-download-tiktok-slideshow-photos',
     title: 'How to Download TikTok Photo Slideshows & Images in Full HD',
@@ -501,45 +463,7 @@ export const GUIDES_DATA: Record<string, GuideArticle> = {
       },
     ],
   },
-  'extract-320kbps-mp3-from-youtube-shorts': {
-    slug: 'extract-320kbps-mp3-from-youtube-shorts',
-    title: 'How to Extract 320kbps MP3 Audio Tracks from YouTube Shorts',
-    subtitle: 'Convert YouTube Shorts video links into high-bitrate MP3 audio files in seconds.',
-    description: 'Fast online guide to extracting high-quality 320kbps MP3 audio tracks directly from YouTube Shorts video links for free.',
-    platform: 'mp3',
-    readTime: '3 min read',
-    updatedDate: 'August 13, 2026',
-    targetKeyword: 'extract 320kbps mp3 from youtube shorts',
-    heroHeading: 'Extract 320kbps MP3',
-    heroHighlight: 'from YouTube Shorts',
-    steps: [
-      {
-        stepNumber: 1,
-        title: 'Copy YouTube Shorts Link',
-        description: 'In YouTube app or browser, open the Shorts video, tap Share, and select "Copy Link".',
-      },
-      {
-        stepNumber: 2,
-        title: 'Paste Link into SnapLoad MP3 Extractor',
-        description: 'Open SnapLoad, navigate to the YouTube Shorts tool, and paste the URL.',
-      },
-      {
-        stepNumber: 3,
-        title: 'Download 320kbps Studio Sound',
-        description: 'Click Fetch Video, select the MP3 Audio option, and tap Download MP3 to extract original studio quality sound.',
-      },
-    ],
-    faqs: [
-      {
-        question: 'Is 320kbps the highest audio quality for YouTube Shorts MP3 extraction?',
-        answer: 'Yes, 320kbps is the industry standard for high-fidelity MP3 audio, preserving full acoustic range and bass levels.',
-      },
-      {
-        question: 'Does extracting MP3 audio from YouTube Shorts require software?',
-        answer: 'No software, Python scripts, or browser addons are needed. Everything is processed server-side in real-time.',
-      },
-    ],
-  },
+
   'copyright-and-fair-use-guidelines': {
     slug: 'copyright-and-fair-use-guidelines',
     title: 'Copyright & Fair Use Guidelines for Online Video Content Creators (2026 Guide)',

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Language } from '../utils/i18n';
 import { AdBanner } from './AdBanner';
 
-type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
+type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'widget';
 
 interface SeoContentProps {
   platform: PlatformKey;
@@ -246,162 +246,47 @@ const MASTER_EN_DATA: Record<PlatformKey, ContentData> = {
       { question: 'Can I download TikTok sounds as MP3 for free?', answer: 'Yes! SnapLoad allows unlimited free downloads of TikTok sound tracks in 320kbps MP3 format.' },
     ],
   },
-  'youtube-shorts': {
-    heading: 'YouTube Shorts Downloader 1080p HD & MP3',
-    subheading: 'Save YouTube Shorts videos in MP4 Full HD resolution or extract 320kbps MP3 audio clips quickly.',
-    whyTitle: 'Why Use SnapLoad YouTube Shorts Saver?',
-    faqTitle: 'YouTube Shorts FAQ',
-    steps: [
-      { number: '01', title: 'Copy Shorts URL', desc: 'Open YouTube, find the Shorts video, tap Share, and select "Copy Link".' },
-      { number: '02', title: 'Paste into Search', desc: 'Paste the URL into SnapLoad and click "Fetch Video".' },
-      { number: '03', title: 'Save MP4 or MP3', desc: 'Choose 1080p HD MP4 or 320kbps MP3 to download immediately.' },
-    ],
-    features: [
-      { title: 'Full 1080p HD Video', desc: 'Download YouTube Shorts in high resolution MP4.', icon: '🎬' },
-      { title: 'MP3 Audio Converter', desc: 'Extract standalone audio clips from Shorts videos.', icon: '🎶' },
-      { title: 'No App Required', desc: 'Web-based downloader working on all devices.', icon: '🌐' },
-      { title: 'Zero Queue Delay', desc: 'High-speed stream merging with instant downloads.', icon: '⚡' },
-    ],
-    deepTechnicalBreakdown: {
-      title: 'YouTube DASH Stream Merging',
-      paragraphs: [
-        'YouTube Shorts stream adaptive video and audio tracks separately using DASH protocol. SnapLoad dynamically multiplexes the highest video stream and audio stream into a cohesive MP4 file.',
-      ],
-    },
-    troubleshooting: {
-      title: 'Shorts Download Best Practices',
-      items: [
-        { title: 'Shorts URL Format', desc: 'Ensure URL contains `youtube.com/shorts/` or `youtu.be/`.' },
-      ],
-    },
-    faqs: [
-      { question: 'Is YouTube Shorts Downloader free?', answer: 'Yes, SnapLoad YouTube Shorts downloader is 100% free with unlimited downloads.' },
-    ],
-  },
   widget: {
-    heading: 'Free Embeddable Video Downloader Widget',
-    subheading: 'Embed SnapLoad video downloader widget on your website or blog to offer instant video downloads to your visitors.',
+    heading: 'Free Online Video Downloader Widget',
+    subheading: 'Embed SnapLoad free video downloader on your website or blog with clean backlink integration.',
     whyTitle: 'Why Embed SnapLoad Widget?',
     faqTitle: 'Widget FAQ',
     steps: [
-      { number: '01', title: 'Copy Widget Code', desc: 'Copy the lightweight iframe embed code provided below.' },
-      { number: '02', title: 'Paste in HTML', desc: 'Paste the code into your blog or website HTML source.' },
-      { number: '03', title: 'Offer Downloader', desc: 'Provide your visitors with a free video downloading tool.' },
+      { number: '01', title: 'Copy Embed Code', desc: 'Copy the lightweight iframe embed code.' },
+      { number: '02', title: 'Paste on Website', desc: 'Paste into your HTML or CMS editor.' },
+      { number: '03', title: 'Instant Downloads', desc: 'Users can download videos directly.' },
     ],
     features: [
-      { title: 'Responsive Design', desc: 'Adapts seamlessly to mobile and desktop screen sizes.', icon: '📱' },
-      { title: 'Zero Maintenance', desc: 'All backend parsing and updates are handled automatically.', icon: '⚙️' },
-      { title: 'Clean Backlink Integration', desc: 'Enhance your site SEO with clean utility integration.', icon: '🔗' },
-      { title: '100% Free Lifetime', desc: 'No subscription or usage fees for website owners.', icon: '🎉' },
+      { title: 'Responsive Design', desc: 'Adapts seamlessly to mobile and desktop layouts.', icon: '📱' },
+      { title: 'Secure & Fast', desc: 'SSL encrypted with direct CDN processing.', icon: '🔒' },
+      { title: 'Multi-Platform', desc: 'Supports TikTok, Instagram, and Facebook.', icon: '🎬' },
+      { title: '100% Free', desc: 'Completely free for all website owners.', icon: '⚡' },
     ],
-    deepTechnicalBreakdown: {
-      title: 'Widget Security & Cross-Origin Architecture',
-      paragraphs: [
-        'The SnapLoad widget runs inside a sandboxed iframe with strict Content Security Policies, ensuring maximum security and zero impact on your site load performance.',
-      ],
-    },
-    troubleshooting: {
-      title: 'Widget Integration Tips',
-      items: [
-        { title: 'Container Width', desc: 'Set container width to 100% and minimum height to 500px for optimal display.' },
-      ],
-    },
-    faqs: [
-      { question: 'Is the downloader widget free to embed?', answer: 'Yes, our widget is 100% free for all websites, blogs, and content portals.' },
-    ],
+    deepTechnicalBreakdown: { title: 'Seamless Embed Architecture', paragraphs: ['Lightweight iframe integration with full responsive styling.'] },
+    troubleshooting: { title: 'Embed Help', items: [{ title: 'Dimensions', desc: 'Recommended minimum height is 500px.' }] },
+    faqs: [{ question: 'Is the widget free to embed?', answer: 'Yes! Free for any website or blog.' }],
   },
 };
 
-// Rich localized ContentData definitions for French, Spanish, German, and Portuguese
-const LOCALIZED_SEO_DATA: Partial<Record<Language, Record<PlatformKey, ContentData>>> = {
+const LOCALIZED_SEO_DATA: Record<string, any> = {
   fr: {
-    all: {
-      heading: 'Téléchargeur de Vidéos TikTok & Instagram Gratuit — Qualité HD Originale',
-      subheading: 'SnapLoad est un outil en ligne gratuit permettant d’enregistrer des vidéos TikTok sans filigrane et des Reels Instagram en qualité HD 1080p originale. Téléchargez des fichiers MP4 et MP3 haute qualité rapidement sans aucune inscription.',
-      whyTitle: 'Pourquoi Choisir SnapLoad ?',
-      faqTitle: 'Foire Aux Questions',
-      steps: [
-        { number: '01', title: 'Copier l’URL de la Vidéo', desc: 'Ouvrez TikTok ou Instagram, trouvez la vidéo ou le Reel souhaité, appuyez sur Partager et choisissez "Copier le lien".' },
-        { number: '02', title: 'Coller dans SnapLoad', desc: 'Collez l’adresse web dans le champ de recherche ci-dessus et cliquez sur le bouton "Obtenir".' },
-        { number: '03', title: 'Choisir la Qualité & Télécharger', desc: 'Sélectionnez le format souhaité (MP4 Full HD 1080p sans filigrane ou audio MP3 320kbps) et enregistrez-le directement sur votre appareil.' },
-      ],
-      features: [
-        { title: 'Moteur Sans Filigrane', desc: 'Supprime automatiquement le logo TikTok et le nom du créateur.', icon: '✨' },
-        { title: 'Résolution Full HD 1080p', desc: 'Conserve la qualité visuelle et le débit vidéo d’origine sans compression.', icon: '🎬' },
-        { title: 'Audio MP3 320kbps', desc: 'Extrait des pistes audio haute fidélité pour la musique et les sonneries.', icon: '🎵' },
-        { title: '100% Gratuit & Sécurisé', desc: 'Aucun compte requis, aucun fichier stocké sur les serveurs, confidentialité garantie.', icon: '🔒' },
-      ],
-      deepTechnicalBreakdown: {
-        title: 'Architecture Technique & Analyse du Flux CDN',
-        paragraphs: [
-          'Les plateformes de médias sociaux utilisent des réseaux de diffusion de contenu (CDN) pour distribuer des flux vidéo aux utilisateurs.',
-          'SnapLoad analyse le flux d’origine du CDN et extrait directement le fichier MP4 master sans filigrane hébergé sur les serveurs globaux.',
-          'Notre infrastructure fonctionne sans stockage physique : les vidéos ne sont jamais enregistrées sur nos serveurs, garantissant une confidentialité totale.',
-        ],
-      },
-      troubleshooting: {
-        title: 'Guide de Dépannage pour le Téléchargement',
-        items: [
-          { title: 'Vérifier la Confidentialité du Compte', desc: 'SnapLoad ne peut télécharger que les vidéos des comptes publics TikTok et Instagram.' },
-          { title: 'Sauvegarder sur iPhone (iOS)', desc: 'Sur iPhone, Safari télécharge le fichier dans l’application Fichiers. Appuyez sur Partager puis "Enregistrer la vidéo" pour l’ajouter aux Photos.' },
-          { title: 'Vider le Cache du Navigateur', desc: 'Si le bouton de téléchargement ne réagit pas, videz votre cache ou ouvrez SnapLoad en navigation privée.' },
-        ],
-      },
-      faqs: [
-        { question: 'Le téléchargement TikTok sans filigrane est-il gratuit ?', answer: 'Oui, SnapLoad est 100% gratuit et illimité. Aucun abonnement ni carte bancaire n’est requis.' },
-        { question: 'Où sont enregistrées les vidéos téléchargées ?', answer: 'Les vidéos sont enregistrées dans le dossier Téléchargements de votre appareil. Sur iPhone, consultez l’application Fichiers.' },
-      ],
-    },
-    tiktok: {
-      heading: 'Téléchargeur TikTok Sans Filigrane HD Gratuit',
-      subheading: 'Enregistrez des vidéos TikTok sans filigrane, des photos de diaporama et des musiques MP3 en HD 1080p.',
-      whyTitle: 'Avantages du Téléchargeur TikTok',
-      faqTitle: 'Foire Aux Questions TikTok',
-      steps: [
-        { number: '01', title: 'Copier le Lien TikTok', desc: 'Ouvrez l’application TikTok, appuyez sur le bouton Partager et sélectionnez "Copier le lien".' },
-        { number: '02', title: 'Coller dans SnapLoad', desc: 'Collez le lien dans la barre de recherche ci-dessus et cliquez sur "Obtenir".' },
-        { number: '03', title: 'Télécharger MP4 Propre', desc: 'Sélectionnez l’option "Sans Filigrane" pour enregistrer votre vidéo nette instantanément.' },
-      ],
-      features: [
-        { title: 'Suppression du Filigrane', desc: 'Élimine le logo TikTok animé et les filigranes du créateur.', icon: '🚫' },
-        { title: 'Traitement Ultra Rapide', desc: 'Analyse du flux CDN en moins de 2 secondes sans attente.', icon: '⚡' },
-        { title: 'Son TikTok MP3 320kbps', desc: 'Extrait les musiques et sons viraux TikTok en fichiers MP3.', icon: '🎧' },
-        { title: 'Extracteur de Photos Diaporama', desc: 'Téléchargez toutes les images originales des carrousels TikTok.', icon: '📷' },
-      ],
-      deepTechnicalBreakdown: {
-        title: 'Fonctionnement de l’Extraction Sans Filigrane',
-        paragraphs: [
-          'TikTok ajoute le filigrane lors du rendu côté client sur l’application mobile.',
-          'SnapLoad contourne ce processus en récupérant directement l’URL du flux MP4 original sur les serveurs distants.',
-        ],
-      },
-      troubleshooting: {
-        title: 'Conseils pour Télécharger sur TikTok',
-        items: [
-          { title: 'Liens de Partage Valides', desc: 'Assurez-vous que l’URL commence par tiktok.com.' },
-        ],
-      },
-      faqs: [
-        { question: 'Comment télécharger une vidéo TikTok sans filigrane ?', answer: 'Copiez le lien de la vidéo TikTok, collez-le sur SnapLoad et choisissez l’option sans filigrane.' },
-      ],
-    },
     instagram: {
-      heading: 'Télécharger Instagram Reels HD 1080p',
-      subheading: 'Téléchargez des Reels Instagram, vidéos et photos en haute définition originale.',
+      heading: 'Téléchargeur Reels Instagram HD',
+      subheading: 'Enregistrez des Reels Instagram en 1080p HD sans application.',
       whyTitle: 'Pourquoi SnapLoad Instagram ?',
-      faqTitle: 'FAQ Instagram',
+      faqTitle: 'FAQ Instagram Reels',
       steps: [
-        { number: '01', title: 'Copier le Lien du Reel', desc: 'Sur Instagram, appuyez sur les trois points ou Partager puis "Copier le lien".' },
-        { number: '02', title: 'Coller dans SnapLoad', desc: 'Collez le lien dans la barre de recherche SnapLoad.' },
-        { number: '03', title: 'Enregistrer le Fichier HD', desc: 'Téléchargez la vidéo au format MP4 1080p.' },
+        { number: '01', title: 'Copier le lien', desc: 'Lien du Reel Instagram.' },
+        { number: '02', title: 'Coller', desc: 'Sur SnapLoad.' },
+        { number: '03', title: 'Télécharger', desc: 'Enregistrez la vidéo HD.' },
       ],
       features: [
-        { title: 'Qualité 1080p HD', desc: 'Conserve la qualité originale sans perte.', icon: '🌟' },
-        { title: 'Reels & Vidéos', desc: 'Prend en charge tous les formats vidéo Instagram.', icon: '📹' },
-        { title: 'Photos Carrousel', desc: 'Téléchargez les photos multiples des carrousels.', icon: '🖼️' },
-        { title: 'Sans Connexion', desc: 'Aucun identifiant Instagram requis.', icon: '🔒' },
+        { title: 'Qualité 1080p', desc: 'Qualité originale nette.', icon: '🎬' },
+        { title: 'Reels & Vidéos', desc: 'Support des Reels et posts.', icon: '📱' },
+        { title: 'Audio MP3', desc: 'Extraction audio 320kbps.', icon: '🎵' },
+        { title: '100% Gratuit', desc: 'Sans inscription ni limite.', icon: '🔒' },
       ],
-      deepTechnicalBreakdown: { title: 'Flux Instagram HLS', paragraphs: ['SnapLoad extrait le meilleur flux vidéo HLS disponible.'] },
+      deepTechnicalBreakdown: { title: 'Extraction CDN Directe', paragraphs: ['Téléchargement direct depuis les serveurs CDN.'] },
       troubleshooting: { items: [{ title: 'Comptes Publics', desc: 'Seuls les contenus des comptes publics sont accessibles.' }] },
       faqs: [{ question: 'Comment enregistrer un Reel Instagram ?', answer: 'Copiez le lien et collez-le sur SnapLoad pour télécharger immédiatement.' }],
     },
@@ -445,43 +330,23 @@ const LOCALIZED_SEO_DATA: Partial<Record<Language, Record<PlatformKey, ContentDa
       troubleshooting: { items: [{ title: 'Sons Supprimés', desc: 'Les sons retirés par l’auteur ne sont pas disponibles.' }] },
       faqs: [{ question: 'Est-ce gratuit ?', answer: 'Oui, téléchargement MP3 gratuit et illimité.' }],
     },
-    'youtube-shorts': {
-      heading: 'Télécharger YouTube Shorts HD & MP3',
-      subheading: 'Téléchargez les vidéos YouTube Shorts en MP4 Full HD ou extrayez l’audio MP3.',
-      whyTitle: 'Pourquoi YouTube Shorts SnapLoad ?',
-      faqTitle: 'FAQ YouTube Shorts',
-      steps: [
-        { number: '01', title: 'Copier le Lien', desc: 'Lien du clip Shorts.' },
-        { number: '02', title: 'Coller', desc: 'Dans SnapLoad.' },
-        { number: '03', title: 'Télécharger', desc: 'Fichier MP4 ou MP3.' },
-      ],
-      features: [
-        { title: 'Vidéo Full HD 1080p', desc: 'Format MP4 haute qualité.', icon: '🎬' },
-        { title: 'Convertisseur MP3', desc: 'Extraction audio dédiée.', icon: '🎶' },
-        { title: 'Sans Application', desc: 'Directement dans votre navigateur.', icon: '🌐' },
-        { title: 'Vitesse Élevée', desc: 'Téléchargements sans délai.', icon: '⚡' },
-      ],
-      deepTechnicalBreakdown: { title: 'Fusion DASH YouTube', paragraphs: ['Combine les flux vidéo et audio DASH en MP4.'] },
-      troubleshooting: { items: [{ title: 'Format URL Shorts', desc: 'Vérifiez que le lien contient youtube.com/shorts.' }] },
-      faqs: [{ question: 'Le service est-il gratuit ?', answer: 'Oui, totalement gratuit.' }],
-    },
     widget: {
-      heading: 'Widget Téléchargeur de Vidéos Gratuit',
-      subheading: 'Intégrez notre widget téléchargeur de vidéos sur votre site web ou blog.',
-      whyTitle: 'Pourquoi Intégrer le Widget ?',
+      heading: 'Widget Téléchargeur Gratuit',
+      subheading: 'Intégrez le widget SnapLoad sur votre site web.',
+      whyTitle: 'Intégration Widget',
       faqTitle: 'FAQ Widget',
       steps: [
-        { number: '01', title: 'Copier le Code', desc: 'Copiez le code iframe.' },
-        { number: '02', title: 'Coller dans le HTML', desc: 'Insérez le code sur votre site.' },
-        { number: '03', title: 'Proposer l’Outil', desc: 'Offrez le téléchargement à vos visiteurs.' },
+        { number: '01', title: 'Copier le code', desc: 'Code iframe.' },
+        { number: '02', title: 'Coller', desc: 'Sur votre site.' },
+        { number: '03', title: 'Télécharger', desc: 'Prêt à l’emploi.' },
       ],
       features: [
-        { title: 'Design Adaptatif', desc: 'S’adapte aux écrans mobiles et desktop.', icon: '📱' },
-        { title: 'Zéro Maintenance', desc: 'Mises à jour automatiques.', icon: '⚙️' },
-        { title: 'Intégration Propre', desc: 'Améliore l’utilité de votre site.', icon: '🔗' },
-        { title: '100% Gratuit', desc: 'Aucun frais pour les propriétaires de sites.', icon: '🎉' },
+        { title: 'Responsive', desc: 'Adapté mobile et desktop.', icon: '📱' },
+        { title: 'Sécurisé', desc: 'Chiffrement SSL.', icon: '🔒' },
+        { title: 'Multi-Plateforme', desc: 'TikTok, Instagram, Facebook.', icon: '🎬' },
+        { title: '100% Gratuit', desc: 'Sans frais.', icon: '⚡' },
       ],
-      deepTechnicalBreakdown: { title: 'Sécurité Iframe', paragraphs: ['Fonctionne dans un environnement iframe sécurisé.'] },
+      deepTechnicalBreakdown: { title: 'Intégration Iframe', paragraphs: ['Chargement rapide et léger.'] },
       troubleshooting: { items: [{ title: 'Dimensions', desc: 'Hauteur recommandée de 500px.' }] },
       faqs: [{ question: 'L’intégration est-elle gratuite ?', answer: 'Oui, gratuite pour tous les sites web.' }],
     },
@@ -604,43 +469,23 @@ const LOCALIZED_SEO_DATA: Partial<Record<Language, Record<PlatformKey, ContentDa
       troubleshooting: { items: [{ title: 'Sonidos Eliminados', desc: 'Audios eliminados por copyright no están disponibles.' }] },
       faqs: [{ question: '¿Es totalmente gratis?', answer: 'Sí, puedes bajar todos los MP3 que quieras sin costo.' }],
     },
-    'youtube-shorts': {
-      heading: 'Descargar YouTube Shorts HD y MP3',
-      subheading: 'Guarda videos de YouTube Shorts en MP4 Full HD o extrae el audio en MP3.',
-      whyTitle: '¿Por qué YouTube Shorts SnapLoad?',
-      faqTitle: 'FAQ YouTube Shorts',
-      steps: [
-        { number: '01', title: 'Copiar Enlace', desc: 'Enlace del video Shorts.' },
-        { number: '02', title: 'Pegar Enlace', desc: 'En la barra de búsqueda.' },
-        { number: '03', title: 'Descargar', desc: 'Guarda en MP4 o MP3.' },
-      ],
-      features: [
-        { title: 'Video Full HD 1080p', desc: 'Formato MP4 en máxima resolución.', icon: '🎬' },
-        { title: 'Convertidor MP3', desc: 'Extracción de audio independiente.', icon: '🎶' },
-        { title: 'Sin Instalar Apps', desc: 'Funciona directamente en tu navegador.', icon: '🌐' },
-        { title: 'Descarga Rápida', desc: 'Procesamiento en tiempo real sin demoras.', icon: '⚡' },
-      ],
-      deepTechnicalBreakdown: { title: 'Unión de Streams DASH', paragraphs: ['Combina las transmisiones de video y audio DASH de YouTube.'] },
-      troubleshooting: { items: [{ title: 'Formato de la URL', desc: 'Verifica que la URL contenga youtube.com/shorts.' }] },
-      faqs: [{ question: '¿Es gratis el descargador?', answer: 'Sí, totalmente gratis e ilimitado.' }],
-    },
     widget: {
       heading: 'Widget Descargador de Videos Gratis',
-      subheading: 'Incrusta nuestro widget de descarga en tu sitio web o blog.',
-      whyTitle: '¿Por qué usar el Widget?',
+      subheading: 'Incrusta el descargador SnapLoad en tu página web o blog.',
+      whyTitle: 'Incrustar Widget',
       faqTitle: 'FAQ Widget',
       steps: [
-        { number: '01', title: 'Copiar Código', desc: 'Copia el código iframe.' },
-        { number: '02', title: 'Pegar en HTML', desc: 'Insértalo en tu sitio web.' },
-        { number: '03', title: 'Ofrecer Servicio', desc: 'Permite a tus visitas descargar videos.' },
+        { number: '01', title: 'Copiar código', desc: 'Código iframe ligero.' },
+        { number: '02', title: 'Pegar en tu web', desc: 'Pégalo en tu CMS o HTML.' },
+        { number: '03', title: 'Descargar', desc: 'Listo para usar.' },
       ],
       features: [
-        { title: 'Diseño Adaptable', desc: 'Se adapta a pantallas de celulares y computadoras.', icon: '📱' },
-        { title: 'Cero Mantenimiento', desc: 'Actualizaciones de servidor automáticas.', icon: '⚙️' },
-        { title: 'Integración Limpia', desc: 'Añade valor de utilidad a tu página web.', icon: '🔗' },
-        { title: '100% Gratis', desc: 'Sin cobros ni suscripciones para dueños de webs.', icon: '🎉' },
+        { title: 'Adaptable', desc: 'Diseño responsive para móvil y PC.', icon: '📱' },
+        { title: 'Seguro', desc: 'Conexión SSL encriptada.', icon: '🔒' },
+        { title: 'Multiplataforma', desc: 'TikTok, Instagram, Facebook.', icon: '🎬' },
+        { title: '100% Gratis', desc: 'Sin costes ni límites.', icon: '⚡' },
       ],
-      deepTechnicalBreakdown: { title: 'Seguridad Iframe', paragraphs: ['Se ejecuta en un entorno iframe aislado y seguro.'] },
+      deepTechnicalBreakdown: { title: 'Arquitectura Iframe', paragraphs: ['Integración directa y ligera.'] },
       troubleshooting: { items: [{ title: 'Dimensiones', desc: 'Se recomienda un alto mínimo de 500px.' }] },
       faqs: [{ question: '¿Es gratis incrustar el widget?', answer: 'Sí, totalmente gratis para todo sitio web.' }],
     },

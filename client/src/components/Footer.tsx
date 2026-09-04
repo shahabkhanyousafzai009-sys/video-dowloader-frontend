@@ -4,9 +4,20 @@ import { LegalTab } from './LegalModal';
 interface FooterProps {
   onOpenLegal: (tab: LegalTab) => void;
   onOpenWidget?: () => void;
+  onNavigate?: (path: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget, onNavigate }) => {
+  const handleLegalClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(path);
+    } else {
+      window.history.pushState({}, '', path);
+      window.dispatchEvent(new Event('popstate'));
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <footer className="w-full mt-16 pb-8 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4">
@@ -47,14 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
             >
               Facebook Video Downloader
             </a>
-            <span className="dark:text-white/20 text-slate-300">•</span>
-            <a
-              href="/youtube-shorts-downloader"
-              className="dark:text-primary-300 text-primary-600 hover:underline transition-all"
-              title="YouTube Shorts Downloader MP4 & MP3"
-            >
-              YouTube Shorts Downloader
-            </a>
+
             <span className="dark:text-white/20 text-slate-300">•</span>
             <a
               href="/mp3-downloader"
@@ -133,7 +137,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
         <div className="glass-subtle rounded-xl p-4 mb-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium dark:text-white/70 text-dark-600">
           <a
             href="/privacy-policy"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('privacy'); }}
+            onClick={(e) => handleLegalClick(e, '/privacy-policy')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Privacy Policy
@@ -141,7 +145,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           <span className="text-white/20">•</span>
           <a
             href="/terms-of-service"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('terms'); }}
+            onClick={(e) => handleLegalClick(e, '/terms-of-service')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Terms of Service
@@ -149,7 +153,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           <span className="text-white/20">•</span>
           <a
             href="/dmca-policy"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('dmca'); }}
+            onClick={(e) => handleLegalClick(e, '/dmca-policy')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             DMCA Policy
@@ -157,7 +161,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           <span className="text-white/20">•</span>
           <a
             href="/about-us"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('about'); }}
+            onClick={(e) => handleLegalClick(e, '/about-us')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             About Us
@@ -165,7 +169,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           <span className="text-white/20">•</span>
           <a
             href="/contact"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('contact'); }}
+            onClick={(e) => handleLegalClick(e, '/contact')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Contact Us
@@ -173,7 +177,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           <span className="text-white/20">•</span>
           <a
             href="/disclaimer"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('disclaimer'); }}
+            onClick={(e) => handleLegalClick(e, '/disclaimer')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Disclaimer
@@ -181,7 +185,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenWidget }) => 
           <span className="text-white/20">•</span>
           <a
             href="/cookie-policy"
-            onClick={(e) => { e.preventDefault(); onOpenLegal('cookies'); }}
+            onClick={(e) => handleLegalClick(e, '/cookie-policy')}
             className="hover:text-primary-400 transition-colors underline underline-offset-4 cursor-pointer"
           >
             Cookie Policy

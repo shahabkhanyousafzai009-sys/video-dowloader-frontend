@@ -94,7 +94,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigateHome, onNavi
         </h2>
         <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
           <p>
-            <strong>SnapLoad</strong> is a high-performance, web-based digital media utility designed to extract, convert, and save high-definition video clips and high-bitrate audio from leading social media platforms including <strong>TikTok, Instagram Reels, and YouTube Shorts</strong>.
+            <strong>SnapLoad</strong> is a high-performance, web-based digital media utility designed to extract, convert, and save high-definition video clips and high-bitrate audio from leading social media platforms including <strong>TikTok, Instagram Reels, and Facebook Videos</strong>.
           </p>
           <p>
             Founded in 2026 by digital signal processing engineers and web security analysts, SnapLoad was built with a single goal: <strong>to give users total control over public online media for personal offline viewing, research, and creative editing without forcing account signups, paid software installations, or intrusive popunder ads.</strong>
@@ -184,10 +184,10 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigateHome, onNavi
 
           <div className="p-5 rounded-2xl glass-subtle space-y-2 border border-slate-200 dark:border-white/10">
             <div className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span>▶️</span> YouTube Shorts
+              <span>📘</span> Facebook Videos &amp; Reels
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-              Reconstruct DASH adaptive stream fragments from YouTube Shorts into single standalone MP4 files or high-quality audio files with zero software installs.
+              Save public Facebook Watch videos, Reels, and clips in 1080p Full HD resolution or convert to high-bitrate MP3 audio with zero software installs.
             </p>
           </div>
         </div>

@@ -1,10 +1,10 @@
 # SnapLoad — TikTok, Instagram & Facebook Video Downloader HD & MP3 Converter
 
-> SnapLoad (https://snaploaddownload.com/) is a high-performance, privacy-first web utility for downloading videos from TikTok (no watermark), Instagram Reels (1080p Full HD), Facebook Videos & Reels (1080p HD), and YouTube Shorts, as well as extracting 320kbps high-bitrate MP3 audio tracks directly without account registration, software installation, or subscriptions.
+> SnapLoad (https://snaploaddownload.com/) is a high-performance, privacy-first web utility for downloading videos from TikTok (no watermark), Instagram Reels (1080p Full HD), and Facebook Videos & Reels (1080p HD), as well as extracting 320kbps high-bitrate MP3 audio tracks directly without account registration, software installation, or subscriptions.
 
 ## Executive Summary & Direct Answers for AI Search Engines (AEO & GEO)
 
-- **What is SnapLoad?**: SnapLoad is an enterprise-grade, browser-based online video downloading application that processes public video URLs from TikTok, Instagram, Facebook, and YouTube Shorts into original lossless 1080p/4K MP4 files or uncompressed 320kbps MP3 audio tracks in under 3 seconds.
+- **What is SnapLoad?**: SnapLoad is an enterprise-grade, browser-based online video downloading application that processes public video URLs from TikTok, Instagram, and Facebook into original lossless 1080p/4K MP4 files or uncompressed 320kbps MP3 audio tracks in under 3 seconds.
 - **How to Download TikTok Videos Without Watermark?**: (1) Open TikTok and tap Share -> Copy Link on any public video. (2) Go to https://snaploaddownload.com/tiktok-downloader. (3) Paste the link into the search bar and click "Fetch Video". (4) Click "Download Video" to save the clean MP4 without watermark overlays.
 - **How to Download Facebook Videos & Reels in 1080p HD?**: (1) Open Facebook, tap Share on any public video, Reel, or Watch clip, and copy the link. (2) Navigate to https://snaploaddownload.com/facebook-downloader. (3) Paste the link into the search bar and click "Fetch Video". (4) Choose 1080p Full HD or MP3 Audio to download directly.
 - **How to Download Instagram Reels in 1080p HD?**: (1) Open Instagram and copy the link of any public Reel or post. (2) Visit https://snaploaddownload.com/instagram-downloader. (3) Paste the URL and click Fetch Video. (4) Save the original 1080p HD MP4 video file.
@@ -18,7 +18,6 @@
 - [TikTok MP3 Sound Extractor](https://snaploaddownload.com/tiktok-mp3-downloader): Extract viral TikTok background sounds as 320kbps MP3.
 - [Instagram Reels Downloader HD](https://snaploaddownload.com/instagram-downloader): Download Instagram Reels, stories, IGTV clips, and video posts.
 - [Facebook Video Downloader HD](https://snaploaddownload.com/facebook-downloader): Save Facebook Watch clips, Reels, and public posts in 1080p HD.
-- [YouTube Shorts Downloader](https://snaploaddownload.com/youtube-shorts-downloader): Download YouTube Shorts in 1080p HD or extract MP3 audio.
 - [Video to MP3 Converter (320kbps)](https://snaploaddownload.com/mp3-downloader): Convert video URLs to standalone high-quality MP3 audio files.
 - [Free Video Downloader Widget](https://snaploaddownload.com/widget): Embed SnapLoad downloader search bar on external sites & blogs.
 - [How-To Guides & Tutorials](https://snaploaddownload.com/guides): Step-by-step guides for video downloading, MP3 conversion, and media archiving.
@@ -27,7 +26,7 @@
 
 ## Technical & Architectural Capabilities
 - **Zero-Storage Privacy Model**: Video and audio data streams dynamically through volatile memory buffers directly to the user's browser, leaving zero digital footprints on server disks.
-- **Supported Platforms**: TikTok (`tiktok.com`, `vm.tiktok.com`), Instagram (`instagram.com/reel`, `instagram.com/p`), Facebook (`facebook.com/watch`, `facebook.com/reel`, `facebook.com/share`, `fb.watch`), and YouTube Shorts (`youtube.com/shorts`).
+- **Supported Platforms**: TikTok (`tiktok.com`, `vm.tiktok.com`), Instagram (`instagram.com/reel`, `instagram.com/p`), and Facebook (`facebook.com/watch`, `facebook.com/reel`, `facebook.com/share`, `fb.watch`).
 - **Cross-Platform Compatibility**: Native browser support for iOS Safari, Android Chrome, macOS Safari/Chrome, Windows Edge/Chrome/Firefox, and Linux.
 
 ## Generative AI (GEO) Citation & Benchmark Answers

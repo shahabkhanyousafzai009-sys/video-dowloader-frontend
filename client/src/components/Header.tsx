@@ -95,12 +95,7 @@ export function Header({
       icon: '📘',
       desc: 'Save FB Reels & Watch clips in 1080p',
     },
-    {
-      label: 'YouTube Shorts',
-      path: '/youtube-shorts-downloader',
-      icon: '▶️',
-      desc: 'Save Shorts in 1080p MP4 or MP3',
-    },
+
     {
       label: 'Video to MP3',
       path: '/mp3-downloader',
@@ -256,7 +251,7 @@ export function Header({
           <a
             href="/faq"
             onClick={(e) => handleLinkClick(e, '/faq')}
-            className={`text-sm px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`text-sm px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
               currentPath === '/faq' || currentPath === '/faqs'
                 ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/30 shadow-xs'
                 : 'font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
@@ -266,6 +261,38 @@ export function Header({
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
             )}
             <span>FAQ</span>
+          </a>
+
+          {/* About Us Link */}
+          <a
+            href="/about-us"
+            onClick={(e) => handleLinkClick(e, '/about-us')}
+            className={`text-sm px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+              currentPath === '/about-us' || currentPath === '/about'
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/30 shadow-xs'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
+            }`}
+          >
+            {(currentPath === '/about-us' || currentPath === '/about') && (
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+            )}
+            <span>About</span>
+          </a>
+
+          {/* Contact Us Link */}
+          <a
+            href="/contact"
+            onClick={(e) => handleLinkClick(e, '/contact')}
+            className={`text-sm px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+              currentPath === '/contact' || currentPath === '/contact-us'
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/30 shadow-xs'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 border border-transparent'
+            }`}
+          >
+            {(currentPath === '/contact' || currentPath === '/contact-us') && (
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+            )}
+            <span>Contact</span>
           </a>
         </div>
 
@@ -351,6 +378,30 @@ export function Header({
             }`}
           >
             FAQ
+          </a>
+
+          <a
+            href="/about-us"
+            onClick={(e) => handleLinkClick(e, '/about-us')}
+            className={`block px-3 py-2 rounded-xl text-sm transition-colors ${
+              currentPath === '/about-us' || currentPath === '/about'
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
+            }`}
+          >
+            About Us
+          </a>
+
+          <a
+            href="/contact"
+            onClick={(e) => handleLinkClick(e, '/contact')}
+            className={`block px-3 py-2 rounded-xl text-sm transition-colors ${
+              currentPath === '/contact' || currentPath === '/contact-us'
+                ? 'font-extrabold bg-primary-500/10 text-primary-600 dark:text-primary-400'
+                : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
+            }`}
+          >
+            Contact Us
           </a>
         </div>
       )}

@@ -33,7 +33,7 @@ import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
 import './App.css';
 
-type Platform = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'youtube-shorts' | 'widget';
+type Platform = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'widget';
 
 interface PlatformSEO {
   path: string;
@@ -91,15 +91,7 @@ const PLATFORMS: Record<Platform, PlatformSEO> = {
     heroHighlight: 'Downloader 1080p HD',
     heroSub: 'Paste any Facebook video, Reel, Watch, or public post link below to save original 1080p HD media or extract 320kbps MP3 audio instantly — 100% free with no login required.',
   },
-  'youtube-shorts': {
-    path: '/youtube-shorts-downloader',
-    label: 'YouTube Shorts',
-    title: 'YouTube Shorts Downloader 1080p HD — Free MP4 & 320kbps MP3 Saver | SnapLoad',
-    description: 'Download YouTube Shorts videos in MP4 1080p HD or extract 320kbps MP3 audio tracks for free. Fast online Shorts downloader with zero account required.',
-    heroHeading: 'YouTube Shorts',
-    heroHighlight: 'Downloader HD & MP3',
-    heroSub: 'Download YouTube Shorts clips in full 1080p HD resolution or convert to MP3 audio files.',
-  },
+
   mp3: {
     path: '/mp3-downloader',
     label: 'MP3 Converter',
@@ -580,9 +572,9 @@ function App() {
         },
         {
           '@type': 'SiteNavigationElement',
-          '@id': 'https://snaploaddownload.com/#nav-youtube',
-          'name': 'YouTube Shorts Downloader',
-          'url': 'https://snaploaddownload.com/youtube-shorts-downloader'
+          '@id': 'https://snaploaddownload.com/#nav-tiktok-mp3',
+          'name': 'TikTok MP3 Sound Extractor',
+          'url': 'https://snaploaddownload.com/tiktok-mp3-downloader'
         },
         {
           '@type': 'SiteNavigationElement',
@@ -1049,6 +1041,7 @@ function App() {
       <Footer
         onOpenLegal={handleOpenLegal}
         onOpenWidget={() => setIsWidgetModalOpen(true)}
+        onNavigate={handleNavigate}
       />
 
       {/* Embed Widget Modal */}

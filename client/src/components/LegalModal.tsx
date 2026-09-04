@@ -174,7 +174,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                 About SnapLoad
               </h2>
               <p>
-                SnapLoad is a high-performance web application designed to extract 1080p HD videos and 320kbps MP3 audio from TikTok, Instagram Reels, and YouTube Shorts.
+                SnapLoad is a high-performance web application designed to extract 1080p HD videos and 320kbps MP3 audio from TikTok, Instagram Reels, and Facebook.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 <div className="p-4 rounded-xl glass-subtle border border-slate-200 dark:border-white/10 space-y-1">

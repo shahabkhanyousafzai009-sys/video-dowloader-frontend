@@ -47,11 +47,6 @@ const ROUTE_META = {
     description: 'Extract and download high quality 320kbps MP3 audio tracks directly from any TikTok video link for free.',
     canonical: `${BASE_URL}/tiktok-mp3-downloader`,
   },
-  '/youtube-shorts-downloader': {
-    title: 'YouTube Shorts Downloader 1080p HD — Free MP4 & MP3 Saver | SnapLoad',
-    description: 'Download YouTube Shorts videos in MP4 1080p HD or extract 320kbps MP3 audio tracks for free.',
-    canonical: `${BASE_URL}/youtube-shorts-downloader`,
-  },
   '/widget': {
     title: 'Free Video Downloader Widget — Embed SnapLoad on Your Site',
     description: 'Embed SnapLoad free video downloader widget on your website or blog with clean backlink integration.',
@@ -76,11 +71,6 @@ const ROUTE_META = {
     title: 'How to Convert TikTok & Instagram Video Links to 320kbps MP3 Audio',
     description: 'Extract high-bitrate MP3 audio tracks directly from TikTok videos or Instagram Reels for free with no app installation.',
     canonical: `${BASE_URL}/guides/how-to-convert-video-to-mp3`,
-  },
-  '/guides/how-to-download-youtube-shorts-hd': {
-    title: 'How to Download YouTube Shorts Videos & Audio in 1080p HD Quality',
-    description: 'Learn how to download YouTube Shorts videos in MP4 format or extract 320kbps MP3 audio quickly and safely using SnapLoad.',
-    canonical: `${BASE_URL}/guides/how-to-download-youtube-shorts-hd`,
   },
   '/guides/how-to-download-tiktok-slideshow-photos': {
     title: 'How to Download TikTok Photo Slideshows & Images in Full HD',
@@ -168,10 +158,10 @@ const ROUTE_META = {
     description: 'Everything you need to know about extracting studio-grade 320kbps MP3 sound tracks from video links without audio quality degradation.',
     canonical: `${BASE_URL}/blog/converting-video-links-to-320kbps-mp3-audio-technical-manual`,
   },
-  '/blog/youtube-shorts-downloader-mp3-extractor-desktop-mobile-guide': {
-    title: 'YouTube Shorts Downloader & MP3 Extractor: Complete Desktop & Mobile Guide',
-    description: 'Learn how to download YouTube Shorts videos in MP4 1080p HD or convert them to standalone 320kbps MP3 audio files with zero software installs.',
-    canonical: `${BASE_URL}/blog/youtube-shorts-downloader-mp3-extractor-desktop-mobile-guide`,
+  '/blog/social-media-video-formats-resolutions-audio-guide': {
+    title: 'Social Media Video Formats, HD Bitrates & Audio Extraction Guide (2026)',
+    description: 'Learn the technical standards for TikTok 1080p, Instagram Reels, and Facebook video streams, codecs, and audio bitrates.',
+    canonical: `${BASE_URL}/blog/social-media-video-formats-resolutions-audio-guide`,
   },
   '/blog/digital-copyright-fair-use-media-security-content-creators-guide': {
     title: 'Digital Copyright, Fair Use, and Media Security: What Every Content Creator Should Know',

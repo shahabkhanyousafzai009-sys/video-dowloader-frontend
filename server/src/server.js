@@ -241,6 +241,7 @@ app.get('/api/health', (req, res) => {
 
 // ===== Serve Static Frontend (Production) =====
 const { injectSeoMeta } = require('./utils/seoMeta');
+const { prerenderContent } = require('./utils/prerenderContent');
 const clientBuildPath = path.join(__dirname, '../../client/dist');
 app.use(express.static(clientBuildPath));
 
@@ -268,7 +269,21 @@ app.get('*', (req, res, next) => {
       `);
     }
 
-    const injectedHtml = injectSeoMeta(html, req.path);
+    let injectedHtml = injectSeoMeta(html, req.path);
+
+    // Pre-render rich semantic content inside <div id="root"> for Google AdSense & search bots
+    try {
+      const richBody = prerenderContent(req.path);
+      if (richBody) {
+        injectedHtml = injectedHtml.replace(
+          /<div id="root">[\s\S]*?<\/div>/i,
+          `<div id="root">${richBody}</div>`
+        );
+      }
+    } catch (renderErr) {
+      console.error('[PRERENDER] Error rendering route:', req.path, renderErr.message);
+    }
+
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.status(200).send(injectedHtml);
   });
