@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageSelector } from './LanguageSelector';
-import { Language } from '../utils/i18n';
+import { Language, TRANSLATIONS } from '../utils/i18n';
 
 interface HeaderProps {
   currentLanguage: Language;
@@ -10,6 +10,45 @@ interface HeaderProps {
   currentPlatform?: string;
   onOpenWidgetModal?: () => void;
 }
+
+const HEADER_EXTRAS: Record<string, {
+  allDownloaders: string;
+  supportedPlatforms: string;
+  embedWidget: string;
+  guides: string;
+  blog: string;
+  faq: string;
+  about: string;
+  contact: string;
+}> = {
+  pt: { allDownloaders: 'Baixadores', supportedPlatforms: 'Plataformas Suportadas', embedWidget: 'Incorporar Widget Gratuito', guides: 'Guias', blog: 'Blog', faq: 'FAQ', about: 'Sobre', contact: 'Contato' },
+  es: { allDownloaders: 'Descargadores', supportedPlatforms: 'Plataformas Compatibles', embedWidget: 'Incrustar Widget Gratis', guides: 'Guías', blog: 'Blog', faq: 'FAQ', about: 'Nosotros', contact: 'Contacto' },
+  id: { allDownloaders: 'Semua Pengunduh', supportedPlatforms: 'Platform Didukung', embedWidget: 'Pasang Widget Gratis', guides: 'Panduan', blog: 'Blog', faq: 'FAQ', about: 'Tentang', contact: 'Kontak' },
+  fr: { allDownloaders: 'Téléchargeurs', supportedPlatforms: 'Plateformes Supportées', embedWidget: 'Intégrer le Widget Gratuit', guides: 'Guides', blog: 'Blog', faq: 'FAQ', about: 'À Propos', contact: 'Contact' },
+  de: { allDownloaders: 'Downloader', supportedPlatforms: 'Unterstützte Plattformen', embedWidget: 'Kostenloses Widget Einbinden', guides: 'Anleitungen', blog: 'Blog', faq: 'FAQ', about: 'Über Uns', contact: 'Kontakt' },
+  ar: { allDownloaders: 'جميع الأدوات', supportedPlatforms: 'المنصات المدعومة', embedWidget: 'تضمين ودجة التحميل مجاناً', guides: 'الأدلة', blog: 'المدونة', faq: 'الأسئلة', about: 'من نحن', contact: 'اتصل بنا' },
+  ru: { allDownloaders: 'Все Загрузчики', supportedPlatforms: 'Поддерживаемые Платформы', embedWidget: 'Встроить Бесплатный Виджет', guides: 'Гайды', blog: 'Блог', faq: 'FAQ', about: 'О нас', contact: 'Контакты' },
+  tr: { allDownloaders: 'Tüm İndiriciler', supportedPlatforms: 'Desteklenen Platformlar', embedWidget: 'Ücretsiz Widget Ekle', guides: 'Kılavuzlar', blog: 'Blog', faq: 'SSS', about: 'Hakkımızda', contact: 'İletişim' },
+  hi: { allDownloaders: 'सभी डाउनलोडर', supportedPlatforms: 'समर्थित प्लेटफॉर्म', embedWidget: 'मुफ़्त विजेट जोड़ें', guides: 'गाइड्स', blog: 'ब्लॉग', faq: 'FAQ', about: 'हमारे बारे में', contact: 'संपर्क' },
+  ur: { allDownloaders: 'تمام ڈاؤنلوڈرز', supportedPlatforms: 'سپورٹ شدہ پلیٹ فارمز', embedWidget: 'مفت ویجیٹ لگائیں', guides: 'گائیڈز', blog: 'بلاگ', faq: 'سوالات', about: 'ہمارے بارے میں', contact: 'رابطہ' },
+  it: { allDownloaders: 'Tutti i Downloader', supportedPlatforms: 'Piattaforme Supportate', embedWidget: 'Incorpora Widget Gratuito', guides: 'Guide', blog: 'Blog', faq: 'FAQ', about: 'Chi Siamo', contact: 'Contatti' },
+  vi: { allDownloaders: 'Tất Cả Công Cụ', supportedPlatforms: 'Nền Tảng Hỗ Trợ', embedWidget: 'Nhúng Tiện Ích Miễn Phí', guides: 'Hướng Dẫn', blog: 'Blog', faq: 'Hỏi Đáp', about: 'Giới Thiệu', contact: 'Liên Hệ' },
+  th: { allDownloaders: 'เครื่องมือทั้งหมด', supportedPlatforms: 'แพลตฟอร์มที่รองรับ', embedWidget: 'ติดตั้งวิดเจ็ตฟรี', guides: 'คู่มือ', blog: 'บล็อก', faq: 'คำถามที่พบบ่อย', about: 'เกี่ยวกับเรา', contact: 'ติดต่อ' },
+  ko: { allDownloaders: '모든 다운로더', supportedPlatforms: '지원되는 플랫폼', embedWidget: '무료 위젯 임베드', guides: '가이드', blog: '블로그', faq: 'FAQ', about: '소개', contact: '문의' },
+  ja: { allDownloaders: '動画保存ツール', supportedPlatforms: '対応プラットフォーム', embedWidget: '無料ウィジェットを埋め込み', guides: '使い方', blog: 'ブログ', faq: 'FAQ', about: '概要', contact: 'お問い合わせ' },
+  pl: { allDownloaders: 'Pobieracze', supportedPlatforms: 'Obsługiwane Platformy', embedWidget: 'Wklej Darmowy Widżet', guides: 'Poradniki', blog: 'Blog', faq: 'FAQ', about: 'O Nas', contact: 'Kontakt' },
+  nl: { allDownloaders: 'Alle Downloaders', supportedPlatforms: 'Ondersteunde Platforms', embedWidget: 'Gratis Widget Insluiten', guides: 'Gidsen', blog: 'Blog', faq: 'FAQ', about: 'Over Ons', contact: 'Contact' },
+  ms: { allDownloaders: 'Semua Pemuat Turun', supportedPlatforms: 'Platform Disokong', embedWidget: 'Pasang Widget Percuma', guides: 'Panduan', blog: 'Blog', faq: 'Soalan Lazim', about: 'Tentang', contact: 'Hubungi' },
+  fil: { allDownloaders: 'Lahat ng Downloader', supportedPlatforms: 'Mga Suportadong Platform', embedWidget: 'I-embed ang Libreng Widget', guides: 'Mga Gabay', blog: 'Blog', faq: 'FAQ', about: 'Tungkol', contact: 'Kontak' },
+  uk: { allDownloaders: 'Всі Завантажувачі', supportedPlatforms: 'Підтримувані Платформи', embedWidget: 'Вставити Безкоштовний Віджет', guides: 'Посібники', blog: 'Блог', faq: 'FAQ', about: 'Про нас', contact: 'Контакти' },
+  sv: { allDownloaders: 'Alla Downloaders', supportedPlatforms: 'Plattformar som stöds', embedWidget: 'Bädda in Gratis Widget', guides: 'Guider', blog: 'Blogg', faq: 'FAQ', about: 'Om Oss', contact: 'Kontakt' },
+  ro: { allDownloaders: 'Descărcătoare', supportedPlatforms: 'Platforme Suportate', embedWidget: 'Integrează Widget Gratuit', guides: 'Ghiduri', blog: 'Blog', faq: 'FAQ', about: 'Despre', contact: 'Contact' },
+  cs: { allDownloaders: 'Všechny Stahovače', supportedPlatforms: 'Podporované Platformy', embedWidget: 'Vložit Widget Zdarma', guides: 'Návody', blog: 'Blog', faq: 'FAQ', about: 'O Nás', contact: 'Kontakt' },
+  el: { allDownloaders: 'Όλα τα Εργαλεία', supportedPlatforms: 'Υποστηριζόμενες Πλατφόρμες', embedWidget: 'Ενσωμάτωση Δωρεάν Widget', guides: 'Οδηγοί', blog: 'Blog', faq: 'FAQ', about: 'Σχετικά', contact: 'Επικοινωνία' },
+  fa: { allDownloaders: 'همه دانلودرها', supportedPlatforms: 'پلتفرم‌های پشتیبانی شده', embedWidget: 'افزودن ابزارک رایگان', guides: 'راهنماها', blog: 'وبلاگ', faq: 'سوالات', about: 'درباره ما', contact: 'تماس' },
+  bn: { allDownloaders: 'সকল ডাউনলোডার', supportedPlatforms: 'সমর্থিত প্ল্যাটফর্ম', embedWidget: 'ফ্রি উইজেট যুক্ত করুন', guides: 'নির্দেশিকা', blog: 'ব্লগ', faq: 'প্রশ্নোত্তর', about: 'আমাদের সম্পর্কে', contact: 'যোগাযোগ' },
+  en: { allDownloaders: 'All Downloaders', supportedPlatforms: 'Supported Platforms', embedWidget: 'Embed Free Downloader Widget', guides: 'Guides', blog: 'Blog', faq: 'FAQ', about: 'About', contact: 'Contact' },
+};
 
 export function Header({
   currentLanguage,
@@ -22,6 +61,9 @@ export function Header({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState(() => window.location.pathname);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+  const hx = HEADER_EXTRAS[currentLanguage] || HEADER_EXTRAS.en;
 
   // Close dropdown on click outside & listen for popstate path changes
   useEffect(() => {
@@ -72,35 +114,34 @@ export function Header({
 
   const downloaderLinks = [
     {
-      label: 'TikTok No Watermark',
+      label: t.nav.tiktok,
       path: '/tiktok-downloader',
       icon: '🎵',
-      desc: 'Save HD TikTok videos without logo',
+      desc: 'TikTok MP4 HD',
     },
     {
-      label: 'TikTok MP3 Audio',
+      label: t.nav['tiktok-mp3'],
       path: '/tiktok-mp3-downloader',
       icon: '🎧',
-      desc: 'Extract 320kbps MP3 sounds',
+      desc: 'TikTok MP3 320kbps',
     },
     {
-      label: 'Instagram Reels HD',
+      label: t.nav.instagram,
       path: '/instagram-downloader',
       icon: '📸',
-      desc: 'Download Reels & Video posts',
+      desc: 'Instagram Reels HD',
     },
     {
-      label: 'Facebook Video HD',
+      label: t.nav.facebook,
       path: '/facebook-downloader',
       icon: '📘',
-      desc: 'Save FB Reels & Watch clips in 1080p',
+      desc: 'Facebook Reels & Watch 1080p',
     },
-
     {
-      label: 'Video to MP3',
+      label: t.nav.mp3,
       path: '/mp3-downloader',
       icon: '🎶',
-      desc: 'High bitrate 320kbps MP3 extractor',
+      desc: 'MP3 320kbps Audio',
     },
   ];
 
@@ -157,7 +198,7 @@ export function Header({
               aria-expanded={isDropdownOpen}
               aria-haspopup="true"
             >
-              <span>All Downloaders</span>
+              <span>{hx.allDownloaders}</span>
               <svg
                 className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180 text-primary-500' : 'text-slate-400'}`}
                 fill="none"
@@ -172,7 +213,7 @@ export function Header({
             {isDropdownOpen && (
               <div className="absolute left-0 mt-2 w-72 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/15 shadow-2xl p-2 z-50 animate-fade-in backdrop-blur-xl">
                 <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-white/40 px-3 py-1.5">
-                  Supported Platforms
+                  {hx.supportedPlatforms}
                 </div>
                 {downloaderLinks.map((item) => (
                   <a
@@ -207,7 +248,7 @@ export function Header({
                       className="w-full flex items-center gap-2 p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-xs font-bold text-primary-600 dark:text-primary-400 text-left cursor-pointer"
                     >
                       <span>🧩</span>
-                      <span>Embed Free Downloader Widget</span>
+                      <span>{hx.embedWidget}</span>
                     </button>
                   </>
                 )}
@@ -228,7 +269,7 @@ export function Header({
             {(currentPath === '/guides' || currentPath.startsWith('/guides/')) && (
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
             )}
-            <span>Guides</span>
+            <span>{hx.guides}</span>
           </a>
 
           {/* Blog Navigation Link */}
@@ -244,7 +285,7 @@ export function Header({
             {(currentPath === '/blog' || currentPath.startsWith('/blog/')) && (
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
             )}
-            <span>Blog</span>
+            <span>{hx.blog}</span>
           </a>
 
           {/* FAQ Navigation Link */}
@@ -260,7 +301,7 @@ export function Header({
             {(currentPath === '/faq' || currentPath === '/faqs') && (
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
             )}
-            <span>FAQ</span>
+            <span>{hx.faq}</span>
           </a>
 
           {/* About Us Link */}
@@ -276,7 +317,7 @@ export function Header({
             {(currentPath === '/about-us' || currentPath === '/about') && (
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
             )}
-            <span>About</span>
+            <span>{hx.about}</span>
           </a>
 
           {/* Contact Us Link */}
@@ -292,7 +333,7 @@ export function Header({
             {(currentPath === '/contact' || currentPath === '/contact-us') && (
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
             )}
-            <span>Contact</span>
+            <span>{hx.contact}</span>
           </a>
         </div>
 
@@ -328,7 +369,7 @@ export function Header({
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white/95 dark:bg-dark-900/95 border-b border-slate-200 dark:border-white/10 px-4 py-3 space-y-2 animate-fade-in backdrop-blur-xl">
           <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-white/40 px-2 pt-1">
-            Downloaders
+            {hx.allDownloaders}
           </div>
           {downloaderLinks.map((item) => (
             <a
@@ -353,7 +394,7 @@ export function Header({
                 : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
             }`}
           >
-            Guides
+            {hx.guides}
           </a>
 
           <a
@@ -365,7 +406,7 @@ export function Header({
                 : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
             }`}
           >
-            Blog
+            {hx.blog}
           </a>
 
           <a
@@ -377,7 +418,7 @@ export function Header({
                 : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
             }`}
           >
-            FAQ
+            {hx.faq}
           </a>
 
           <a
@@ -389,7 +430,7 @@ export function Header({
                 : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
             }`}
           >
-            About Us
+            {hx.about}
           </a>
 
           <a
@@ -401,7 +442,7 @@ export function Header({
                 : 'font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10'
             }`}
           >
-            Contact Us
+            {hx.contact}
           </a>
         </div>
       )}

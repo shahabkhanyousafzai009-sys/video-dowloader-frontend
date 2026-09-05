@@ -486,16 +486,143 @@ function renderFaq() {
   `;
 }
 
-function renderHomeDownloader(platform) {
-  const titles = {
-    all: 'SnapLoad — Free Social Video Downloader &amp; HD Audio Converter',
-    tiktok: 'TikTok Downloader Without Watermark HD — SnapLoad',
-    instagram: 'Instagram Reels Downloader 1080p HD — SnapLoad',
-    facebook: 'Facebook Video Downloader 1080p HD — SnapLoad',
-    mp3: 'Online Video to MP3 Converter 320kbps — SnapLoad',
+function renderHomeDownloader(platform, lang = 'en') {
+  const contentMap = {
+    pt: {
+      titles: {
+        all: 'Baixar Vídeo do TikTok Sem Marca d\'Água HD 1080p — SnapLoad',
+        tiktok: 'Baixar Vídeo TikTok Sem Marca d\'Água Gratis HD 1080p | SnapLoad',
+        instagram: 'Baixar Reels do Instagram 1080p HD Gratis | SnapLoad',
+        facebook: 'Baixar Vídeos do Facebook HD 1080p Grátis | SnapLoad',
+        mp3: 'Conversor de Vídeo para MP3 320kbps Online Grátis | SnapLoad',
+      },
+      desc: 'Ferramenta online rápida e gratuita para baixar vídeos do TikTok sem marca d\'água, salvar Reels do Instagram em Full HD 1080p e converter vídeos para áudio MP3 320kbps.',
+      inputTitle: 'Cole o link do TikTok, Instagram ou Facebook aqui...',
+      inputSub: 'Baixador rápido carregando no seu navegador... Ative o JavaScript para baixar.',
+      h2Why: 'Por Que Usar o SnapLoad para Baixar Vídeos?',
+      feature1Title: '🎯 Sem Marca d\'Água',
+      feature1Desc: 'Extrai o fluxo original do vídeo diretamente do CDN, removendo o logotipo flutuante do TikTok sem perder qualidade.',
+      feature2Title: '📺 Resolução Full HD 1080p',
+      feature2Desc: 'Preserva a resolução original em alta definição sem compressão secundária.',
+      feature3Title: '🎧 Áudio MP3 320kbps',
+      feature3Desc: 'Converte a música ou som do vídeo em arquivo de áudio MP3 de alta fidelidade.',
+      h2Steps: 'Como Baixar Vídeo em 3 Passos Simples',
+      steps: [
+        '<strong>Copiar Link:</strong> Abra o TikTok, Instagram ou Facebook e clique em "Copiar Link".',
+        '<strong>Colar URL:</strong> Cole o link copiado no campo do SnapLoad acima.',
+        '<strong>Baixar:</strong> Clique em "Baixar", selecione 1080p Sem Marca d\'Água ou áudio MP3 e salve no celular ou PC.'
+      ],
+      h2Platforms: 'Plataformas Suportadas',
+      platforms: [
+        '<strong>TikTok:</strong> Vídeos em 1080p sem marca d\'água, músicas MP3 e carrosséis de fotos.',
+        '<strong>Instagram:</strong> Reels, vídeos e fotos em resolução original HD.',
+        '<strong>Facebook:</strong> Reels do Facebook, vídeos Watch e clipes públicos em 1080p MP4.',
+        '<strong>Extrator MP3:</strong> Conversão rápida para MP3 320kbps para qualquer link.'
+      ]
+    },
+    es: {
+      titles: {
+        all: 'Descargar Videos de TikTok Sin Marca de Agua Gratis HD 1080p — SnapLoad',
+        tiktok: 'Descargar Video TikTok Sin Marca de Agua Gratis 1080p HD | SnapLoad',
+        instagram: 'Descargar Instagram Reels 1080p HD Gratis | SnapLoad',
+        facebook: 'Descargar Videos de Facebook 1080p HD Gratis | SnapLoad',
+        mp3: 'Convertidor de Video a MP3 Online Gratis 320kbps | SnapLoad',
+      },
+      desc: 'Herramienta online gratuita y rápida para descargar videos de TikTok sin marca de agua, guardar Reels de Instagram en Full HD y extraer audio MP3 de 320kbps.',
+      inputTitle: 'Pega el enlace de TikTok, Instagram o Facebook aquí...',
+      inputSub: 'Descargador interactivo cargando... Activa JavaScript para descargar al instante.',
+      h2Why: '¿Por Qué Elegir SnapLoad?',
+      feature1Title: '🎯 Sin Marca de Agua',
+      feature1Desc: 'Elimina automáticamente las marcas de agua de TikTok para guardar videos limpios en máxima calidad.',
+      feature2Title: '📺 Full HD 1080p y 4K',
+      feature2Desc: 'Descarga videos en la resolución nativa original sin pérdida de nitidez.',
+      feature3Title: '🎧 Audio MP3 320kbps',
+      feature3Desc: 'Extrae pistas de audio y música de TikTok e Instagram en MP3 cristalino.',
+      h2Steps: 'Cómo Descargar Videos en 3 Pasos Fáciles',
+      steps: [
+        '<strong>Copiar Enlace:</strong> Abre la aplicación de TikTok o Instagram, pulsa Compartir y Copiar Enlace.',
+        '<strong>Pegar URL:</strong> Pega el enlace en el cuadro de búsqueda de SnapLoad.',
+        '<strong>Descargar:</strong> Elige calidad Full HD sin marca de agua o MP3 y haz clic en Descargar.'
+      ],
+      h2Platforms: 'Plataformas Compatibles',
+      platforms: [
+        '<strong>TikTok:</strong> Videos 1080p sin marca de agua, sonidos virales MP3 y fotos en HD.',
+        '<strong>Instagram:</strong> Reels, videos y publicaciones en resolución original.',
+        '<strong>Facebook:</strong> Videos y Reels de Facebook en 1080p Full HD MP4.',
+        '<strong>Convertidor MP3:</strong> Extractor de audio de alta fidelidad 320kbps.'
+      ]
+    },
+    id: {
+      titles: {
+        all: 'Download Video TikTok Tanpa Watermark HD 1080p Gratis — SnapLoad',
+        tiktok: 'Download Video TikTok Tanpa Watermark HD 1080p Gratis | SnapLoad',
+        instagram: 'Download Reels Instagram HD 1080p Gratis | SnapLoad',
+        facebook: 'Download Video Facebook HD 1080p Gratis | SnapLoad',
+        mp3: 'Konverter Video ke MP3 Online 320kbps Gratis | SnapLoad',
+      },
+      desc: 'Layanan online gratis dan cepat untuk download video TikTok tanpa watermark, simpan Instagram Reels HD, dan konversi audio MP3 320kbps tanpa aplikasi.',
+      inputTitle: 'Tempel link video TikTok, Instagram, atau Facebook di sini...',
+      inputSub: 'Pengunduh cepat sedang memuat... Aktifkan JavaScript untuk mengunduh langsung.',
+      h2Why: 'Mengapa Memilih SnapLoad?',
+      feature1Title: '🎯 Bersih Tanpa Watermark',
+      feature1Desc: 'Menghapus logo watermark TikTok secara otomatis dan menjaga kualitas video tetap jernih.',
+      feature2Title: '📺 Resolusi Penuh 1080p HD',
+      feature2Desc: 'Mengunduh video dalam resolusi asli tertinggi tanpa kompresi tambahan.',
+      feature3Title: '🎧 Audio MP3 320kbps',
+      feature3Desc: 'Ekstrak musik dan sound TikTok menjadi file audio MP3 berkualitas tinggi.',
+      h2Steps: 'Cara Download Video dalam 3 Langkah Mudah',
+      steps: [
+        '<strong>Salin Link:</strong> Buka TikTok, Instagram, atau Facebook, klik Bagikan lalu Salin Tautan.',
+        '<strong>Tempel URL:</strong> Tempel tautan di bilah pencarian SnapLoad di atas.',
+        '<strong>Unduh:</strong> Pilih 1080p Tanpa Watermark atau MP3 Audio dan klik Unduh.'
+      ],
+      h2Platforms: 'Platform yang Didukung',
+      platforms: [
+        '<strong>TikTok:</strong> Video 1080p tanpa watermark, musik MP3, dan slideshow foto HD.',
+        '<strong>Instagram:</strong> Reels, video, dan postingan dalam format HD asli.',
+        '<strong>Facebook:</strong> Video Facebook Watch dan Reels dalam MP4 1080p Full HD.',
+        '<strong>Konverter MP3:</strong> Ekstraksi audio MP3 320kbps untuk semua platform.'
+      ]
+    },
+    en: {
+      titles: {
+        all: 'TikTok Downloader Without Watermark HD — SnapLoad Video Downloader',
+        tiktok: 'TikTok Downloader Without Watermark HD — Free TikTok Video Downloader | SnapLoad',
+        instagram: 'Instagram Reels Downloader 1080p HD — SnapLoad',
+        facebook: 'Facebook Video Downloader 1080p HD — SnapLoad',
+        mp3: 'Online Video to MP3 Converter 320kbps — SnapLoad',
+      },
+      desc: 'Fast, free online media utility to download TikTok videos without watermark, save Instagram Reels in 1080p Full HD, and extract studio-grade 320kbps MP3 audio with no software required.',
+      inputTitle: 'Paste Video Link from TikTok, Instagram, or Facebook',
+      inputSub: 'Interactive downloader loading in your browser... Enable JavaScript to download instantly.',
+      h2Why: 'Why Choose SnapLoad?',
+      feature1Title: '🎯 Clean Watermark Removal',
+      feature1Desc: 'Extracts original video streams directly from the source content delivery network, stripping bouncing platform logos and overlays cleanly.',
+      feature2Title: '📺 Full 1080p HD & 4K Output',
+      feature2Desc: 'Preserves native resolutions and high bitrates up to 1080p Full HD without introducing secondary compression artifacts.',
+      feature3Title: '🎧 320kbps Studio Audio',
+      feature3Desc: 'Converts video sound tracks to pristine 320kbps CBR MP3 audio files with wide dynamic range and crisp acoustics.',
+      h2Steps: 'How to Download Videos in 3 Easy Steps',
+      steps: [
+        '<strong>Copy Link:</strong> Open TikTok, Instagram, or Facebook, tap Share, and click "Copy Link".',
+        '<strong>Paste URL:</strong> Paste the copied link into SnapLoad\'s search field at the top of the page.',
+        '<strong>Download:</strong> Click "Fetch Video", select your preferred HD resolution or MP3 audio format, and tap Download to save immediately.'
+      ],
+      h2Platforms: 'Supported Platforms & Specifications',
+      platforms: [
+        '<strong>TikTok:</strong> Watermark-free 1080p MP4 videos, viral MP3 sounds, and HD photo slideshows.',
+        '<strong>Instagram:</strong> 1080p Reels, video posts, and carousel media in original container formats.',
+        '<strong>Facebook:</strong> Public Facebook Reels, Watch videos, and clips in 1080p Full HD MP4 or 320kbps MP3.',
+        '<strong>MP3 Converter:</strong> Standalone high-bitrate 320kbps MP3 audio extractor for all supported platforms.'
+      ]
+    }
   };
 
-  const currentTitle = titles[platform] || titles.all;
+  const localized = contentMap[lang] || contentMap.en;
+  const currentTitle = localized.titles[platform] || localized.titles.all;
+
+  const stepsHtml = localized.steps.map(s => `<li>${s}</li>`).join('\n');
+  const platformsHtml = localized.platforms.map(p => `<li>${p}</li>`).join('\n');
 
   return `
     <main style="${CONTAINER_STYLE}">
@@ -503,44 +630,39 @@ function renderHomeDownloader(platform) {
       <section style="text-align: center; margin-bottom: 40px;">
         <h1 style="${H1_STYLE}">${currentTitle}</h1>
         <p style="font-size: 1.2rem; color: #475569; max-width: 750px; margin: 0 auto 24px;">
-          Fast, free online media utility to download TikTok videos without watermark, save Instagram Reels in 1080p Full HD, and extract studio-grade 320kbps MP3 audio with no software required.
+          ${localized.desc}
         </p>
         <div style="background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 30px 20px; max-width: 700px; margin: 0 auto;">
-          <p style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Paste Video Link from TikTok, Instagram, or Facebook</p>
-          <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 16px;">Interactive downloader loading in your browser... Enable JavaScript to download instantly.</p>
+          <p style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">${localized.inputTitle}</p>
+          <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 16px;">${localized.inputSub}</p>
         </div>
       </section>
 
       <section style="margin-top: 40px;">
-        <h2 style="${H2_STYLE}">Why Choose SnapLoad?</h2>
+        <h2 style="${H2_STYLE}">${localized.h2Why}</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 24px 0;">
           <div style="${CARD_STYLE}; margin: 0;">
-            <h3 style="margin-top: 0; color: #0f172a;">🎯 Clean Watermark Removal</h3>
-            <p style="${P_STYLE}; margin-bottom: 0;">Extracts original video streams directly from the source content delivery network, stripping bouncing platform logos and overlays cleanly.</p>
+            <h3 style="margin-top: 0; color: #0f172a;">${localized.feature1Title}</h3>
+            <p style="${P_STYLE}; margin-bottom: 0;">${localized.feature1Desc}</p>
           </div>
           <div style="${CARD_STYLE}; margin: 0;">
-            <h3 style="margin-top: 0; color: #0f172a;">📺 Full 1080p HD &amp; 4K Output</h3>
-            <p style="${P_STYLE}; margin-bottom: 0;">Preserves native resolutions and high bitrates up to 1080p Full HD without introducing secondary compression artifacts.</p>
+            <h3 style="margin-top: 0; color: #0f172a;">${localized.feature2Title}</h3>
+            <p style="${P_STYLE}; margin-bottom: 0;">${localized.feature2Desc}</p>
           </div>
           <div style="${CARD_STYLE}; margin: 0;">
-            <h3 style="margin-top: 0; color: #0f172a;">🎧 320kbps Studio Audio</h3>
-            <p style="${P_STYLE}; margin-bottom: 0;">Converts video sound tracks to pristine 320kbps CBR MP3 audio files with wide dynamic range and crisp acoustics.</p>
+            <h3 style="margin-top: 0; color: #0f172a;">${localized.feature3Title}</h3>
+            <p style="${P_STYLE}; margin-bottom: 0;">${localized.feature3Desc}</p>
           </div>
         </div>
 
-        <h2 style="${H2_STYLE}">How to Download Videos in 3 Easy Steps</h2>
+        <h2 style="${H2_STYLE}">${localized.h2Steps}</h2>
         <ol style="${LIST_STYLE}">
-          <li><strong>Copy Link:</strong> Open TikTok, Instagram, or Facebook, tap Share, and click &quot;Copy Link&quot;.</li>
-          <li><strong>Paste URL:</strong> Paste the copied link into SnapLoad's search field at the top of the page.</li>
-          <li><strong>Download:</strong> Click &quot;Fetch Video&quot;, select your preferred HD resolution or MP3 audio format, and tap Download to save immediately.</li>
+          ${stepsHtml}
         </ol>
 
-        <h2 style="${H2_STYLE}">Supported Platforms &amp; Specifications</h2>
+        <h2 style="${H2_STYLE}">${localized.h2Platforms}</h2>
         <ul style="${LIST_STYLE}">
-          <li><strong>TikTok:</strong> Watermark-free 1080p MP4 videos, viral MP3 sounds, and HD photo slideshows.</li>
-          <li><strong>Instagram:</strong> 1080p Reels, video posts, and carousel media in original container formats.</li>
-          <li><strong>Facebook:</strong> Public Facebook Reels, Watch videos, and clips in 1080p Full HD MP4 or 320kbps MP3.</li>
-          <li><strong>MP3 Converter:</strong> Standalone high-bitrate 320kbps MP3 audio extractor for all supported platforms.</li>
+          ${platformsHtml}
         </ul>
       </section>
       ${getFooter()}
@@ -837,38 +959,52 @@ function prerenderContent(rawPathname) {
     ? rawPathname.slice(0, -1)
     : rawPathname;
 
+  // Direct High-Volume Keyword Routes
+  if (normalizedPath === '/baixar-video-tiktok') return renderHomeDownloader('tiktok', 'pt');
+  if (normalizedPath === '/descargar-videos-de-tiktok') return renderHomeDownloader('tiktok', 'es');
+  if (normalizedPath === '/tiktok-video-downloader' || normalizedPath === '/tiktok-download') return renderHomeDownloader('tiktok', 'en');
+
+  // Parse Language Prefix (e.g. /pt, /es, /id, /ar, /tr, /ru, /de, /fr, /it, /vi, etc.)
+  let lang = 'en';
+  let cleanPath = normalizedPath;
+  const langMatch = normalizedPath.match(/^\/(pt|es|id|ar|tr|ru|de|fr|it|vi|th|ko|ja|pl|nl|ms|fil|uk|sv|ro|cs|el|fa|bn|hi|ur)(\/.*)?$/);
+  if (langMatch) {
+    lang = langMatch[1];
+    cleanPath = langMatch[2] || '/';
+  }
+
   // Legal & Trust Routes
-  if (normalizedPath === '/privacy-policy') return renderPrivacyPolicy();
-  if (normalizedPath === '/terms-of-service') return renderTermsOfService();
-  if (normalizedPath === '/dmca-policy') return renderDmcaPolicy();
-  if (normalizedPath === '/about-us' || normalizedPath === '/about') return renderAboutUs();
-  if (normalizedPath === '/contact' || normalizedPath === '/contact-us') return renderContactUs();
-  if (normalizedPath === '/disclaimer') return renderDisclaimer();
-  if (normalizedPath === '/cookie-policy') return renderCookiePolicy();
-  if (normalizedPath === '/faq' || normalizedPath === '/faqs') return renderFaq();
+  if (cleanPath === '/privacy-policy') return renderPrivacyPolicy();
+  if (cleanPath === '/terms-of-service') return renderTermsOfService();
+  if (cleanPath === '/dmca-policy') return renderDmcaPolicy();
+  if (cleanPath === '/about-us' || cleanPath === '/about') return renderAboutUs();
+  if (cleanPath === '/contact' || cleanPath === '/contact-us') return renderContactUs();
+  if (cleanPath === '/disclaimer') return renderDisclaimer();
+  if (cleanPath === '/cookie-policy') return renderCookiePolicy();
+  if (cleanPath === '/faq' || cleanPath === '/faqs') return renderFaq();
 
   // Blog Hub & Detail Routes
-  if (normalizedPath === '/blog') return renderBlogHub();
-  if (normalizedPath.startsWith('/blog/')) {
-    const slug = normalizedPath.replace('/blog/', '');
+  if (cleanPath === '/blog') return renderBlogHub();
+  if (cleanPath.startsWith('/blog/')) {
+    const slug = cleanPath.replace('/blog/', '');
     return renderBlogPost(slug);
   }
 
   // Guides Hub & Detail Routes
-  if (normalizedPath === '/guides') return renderGuidesHub();
-  if (normalizedPath.startsWith('/guides/')) {
-    const slug = normalizedPath.replace('/guides/', '');
+  if (cleanPath === '/guides') return renderGuidesHub();
+  if (cleanPath.startsWith('/guides/')) {
+    const slug = cleanPath.replace('/guides/', '');
     return renderGuideDetail(slug);
   }
 
-  // Platform Downloader Routes
-  if (normalizedPath === '/tiktok-downloader') return renderHomeDownloader('tiktok');
-  if (normalizedPath === '/instagram-downloader') return renderHomeDownloader('instagram');
-  if (normalizedPath === '/facebook-downloader') return renderHomeDownloader('facebook');
-  if (normalizedPath === '/mp3-downloader' || normalizedPath === '/tiktok-mp3-downloader') return renderHomeDownloader('mp3');
+  // Platform Downloader Routes (with language support)
+  if (cleanPath === '/tiktok-downloader') return renderHomeDownloader('tiktok', lang);
+  if (cleanPath === '/instagram-downloader') return renderHomeDownloader('instagram', lang);
+  if (cleanPath === '/facebook-downloader') return renderHomeDownloader('facebook', lang);
+  if (cleanPath === '/mp3-downloader' || cleanPath === '/tiktok-mp3-downloader') return renderHomeDownloader('mp3', lang);
 
-  // Default Home
-  return renderHomeDownloader('all');
+  // Default Home (with language support)
+  return renderHomeDownloader('all', lang);
 }
 
 module.exports = { prerenderContent };

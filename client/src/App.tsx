@@ -45,6 +45,36 @@ interface PlatformSEO {
   heroSub: string;
 }
 
+const RATING_TEXTS: Record<string, { rating: string; reviews: string }> = {
+  pt: { rating: 'Avaliação 4.9 / 5', reviews: '(Mais de 1.280 Avaliações)' },
+  es: { rating: 'Calificación 4.9 / 5', reviews: '(Más de 1.280 Reseñas)' },
+  id: { rating: 'Peringkat 4.9 / 5', reviews: '(1.280+ Ulasan)' },
+  fr: { rating: 'Note 4.9 / 5', reviews: '(1 280+ Avis)' },
+  de: { rating: 'Bewertung 4.9 / 5', reviews: '(1.280+ Bewertungen)' },
+  ar: { rating: 'تقييم 4.9 / 5', reviews: '(أكثر من 1,280 تقييم)' },
+  ru: { rating: 'Рейтинг 4.9 / 5', reviews: '(1 280+ Отзывов)' },
+  tr: { rating: 'Puan 4.9 / 5', reviews: '(1.280+ İnceleme)' },
+  hi: { rating: '4.9 / 5 रेटिंग', reviews: '(1,280+ समीक्षाएं)' },
+  ur: { rating: '4.9 / 5 ریٹنگ', reviews: '(1,280+ جائزے)' },
+  it: { rating: 'Valutazione 4.9 / 5', reviews: '(Oltre 1.280 Recensioni)' },
+  vi: { rating: 'Đánh giá 4.9 / 5', reviews: '(Hơn 1.280 Đánh giá)' },
+  th: { rating: 'คะแนน 4.9 / 5', reviews: '(มากกว่า 1,280 รีวิว)' },
+  ko: { rating: '평점 4.9 / 5', reviews: '(1,280개 이상의 리뷰)' },
+  ja: { rating: '評価 4.9 / 5', reviews: '(1,280件以上のレビュー)' },
+  pl: { rating: 'Ocena 4.9 / 5', reviews: '(Ponad 1 280 Opinii)' },
+  nl: { rating: 'Beoordeling 4.9 / 5', reviews: '(Meer dan 1.280 Recensies)' },
+  ms: { rating: 'Penarafan 4.9 / 5', reviews: '(Lebih 1,280 Ulasan)' },
+  fil: { rating: 'Rating na 4.9 / 5', reviews: '(Higit sa 1,280 Review)' },
+  uk: { rating: 'Оцінка 4.9 / 5', reviews: '(Понад 1 280 Відгуків)' },
+  sv: { rating: 'Betyg 4.9 / 5', reviews: '(Över 1 280 Recensioner)' },
+  ro: { rating: 'Evaluare 4.9 / 5', reviews: '(Peste 1.280 Recenzii)' },
+  cs: { rating: 'Hodnocení 4.9 / 5', reviews: '(Více než 1 280 Recenzí)' },
+  el: { rating: 'Βαθμολογία 4.9 / 5', reviews: '(Πάνω από 1.280 Κριτικές)' },
+  fa: { rating: 'امتیاز ۴.۹ از ۵', reviews: '(بیش از ۱,۲۸۰ نظر)' },
+  bn: { rating: 'রেটিং ৪.৯ / ৫', reviews: '(১,২৮০+ রিভিউ)' },
+  en: { rating: '4.9 / 5 Rating', reviews: '(1,280+ Reviews)' },
+};
+
 const PLATFORMS: Record<Platform, PlatformSEO> = {
   all: {
     path: '/',
@@ -921,8 +951,8 @@ function App() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-amber-300 shrink-0">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span className="text-white font-bold">4.9 / 5 Rating</span>
-                  <span className="text-white/70 font-normal">(1,280+ Reviews)</span>
+                  <span className="text-white font-bold">{(RATING_TEXTS[currentLanguage] || RATING_TEXTS.en).rating}</span>
+                  <span className="text-white/70 font-normal">{(RATING_TEXTS[currentLanguage] || RATING_TEXTS.en).reviews}</span>
                 </div>
 
                 {/* Main Headline */}
@@ -1042,6 +1072,7 @@ function App() {
         onOpenLegal={handleOpenLegal}
         onOpenWidget={() => setIsWidgetModalOpen(true)}
         onNavigate={handleNavigate}
+        currentLanguage={currentLanguage}
       />
 
       {/* Embed Widget Modal */}

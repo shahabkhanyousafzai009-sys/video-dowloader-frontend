@@ -11,7 +11,65 @@ interface UrlInputProps {
   currentLanguage?: Language;
 }
 
-type MediaFilter = 'all' | 'video' | 'photo' | 'dp' | 'story' | 'audio';
+const DISCLAIMER_TEXTS: Record<string, { text1: string; link: string; text2: string }> = {
+  pt: { text1: 'Apenas para uso pessoal e offline. Ao usar esta ferramenta, você concorda com nossos ', link: 'Termos de Uso', text2: '.' },
+  es: { text1: 'Solo para uso personal y sin conexión. Al usar esta herramienta, aceptas nuestra ', link: 'Política de Uso Justo', text2: '.' },
+  id: { text1: 'Hanya untuk penggunaan pribadi dan offline. Dengan menggunakan alat ini, Anda menyetujui ', link: 'Kebijakan Penggunaan', text2: '.' },
+  fr: { text1: 'Pour usage personnel et hors ligne uniquement. En utilisant cet outil, vous acceptez nos ', link: 'Conditions d\'Utilisation', text2: '.' },
+  de: { text1: 'Nur für den persönlichen, offline Gebrauch. Durch die Nutzung stimmen Sie unserer ', link: 'Fair-Use-Richtlinie', text2: ' zu.' },
+  ar: { text1: 'للاستخدام الشخصي دون اتصال فقط. باستخدام هذه الأداة فإنك توافق على ', link: 'سياسة الاستخدام العادل', text2: '.' },
+  ru: { text1: 'Только для личного использования. Используя сервис, вы соглашаетесь с ', link: 'Правилами', text2: '.' },
+  tr: { text1: 'Yalnızca kişisel ve çevrimdışı kullanım içindir. Bu aracı kullanarak ', link: 'Kullanım Koşullarımızı', text2: ' kabul etmiş olursunuz.' },
+  ur: { text1: 'صرف ذاتی اور آف لائن استعمال کے لیے۔ اس ٹول کو استعمال کر کے آپ ہماری ', link: 'استعمال کی پالیسی', text2: ' سے اتفاق کرتے ہیں۔' },
+  hi: { text1: 'केवल व्यक्तिगत और ऑफ़लाइन उपयोग के लिए। इस टूल का उपयोग करके आप हमारी ', link: 'उपयोग नीति', text2: ' से सहमत होते हैं।' },
+  it: { text1: 'Solo per uso personale e offline. Utilizzando questo strumento accetti i nostri ', link: 'Termini di Servizio', text2: '.' },
+  vi: { text1: 'Chỉ dành cho mục đích cá nhân, ngoại tuyến. Sử dụng công cụ này đồng nghĩa bạn đồng ý với ', link: 'Điều khoản Sử dụng', text2: '.' },
+  th: { text1: 'สำหรับการใช้งานส่วนตัวแบบออฟไลน์เท่านั้น การใช้เครื่องมือนี้ถือว่าคุณยอมรับ ', link: 'ข้อกำหนดการใช้งาน', text2: ' ของเรา' },
+  ko: { text1: '개인적 오프라인 용도로만 사용 가능합니다. 본 도구를 사용하면 당사의 ', link: '이용약관', text2: '에 동의하는 것으로 간주됩니다.' },
+  ja: { text1: '個人利用およびオフライン再生専用です。本ツールの利用により、当サービスの ', link: '利用規約', text2: ' に同意したものとみなされます。' },
+  pl: { text1: 'Wyłącznie do osobistego użytku offline. Korzystając z narzędzia, akceptujesz nasz ', link: 'Regulamin Serwisu', text2: '.' },
+  nl: { text1: 'Alleen voor persoonlijk offline gebruik. Door deze tool te gebruiken gaat u akkoord met onze ', link: 'Gebruiksvoorwaarden', text2: '.' },
+  ms: { text1: 'Untuk kegunaan peribadi dan luar talian sahaja. Menggunakan alat ini bermakna anda bersetuju dengan ', link: 'Syarat Perkhidmatan', text2: ' kami.' },
+  fil: { text1: 'Para sa personal na offline na paggamit lamang. Sa paggamit ng tool na ito, sumasang-ayon ka sa aming ', link: 'Mga Tuntunin sa Paggamit', text2: '.' },
+  uk: { text1: 'Лише для особистого офлайн-використання. Використовуючи цей інструмент, ви погоджуєтеся з нашими ', link: 'Умовами використання', text2: '.' },
+  sv: { text1: 'Endast för personligt och offlinebruk. Genom att använda detta verktyg godkänner du våra ', link: 'Användarvillkor', text2: '.' },
+  ro: { text1: 'Doar pentru uz personal și offline. Prin utilizarea acestui instrument sunteți de acord cu ', link: 'Termenii de Utilizare', text2: '.' },
+  cs: { text1: 'Pouze pro osobní offline použití. Používáním tohoto nástroje souhlasíte s našimi ', link: 'Podmínkami použití', text2: '.' },
+  el: { text1: 'Μόνο για προσωπική, εκτός σύνδεσης χρήση. Χρησιμοποιώντας αυτό το εργαλείο συμφωνείτε με τους ', link: 'Όρους Χρήσης', text2: ' μας.' },
+  fa: { text1: 'فقط برای استفاده شخصی و آفلاین. با استفاده از این ابزار شما با ', link: 'قوانین استفاده', text2: ' ما موافقت می‌کنید.' },
+  bn: { text1: 'কেবলমাত্র ব্যক্তিগত এবং অফলাইন ব্যবহারের জন্য। এই টুল ব্যবহার করে আপনি আমাদের ', link: 'ব্যবহারের শর্তাবলী', text2: ' মেনে নিচ্ছেন।' },
+  en: { text1: 'For personal, offline use only. By using this tool you agree to our ', link: 'Fair Use Policy', text2: '.' },
+};
+
+const BADGES_TEXTS: Record<string, [string, string, string, string]> = {
+  pt: ['Qualidade Original', 'HD MP4', 'Sem Necessidade de Login', '100% Grátis'],
+  es: ['Calidad Original', 'HD MP4', 'Sin Iniciar Sesión', '100% Gratis'],
+  id: ['Kualitas Asli', 'HD MP4', 'Tanpa Login', '100% Gratis'],
+  fr: ['Qualité Originale', 'HD MP4', 'Sans Inscription', '100% Gratuit'],
+  de: ['Originalqualität', 'HD MP4', 'Keine Anmeldung', '100% Kostenlos'],
+  ar: ['جودة أصلية', 'HD MP4', 'دون تسجيل دخول', 'مجاني 100%'],
+  ru: ['Оригинальное качество', 'HD MP4', 'Без регистрации', '100% Бесплатно'],
+  tr: ['Orijinal Kalite', 'HD MP4', 'Giriş Gerekmez', '%100 Ücretsiz'],
+  ur: ['اصل کوالٹی', 'ایچ ڈی MP4', 'لاگ ان کی ضرورت نہیں', '100% مفت'],
+  hi: ['मूल गुणवत्ता', 'HD MP4', 'लॉगिन की आवश्यकता नहीं', '100% मुफ़्त'],
+  it: ['Qualità Originale', 'HD MP4', 'Nessun Login Richiesto', '100% Gratis'],
+  vi: ['Chất Lượng Gốc', 'HD MP4', 'Không Cần Đăng Nhập', '100% Miễn Phí'],
+  th: ['คุณภาพต้นฉบับ', 'HD MP4', 'ไม่ต้องเข้าสู่ระบบ', 'ฟรี 100%'],
+  ko: ['원본 화질', 'HD MP4', '로그인 필요 없음', '100% 무료'],
+  ja: ['元の画質', 'HD MP4', 'ログイン不要', '100% 無料'],
+  pl: ['Jakość Oryginalna', 'HD MP4', 'Bez Logowania', '100% Za Darmo'],
+  nl: ['Originele Kwaliteit', 'HD MP4', 'Geen Login Nodig', '100% Gratis'],
+  ms: ['Kualiti Asal', 'HD MP4', 'Tanpa Log Masuk', '100% Percuma'],
+  fil: ['Orihinal na Kalidad', 'HD MP4', 'Hindi Kailangan ng Login', '100% Libre'],
+  uk: ['Оригінальна якість', 'HD MP4', 'Без входу в акаунт', '100% Безкоштовно'],
+  sv: ['Originalkvalitet', 'HD MP4', 'Ingen Inloggning Krävs', '100% Gratis'],
+  ro: ['Calitate Originală', 'HD MP4', 'Fără Conectare', '100% Gratuit'],
+  cs: ['Původní kvalita', 'HD MP4', 'Bez nutnosti přihlášení', '100% Zdarma'],
+  el: ['Αρχική Ποιότητα', 'HD MP4', 'Χωρίς Σύνδεση', '100% Δωρεάν'],
+  fa: ['کیفیت اصلی', 'HD MP4', 'بدون نیاز به لاگین', '۱۰۰٪ رایگان'],
+  bn: ['অরিজিনাল কোয়ালিটি', 'HD MP4', 'কোনো লগইন প্রয়োজন নেই', '১০০% ফ্রি'],
+  en: ['Original Quality', 'HD MP4', 'No Login Required', '100% Free'],
+};
 
 export function UrlInput({ onSubmit, loading, onReset, currentLanguage = 'en' }: UrlInputProps) {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
@@ -139,21 +197,33 @@ export function UrlInput({ onSubmit, loading, onReset, currentLanguage = 'en' }:
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
           )}
-          <span>{loading ? t.input.fetching : 'DOWNLOAD'}</span>
+          <span>{loading ? t.input.fetching : (t.input.fetch ? t.input.fetch.toUpperCase() : 'DOWNLOAD')}</span>
         </button>
 
         {/* Disclaimer Note */}
-        <p className="text-[11px] text-white/80 text-center font-medium">
-          For personal, offline use only. By using this tool you agree to our <a href="/terms-of-service" className="underline hover:text-white font-bold">Fair Use Policy</a>.
-        </p>
+        {(() => {
+          const d = DISCLAIMER_TEXTS[currentLanguage] || DISCLAIMER_TEXTS.en;
+          return (
+            <p className="text-[11px] text-white/80 text-center font-medium">
+              {d.text1}
+              <a href="/terms-of-service" className="underline hover:text-white font-bold">{d.link}</a>
+              {d.text2}
+            </p>
+          );
+        })()}
 
         {/* Feature Checkmark Badges */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-bold text-white drop-shadow-sm">
-          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> Original Quality</span>
-          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> HD MP4</span>
-          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> No Login Required</span>
-          <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> 100% Free</span>
-        </div>
+        {(() => {
+          const b = BADGES_TEXTS[currentLanguage] || BADGES_TEXTS.en;
+          return (
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-bold text-white drop-shadow-sm">
+              <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> {b[0]}</span>
+              <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> {b[1]}</span>
+              <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> {b[2]}</span>
+              <span className="flex items-center gap-1.5"><span className="text-emerald-300 font-black">✓</span> {b[3]}</span>
+            </div>
+          );
+        })()}
 
         {/* Validation Status Message */}
         {validationMsg && url.trim() && (

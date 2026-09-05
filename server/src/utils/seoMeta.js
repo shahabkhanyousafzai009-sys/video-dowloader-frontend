@@ -322,6 +322,153 @@ const ROUTE_META = {
     description: 'Convertissez des liens vidéo TikTok et Instagram en fichiers audio MP3 320kbps. Extracteur audio rapide sans inscription.',
     canonical: `${BASE_URL}/fr/mp3-downloader`,
   },
+  // ===== High-Volume Keyword Direct Routes (Matching SimilarWeb Top Keywords) =====
+  '/tiktok-video-downloader': {
+    title: 'TikTok Video Downloader Without Watermark HD — Free MP4 & MP3 | SnapLoad',
+    description: 'Download TikTok videos without watermark in original 1080p Full HD quality. Fast online TikTok video downloader for Android, iPhone, and PC with 320kbps audio.',
+    canonical: `${BASE_URL}/tiktok-video-downloader`,
+  },
+  '/tiktok-download': {
+    title: 'TikTok Download Without Watermark HD 1080p — Free Video Saver | SnapLoad',
+    description: 'Instant TikTok download online without watermark. Save viral TikTok clips, stories, and background music in MP4 or MP3 format with zero registration.',
+    canonical: `${BASE_URL}/tiktok-download`,
+  },
+  '/baixar-video-tiktok': {
+    title: 'Baixar Video TikTok Sem Marca d\'Água Gratis HD 1080p | SnapLoad',
+    description: 'Baixar video tiktok sem marca d\'água online e grátis. Salve vídeos do TikTok em Full HD MP4 e converta para áudio MP3 rapidamente.',
+    canonical: `${BASE_URL}/baixar-video-tiktok`,
+  },
+  '/descargar-videos-de-tiktok': {
+    title: 'Descargar Videos de TikTok Sin Marca de Agua Gratis HD | SnapLoad',
+    description: 'Descargar videos de tiktok sin marca de agua en 1080p HD gratis. Descargador de tiktok rápido online en full HD 1080p para móvil y PC.',
+    canonical: `${BASE_URL}/descargar-videos-de-tiktok`,
+  },
+  // ===== Bahasa Indonesia (ID) Routes =====
+  '/id': {
+    title: 'Download Video TikTok Tanpa Watermark HD Gratis — SnapLoad',
+    description: 'Unduh video TikTok tanpa watermark dalam resolusi Full HD 1080p gratis. Download Reels Instagram dan video Facebook serta convert audio MP3 320kbps.',
+    canonical: `${BASE_URL}/id`,
+  },
+  '/id/tiktok-downloader': {
+    title: 'Download Video TikTok Tanpa Watermark HD 1080p Gratis | SnapLoad',
+    description: 'Download video TikTok tanpa watermark dan tanpa logo secara online dan gratis. Simpan video TikTok MP4 dan musik MP3 langsung di HP dan PC.',
+    canonical: `${BASE_URL}/id/tiktok-downloader`,
+  },
+  '/id/instagram-downloader': {
+    title: 'Download Reels Instagram HD 1080p Gratis | SnapLoad',
+    description: 'Download Reels, video, dan foto Instagram kualitas asli HD. Pengunduh online cepat tanpa aplikasi untuk Android, iPhone, dan laptop.',
+    canonical: `${BASE_URL}/id/instagram-downloader`,
+  },
+  '/id/facebook-downloader': {
+    title: 'Download Video Facebook HD 1080p Gratis | SnapLoad',
+    description: 'Download video Facebook Watch, Reels, dan video publik kualitas 1080p Full HD MP4 atau ekstrak audio MP3 gratis tanpa registrasi.',
+    canonical: `${BASE_URL}/id/facebook-downloader`,
+  },
+  '/id/mp3-downloader': {
+    title: 'Konverter Video ke MP3 Online 320kbps Gratis | SnapLoad',
+    description: 'Ekstrak dan unduh lagu dari link video TikTok dan Instagram menjadi format MP3 320kbps jernih tanpa batas.',
+    canonical: `${BASE_URL}/id/mp3-downloader`,
+  },
+  // ===== Arabic (AR) Routes =====
+  '/ar': {
+    title: 'تحميل فيديو تيك توك بدون علامة مائية HD مجاناً | SnapLoad',
+    description: 'أفضل موقع مجاني لتحميل فيديوهات تيك توك بدون علامة مائية بجودة Full HD 1080p، تنزيل ريلز انستغرام وفيديوهات فيسبوك واستخراج صوت MP3 بسرعة فائقة.',
+    canonical: `${BASE_URL}/ar`,
+  },
+  '/ar/tiktok-downloader': {
+    title: 'تحميل فيديوهات تيك توك بدون علامة مائية 1080p HD | SnapLoad',
+    description: 'تنزيل وحفظ مقاطع تيك توك بدون حقوق أو شعار مجاناً وبأعلى جودة للموبايل والكمبيوتر دون برامج.',
+    canonical: `${BASE_URL}/ar/tiktok-downloader`,
+  },
+  '/ar/instagram-downloader': {
+    title: 'تحميل ريلز انستقرام وفيديوهات بجودة عالية HD | SnapLoad',
+    description: 'تنزيل مقاطع ريلز انستقرام وفيديوهات البوستات بجودة 1080p HD الأصلية مجاناً وسريع جداً.',
+    canonical: `${BASE_URL}/ar/instagram-downloader`,
+  },
+  '/ar/facebook-downloader': {
+    title: 'تحميل فيديو من فيسبوك وريلز بجودة 1080p HD | SnapLoad',
+    description: 'حفظ وتحميل فيديوهات فيسبوك العامة ومقاطع الريلز بصيغة MP4 عالية الجودة أو تحويلها إلى MP3 مجاناً.',
+    canonical: `${BASE_URL}/ar/facebook-downloader`,
+  },
+  '/ar/mp3-downloader': {
+    title: 'تحويل الفيديو إلى MP3 أونلاين مجاناً 320kbps | SnapLoad',
+    description: 'استخراج وتنزيل الصوت والموسيقى من فيديوهات تيك توك وانستغرام بصيغة MP3 نقية 320kbps مجاناً.',
+    canonical: `${BASE_URL}/ar/mp3-downloader`,
+  },
+  // ===== Turkish (TR) Routes =====
+  '/tr': {
+    title: 'TikTok Video İndir Filigransız HD Ücretsiz | SnapLoad',
+    description: 'TikTok videolarını filigransız 1080p Full HD kalitede ücretsiz indirin. Instagram Reels ve Facebook videolarını kaydedin, 320kbps MP3 ses dönüştürün.',
+    canonical: `${BASE_URL}/tr`,
+  },
+  '/tr/tiktok-downloader': {
+    title: 'TikTok Video İndir Filigransız HD 1080p | SnapLoad',
+    description: 'Logosuz ve filigransız TikTok video indirme aracı. Hızlı, güvenli ve ücretsiz MP4 ve MP3 indirin.',
+    canonical: `${BASE_URL}/tr/tiktok-downloader`,
+  },
+  '/tr/instagram-downloader': {
+    title: 'Instagram Reels Video İndir 1080p HD | SnapLoad',
+    description: 'Instagram Reels, video ve gönderilerini orijinal yüksek çözünürlükte indirin. Mobil ve PC uyumlu.',
+    canonical: `${BASE_URL}/tr/instagram-downloader`,
+  },
+  '/tr/facebook-downloader': {
+    title: 'Facebook Video İndir HD 1080p Ücretsiz | SnapLoad',
+    description: 'Facebook Reels ve Watch videolarını 1080p MP4 veya 320kbps MP3 formatında anında indirin.',
+    canonical: `${BASE_URL}/tr/facebook-downloader`,
+  },
+  '/tr/mp3-downloader': {
+    title: 'Video MP3 Dönüştürücü Online 320kbps | SnapLoad',
+    description: 'TikTok ve Instagram videolarını 320kbps yüksek kaliteli MP3 ses dosyalarına ücretsiz dönüştürün.',
+    canonical: `${BASE_URL}/tr/mp3-downloader`,
+  },
+  // ===== Russian (RU) Routes =====
+  '/ru': {
+    title: 'Скачать видео Тик Ток без водяного знака HD | SnapLoad',
+    description: 'Бесплатный онлайн сервис для скачивания видео TikTok без водяного знака в 1080p HD, Reels из Instagram и Facebook видео, конвертация в MP3.',
+    canonical: `${BASE_URL}/ru`,
+  },
+  '/ru/tiktok-downloader': {
+    title: 'Скачать видео Тик Ток без водяного знака бесплатно 1080p HD | SnapLoad',
+    description: 'Скачивайте видео из TikTok без логотипа и водяных знаков в оригинальном качестве Full HD на телефон или компьютер.',
+    canonical: `${BASE_URL}/ru/tiktok-downloader`,
+  },
+  '/ru/instagram-downloader': {
+    title: 'Скачать Рилс Инстаграм 1080p HD бесплатно | SnapLoad',
+    description: 'Скачивайте Instagram Reels, видео и фото в оригинальном высоком разрешении без потери качества.',
+    canonical: `${BASE_URL}/ru/instagram-downloader`,
+  },
+  '/ru/facebook-downloader': {
+    title: 'Скачать видео с Фейсбука 1080p HD бесплатно | SnapLoad',
+    description: 'Сохраняйте Reels и видео Facebook в формате MP4 1080p или извлекайте аудио треки в MP3 320kbps.',
+    canonical: `${BASE_URL}/ru/facebook-downloader`,
+  },
+  '/ru/mp3-downloader': {
+    title: 'Конвертер видео в MP3 онлайн 320kbps | SnapLoad',
+    description: 'Извлечение чистого звука из ссылок TikTok и Instagram в формате MP3 320kbps без регистрации.',
+    canonical: `${BASE_URL}/ru/mp3-downloader`,
+  },
+  // ===== Italian (IT) Routes =====
+  '/it': {
+    title: 'Scaricare Video TikTok Senza Watermark HD Gratis | SnapLoad',
+    description: 'Scarica video TikTok senza watermark in 1080p Full HD gratis. Salva Instagram Reels e converti video in audio MP3 a 320kbps rapidamente.',
+    canonical: `${BASE_URL}/it`,
+  },
+  '/it/tiktok-downloader': {
+    title: 'Scaricare Video TikTok Senza Logo HD Gratis | SnapLoad',
+    description: 'Salva video TikTok senza filigrana in alta definizione 1080p. Downloader veloce e gratuito per iPhone, Android e PC.',
+    canonical: `${BASE_URL}/it/tiktok-downloader`,
+  },
+  // ===== Vietnamese (VI) Routes =====
+  '/vi': {
+    title: 'Tải Video TikTok Không Logo Hình Mờ HD Miễn Phí | SnapLoad',
+    description: 'Tải video TikTok không logo không watermark chuẩn Full HD 1080p miễn phí. Lưu Reels Instagram và tải nhạc MP3 320kbps cực nhanh.',
+    canonical: `${BASE_URL}/vi`,
+  },
+  '/vi/tiktok-downloader': {
+    title: 'Tải Video TikTok Không Watermark 1080p HD Miễn Phí | SnapLoad',
+    description: 'Công cụ tải video TikTok không dính watermark trực tuyến miễn phí trên điện thoại và máy tính không cần cài app.',
+    canonical: `${BASE_URL}/vi/tiktok-downloader`,
+  },
 };
 
 /**

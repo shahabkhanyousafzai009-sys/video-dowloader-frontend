@@ -15,6 +15,17 @@ const testRoutes = [
   '/blog',
   '/guides',
   '/blog/social-media-video-formats-resolutions-audio-guide',
+  '/pt',
+  '/pt/tiktok-downloader',
+  '/es',
+  '/es/tiktok-downloader',
+  '/id',
+  '/id/tiktok-downloader',
+  '/ar',
+  '/ar/tiktok-downloader',
+  '/baixar-video-tiktok',
+  '/descargar-videos-de-tiktok',
+  '/tiktok-video-downloader',
 ];
 
 for (const r of testRoutes) {

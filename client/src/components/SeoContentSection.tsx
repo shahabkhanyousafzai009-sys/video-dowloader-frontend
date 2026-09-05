@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Language } from '../utils/i18n';
 import { AdBanner } from './AdBanner';
+import { LOCALIZED_SEO_DATA, HOW_TO_BADGES, FAQ_SUBTITLES } from '../data/localizedSeoData';
 
 type PlatformKey = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'widget';
 
@@ -268,264 +269,42 @@ const MASTER_EN_DATA: Record<PlatformKey, ContentData> = {
   },
 };
 
-const LOCALIZED_SEO_DATA: Record<string, any> = {
-  fr: {
-    instagram: {
-      heading: 'Téléchargeur Reels Instagram HD',
-      subheading: 'Enregistrez des Reels Instagram en 1080p HD sans application.',
-      whyTitle: 'Pourquoi SnapLoad Instagram ?',
-      faqTitle: 'FAQ Instagram Reels',
-      steps: [
-        { number: '01', title: 'Copier le lien', desc: 'Lien du Reel Instagram.' },
-        { number: '02', title: 'Coller', desc: 'Sur SnapLoad.' },
-        { number: '03', title: 'Télécharger', desc: 'Enregistrez la vidéo HD.' },
-      ],
-      features: [
-        { title: 'Qualité 1080p', desc: 'Qualité originale nette.', icon: '🎬' },
-        { title: 'Reels & Vidéos', desc: 'Support des Reels et posts.', icon: '📱' },
-        { title: 'Audio MP3', desc: 'Extraction audio 320kbps.', icon: '🎵' },
-        { title: '100% Gratuit', desc: 'Sans inscription ni limite.', icon: '🔒' },
-      ],
-      deepTechnicalBreakdown: { title: 'Extraction CDN Directe', paragraphs: ['Téléchargement direct depuis les serveurs CDN.'] },
-      troubleshooting: { items: [{ title: 'Comptes Publics', desc: 'Seuls les contenus des comptes publics sont accessibles.' }] },
-      faqs: [{ question: 'Comment enregistrer un Reel Instagram ?', answer: 'Copiez le lien et collez-le sur SnapLoad pour télécharger immédiatement.' }],
-    },
-    mp3: {
-      heading: 'Convertisseur Vidéo en MP3 (320kbps)',
-      subheading: 'Extrayez des pistes audio MP3 haute fidélité à partir de liens vidéo TikTok et Instagram.',
-      whyTitle: 'Pourquoi Choisir l’Extracteur MP3 ?',
-      faqTitle: 'FAQ Convertisseur MP3',
-      steps: [
-        { number: '01', title: 'Copier le Lien Vidéo', desc: 'Copiez l’URL de la vidéo contenant votre musique préférée.' },
-        { number: '02', title: 'Choisir le Format MP3', desc: 'Sélectionnez le format MP3 320kbps sur SnapLoad.' },
-        { number: '03', title: 'Télécharger le Son', desc: 'Enregistrez le fichier audio directement sur votre téléphone.' },
-      ],
-      features: [
-        { title: 'Débit Audio 320kbps', desc: 'Son stéréo haute qualité 44.1kHz.', icon: '🎵' },
-        { title: 'Extraction Rapide', desc: 'Conversion en moins de 2 secondes.', icon: '⚡' },
-        { title: 'Idéal Sonneries', desc: 'Utilisez vos musiques comme sonnerie de téléphone.', icon: '🔔' },
-        { title: '100% Gratuit', desc: 'Téléchargements audio illimités.', icon: '♾️' },
-      ],
-      deepTechnicalBreakdown: { title: 'Démultiplexage Audio', paragraphs: ['Isole le flux audio sans dégradation de qualité.'] },
-      troubleshooting: { items: [{ title: 'Musique Muette', desc: 'Les vidéos sans son ne peuvent pas être converties.' }] },
-      faqs: [{ question: 'Quelle est la qualité du MP3 ?', answer: 'Le fichier MP3 est extrait avec un débit de 320kbps.' }],
-    },
-    'tiktok-mp3': {
-      heading: 'Télécharger Musique TikTok MP3',
-      subheading: 'Extrayez les sons viraux et musiques de TikTok en format MP3 320kbps.',
-      whyTitle: 'Sons TikTok MP3',
-      faqTitle: 'FAQ TikTok MP3',
-      steps: [
-        { number: '01', title: 'Copier le Lien', desc: 'Lien de la vidéo TikTok.' },
-        { number: '02', title: 'Coller', desc: 'Sur SnapLoad.' },
-        { number: '03', title: 'Enregistrer MP3', desc: 'Télécharger le son.' },
-      ],
-      features: [
-        { title: 'Sons Viraux', desc: 'Extrayez la musique de fond.', icon: '🎧' },
-        { title: 'Son 320kbps', desc: 'Qualité stéréo nette.', icon: '🎵' },
-        { title: 'Mobile & PC', desc: 'Compatible iOS, Android et ordinateur.', icon: '📱' },
-        { title: 'Sans Compte', desc: 'Accès libre et rapide.', icon: '⚡' },
-      ],
-      deepTechnicalBreakdown: { title: 'Extraction Sonore', paragraphs: ['Télécharge la piste audio originale directement.'] },
-      troubleshooting: { items: [{ title: 'Sons Supprimés', desc: 'Les sons retirés par l’auteur ne sont pas disponibles.' }] },
-      faqs: [{ question: 'Est-ce gratuit ?', answer: 'Oui, téléchargement MP3 gratuit et illimité.' }],
-    },
-    widget: {
-      heading: 'Widget Téléchargeur Gratuit',
-      subheading: 'Intégrez le widget SnapLoad sur votre site web.',
-      whyTitle: 'Intégration Widget',
-      faqTitle: 'FAQ Widget',
-      steps: [
-        { number: '01', title: 'Copier le code', desc: 'Code iframe.' },
-        { number: '02', title: 'Coller', desc: 'Sur votre site.' },
-        { number: '03', title: 'Télécharger', desc: 'Prêt à l’emploi.' },
-      ],
-      features: [
-        { title: 'Responsive', desc: 'Adapté mobile et desktop.', icon: '📱' },
-        { title: 'Sécurisé', desc: 'Chiffrement SSL.', icon: '🔒' },
-        { title: 'Multi-Plateforme', desc: 'TikTok, Instagram, Facebook.', icon: '🎬' },
-        { title: '100% Gratuit', desc: 'Sans frais.', icon: '⚡' },
-      ],
-      deepTechnicalBreakdown: { title: 'Intégration Iframe', paragraphs: ['Chargement rapide et léger.'] },
-      troubleshooting: { items: [{ title: 'Dimensions', desc: 'Hauteur recommandée de 500px.' }] },
-      faqs: [{ question: 'L’intégration est-elle gratuite ?', answer: 'Oui, gratuite pour tous les sites web.' }],
-    },
-  },
-  es: {
-    all: {
-      heading: 'Descargador de Videos de TikTok e Instagram Gratis — Calidad HD Original',
-      subheading: 'SnapLoad es una herramienta online gratuita para descargar videos de TikTok sin marca de agua y guardar Reels de Instagram en calidad Full HD 1080p. Guarda archivos MP4 y MP3 de alta fidelidad sin registros.',
-      whyTitle: '¿Por qué elegir SnapLoad?',
-      faqTitle: 'Preguntas Frecuentes',
-      steps: [
-        { number: '01', title: 'Copiar URL del Video', desc: 'Abre TikTok o Instagram, encuentra el video o Reel, toca Compartir y elige "Copiar enlace".' },
-        { number: '02', title: 'Pegar en SnapLoad', desc: 'Pega la dirección web en el buscador arriba y haz clic en "Obtener".' },
-        { number: '03', title: 'Seleccionar Calidad y Descargar', desc: 'Elige el formato (MP4 Full HD 1080p sin marca de agua o audio MP3 320kbps) y guárdalo en tu dispositivo.' },
-      ],
-      features: [
-        { title: 'Sin Marca de Agua', desc: 'Elimina automáticamente el logo flotante y usuario de TikTok.', icon: '✨' },
-        { title: 'Resolución Full HD 1080p', desc: 'Conserva la calidad visual original sin pérdidas por compresión.', icon: '🎬' },
-        { title: 'Audio MP3 de 320kbps', desc: 'Extrae pistas de sonido de alta calidad para música y tonos.', icon: '🎵' },
-        { title: '100% Gratis y Seguro', desc: 'Sin registro de cuenta, sin archivos guardados en servidores, total privacidad.', icon: '🔒' },
-      ],
-      deepTechnicalBreakdown: {
-        title: 'Arquitectura Técnica de Extracción de Transmisión CDN',
-        paragraphs: [
-          'Las plataformas de videos cortos utilizan Redes de Distribución de Contenido (CDN) globales.',
-          'SnapLoad analiza el flujo mestre original del servidor CDN y extrae directamente el archivo MP4 sin marca de agua.',
-          'Nuestra infraestructura opera con almacenamiento cero: los archivos nunca se guardan en el servidor.',
-        ],
-      },
-      troubleshooting: {
-        title: 'Guía de Solución de Problemas',
-        items: [
-          { title: 'Verificar Privacidad de la Cuenta', desc: 'SnapLoad solo procesa enlaces de cuentas públicas de TikTok e Instagram.' },
-          { title: 'Guardar en la Galería de iPhone (iOS)', desc: 'En iPhone, abre Descargas en Safari, toca Compartir y selecciona "Guardar video" para moverlo a Fotos.' },
-          { title: 'Limpiar Caché del Navegador', desc: 'Si el botón no responde, limpia la caché de tu navegador o abre una ventana de incógnito.' },
-        ],
-      },
-      faqs: [
-        { question: '¿Es gratis descargar videos de TikTok sin marca de agua?', answer: 'Sí, SnapLoad es 100% gratuito e ilimitado. No requiere suscripciones ni datos bancarios.' },
-        { question: '¿Dónde se guardan los videos descargados?', answer: 'Se guardan en la carpeta Descargas de tu dispositivo. En iPhone, revisa la aplicación Archivos.' },
-      ],
-    },
-    tiktok: {
-      heading: 'Descargar Video TikTok Sin Marca de Agua Gratis HD',
-      subheading: 'Descarga videos de TikTok gratis sin marca de agua, fotos de carrusel y audios MP3 en 1080p Full HD.',
-      whyTitle: 'Ventajas del Descargador de TikTok',
-      faqTitle: 'Preguntas Frecuentes de TikTok',
-      steps: [
-        { number: '01', title: 'Copiar Enlace de TikTok', desc: 'Abre la app de TikTok, toca Compartir y selecciona "Copiar enlace".' },
-        { number: '02', title: 'Pegar en SnapLoad', desc: 'Pega el enlace en la barra de búsqueda y presiona "Obtener".' },
-        { number: '03', title: 'Descargar MP4 Limpio', desc: 'Elige la opción "Sin Marca de Agua" para guardar tu video al instante.' },
-      ],
-      features: [
-        { title: 'Sin Marca de Agua', desc: 'Remueve el logo animado de TikTok y la marca de agua del creador.', icon: '🚫' },
-        { title: 'Procesamiento en 2 Segundos', desc: 'Análisis de CDN ultra rápido sin colas de espera.', icon: '⚡' },
-        { title: 'Música de TikTok a MP3', desc: 'Extrae audios y canciones virales de TikTok en archivos MP3 320kbps.', icon: '🎧' },
-        { title: 'Fotos de Carrusel TikTok', desc: 'Descarga todas las fotos en alta resolución de las publicaciones de diapositivas.', icon: '📷' },
-      ],
-      deepTechnicalBreakdown: { title: 'Extracción Directa de Video', paragraphs: ['SnapLoad recupera la URL directa del MP4 mestre sin marca de agua.'] },
-      troubleshooting: { items: [{ title: 'Enlaces Válidos', desc: 'Asegúrate de que la URL contenga tiktok.com.' }] },
-      faqs: [{ question: '¿Cómo quitar la marca de agua a un video de TikTok?', answer: 'Copia el enlace del video, pégalo en SnapLoad y descarga la versión sin marca de agua.' }],
-    },
-    instagram: {
-      heading: 'Descargar Instagram Reels HD 1080p',
-      subheading: 'Descarga Reels de Instagram, videos y fotos en máxima calidad original.',
-      whyTitle: '¿Por qué SnapLoad Instagram?',
-      faqTitle: 'FAQ Instagram',
-      steps: [
-        { number: '01', title: 'Copiar Enlace del Reel', desc: 'En Instagram, toca los tres puntos o Compartir y selecciona "Copiar enlace".' },
-        { number: '02', title: 'Pegar en SnapLoad', desc: 'Pega el enlace en el cuadro de búsqueda.' },
-        { number: '03', title: 'Guardar Archivo HD', desc: 'Descarga el video en formato MP4 1080p.' },
-      ],
-      features: [
-        { title: 'Calidad 1080p HD', desc: 'Conserva la nitidez original sin compresión.', icon: '🌟' },
-        { title: 'Reels y Publicaciones', desc: 'Soporte completo para videos de Instagram.', icon: '📹' },
-        { title: 'Carrusel de Fotos', desc: 'Descarga todas las fotos de publicaciones múltiples.', icon: '🖼️' },
-        { title: 'Sin Iniciar Sesión', desc: 'Descarga anónima sin ingresar tus credenciales.', icon: '🔒' },
-      ],
-      deepTechnicalBreakdown: { title: 'Transmisiones HLS', paragraphs: ['SnapLoad extrae la variante HLS de mayor resolución.'] },
-      troubleshooting: { items: [{ title: 'Cuentas Públicas', desc: 'Solo se pueden procesar contenidos de perfiles públicos.' }] },
-      faqs: [{ question: '¿Cómo guardar un Reel de Instagram?', answer: 'Copia el enlace del Reel y pégalo en SnapLoad para guardarlo en 1080p.' }],
-    },
-    mp3: {
-      heading: 'Convertidor de Video a MP3 (320kbps)',
-      subheading: 'Extrae audio en alta fidelidad de 320kbps desde enlaces de video de TikTok e Instagram.',
-      whyTitle: '¿Por qué el Extractor MP3?',
-      faqTitle: 'FAQ Convertidor MP3',
-      steps: [
-        { number: '01', title: 'Copiar Enlace de Video', desc: 'Copia la URL del video que tiene la música que deseas.' },
-        { number: '02', title: 'Elegir Opción MP3', desc: 'Selecciona la opción de audio MP3 de 320kbps.' },
-        { number: '03', title: 'Descargar Audio', desc: 'Guarda el archivo MP3 en tu teléfono o PC.' },
-      ],
-      features: [
-        { title: 'Bitrate de 320kbps', desc: 'Audio estéreo de alta definición de 44.1kHz.', icon: '🎵' },
-        { title: 'Extracción Rápida', desc: 'Convierte enlaces a MP3 en segundos.', icon: '⚡' },
-        { title: 'Tonos de Llamada', desc: 'Ideal para usar como tono de llamada o alarma.', icon: '🔔' },
-        { title: '100% Gratuito', desc: 'Descargas de audio sin límites.', icon: '♾️' },
-      ],
-      deepTechnicalBreakdown: { title: 'Demux de Audio', paragraphs: ['Aísla la pista de audio sin pérdida de calidad.'] },
-      troubleshooting: { items: [{ title: 'Videos Silenciados', desc: 'Los videos con audio deshabilitado no se pueden extraer.' }] },
-      faqs: [{ question: '¿Qué calidad tiene el MP3?', answer: 'El archivo MP3 extraído cuenta con una calidad máxima de 320kbps.' }],
-    },
-    'tiktok-mp3': {
-      heading: 'Descargar Música de TikTok MP3',
-      subheading: 'Descarga audios virales y canciones de TikTok en formato MP3 320kbps.',
-      whyTitle: 'Audios de TikTok MP3',
-      faqTitle: 'FAQ Audios TikTok',
-      steps: [
-        { number: '01', title: 'Copiar Enlace', desc: 'Enlace del video de TikTok.' },
-        { number: '02', title: 'Pegar Enlace', desc: 'Pégalo en SnapLoad.' },
-        { number: '03', title: 'Guardar MP3', desc: 'Descarga la pista de audio.' },
-      ],
-      features: [
-        { title: 'Sonidos Virales', desc: 'Extrae la música de fondo de los videos.', icon: '🎧' },
-        { title: 'Audio 320kbps', desc: 'Sonido limpio y nítido.', icon: '🎵' },
-        { title: 'Móvil y PC', desc: 'Compatible con iOS, Android y computadoras.', icon: '📱' },
-        { title: 'Sin Cuentas', desc: 'Acceso directo sin registro.', icon: '⚡' },
-      ],
-      deepTechnicalBreakdown: { title: 'Extraer Pistas de Audio', paragraphs: ['Obtiene directamente el flujo de audio del servidor.'] },
-      troubleshooting: { items: [{ title: 'Sonidos Eliminados', desc: 'Audios eliminados por copyright no están disponibles.' }] },
-      faqs: [{ question: '¿Es totalmente gratis?', answer: 'Sí, puedes bajar todos los MP3 que quieras sin costo.' }],
-    },
-    widget: {
-      heading: 'Widget Descargador de Videos Gratis',
-      subheading: 'Incrusta el descargador SnapLoad en tu página web o blog.',
-      whyTitle: 'Incrustar Widget',
-      faqTitle: 'FAQ Widget',
-      steps: [
-        { number: '01', title: 'Copiar código', desc: 'Código iframe ligero.' },
-        { number: '02', title: 'Pegar en tu web', desc: 'Pégalo en tu CMS o HTML.' },
-        { number: '03', title: 'Descargar', desc: 'Listo para usar.' },
-      ],
-      features: [
-        { title: 'Adaptable', desc: 'Diseño responsive para móvil y PC.', icon: '📱' },
-        { title: 'Seguro', desc: 'Conexión SSL encriptada.', icon: '🔒' },
-        { title: 'Multiplataforma', desc: 'TikTok, Instagram, Facebook.', icon: '🎬' },
-        { title: '100% Gratis', desc: 'Sin costes ni límites.', icon: '⚡' },
-      ],
-      deepTechnicalBreakdown: { title: 'Arquitectura Iframe', paragraphs: ['Integración directa y ligera.'] },
-      troubleshooting: { items: [{ title: 'Dimensiones', desc: 'Se recomienda un alto mínimo de 500px.' }] },
-      faqs: [{ question: '¿Es gratis incrustar el widget?', answer: 'Sí, totalmente gratis para todo sitio web.' }],
-    },
-  },
-};
+
 
 // Function to resolve complete ContentData for any language (including all 50 global languages)
 function getResolvedContentData(platform: PlatformKey, currentLanguage: Language = 'en'): ContentData {
-  // Check if localized custom block exists
   const customLangDict = LOCALIZED_SEO_DATA[currentLanguage];
-  const customBlock = customLangDict ? customLangDict[platform] || customLangDict.all : null;
-
-  // Master baseline from English
+  const langAllBlock = customLangDict ? customLangDict.all : null;
+  const customBlock = customLangDict ? (customLangDict[platform] || langAllBlock) : null;
   const masterBlock = MASTER_EN_DATA[platform] || MASTER_EN_DATA.all;
 
-  if (!customBlock) {
+  if (!customBlock && !langAllBlock) {
     return masterBlock;
   }
 
-  // Ensure ALL arrays (steps, features, deepTechnicalBreakdown, troubleshooting, faqs) are 100% filled and complete!
+  const active = customBlock || langAllBlock || masterBlock;
+  const fallback = langAllBlock || masterBlock;
+
   return {
-    heading: customBlock.heading || masterBlock.heading,
-    subheading: customBlock.subheading || masterBlock.subheading,
-    whyTitle: customBlock.whyTitle || masterBlock.whyTitle,
-    faqTitle: customBlock.faqTitle || masterBlock.faqTitle,
-    steps: customBlock.steps && customBlock.steps.length >= 3 ? customBlock.steps : masterBlock.steps,
-    features: customBlock.features && customBlock.features.length >= 4 ? customBlock.features : masterBlock.features,
+    heading: active.heading || fallback.heading || masterBlock.heading,
+    subheading: active.subheading || fallback.subheading || masterBlock.subheading,
+    whyTitle: active.whyTitle || fallback.whyTitle || masterBlock.whyTitle,
+    faqTitle: active.faqTitle || fallback.faqTitle || masterBlock.faqTitle,
+    steps: (active.steps && active.steps.length >= 3) ? active.steps : (fallback.steps || masterBlock.steps),
+    features: (active.features && active.features.length >= 4) ? active.features : (fallback.features || masterBlock.features),
     deepTechnicalBreakdown: {
-      title: customBlock.deepTechnicalBreakdown?.title || masterBlock.deepTechnicalBreakdown.title,
-      paragraphs: (customBlock.deepTechnicalBreakdown?.paragraphs && customBlock.deepTechnicalBreakdown.paragraphs.length >= 2)
-        ? customBlock.deepTechnicalBreakdown.paragraphs
-        : masterBlock.deepTechnicalBreakdown.paragraphs,
+      title: active.deepTechnicalBreakdown?.title || fallback.deepTechnicalBreakdown?.title || masterBlock.deepTechnicalBreakdown.title,
+      paragraphs: (active.deepTechnicalBreakdown?.paragraphs && active.deepTechnicalBreakdown.paragraphs.length >= 2)
+        ? active.deepTechnicalBreakdown.paragraphs
+        : (fallback.deepTechnicalBreakdown?.paragraphs || masterBlock.deepTechnicalBreakdown.paragraphs),
     },
     troubleshooting: {
-      title: customBlock.troubleshooting?.title || masterBlock.troubleshooting.title,
-      items: (customBlock.troubleshooting?.items && customBlock.troubleshooting.items.length >= 2)
-        ? customBlock.troubleshooting.items
-        : masterBlock.troubleshooting.items,
+      title: active.troubleshooting?.title || fallback.troubleshooting?.title || masterBlock.troubleshooting.title,
+      items: (active.troubleshooting?.items && active.troubleshooting.items.length >= 2)
+        ? active.troubleshooting.items
+        : (fallback.troubleshooting?.items || masterBlock.troubleshooting.items),
     },
-    faqs: (customBlock.faqs && customBlock.faqs.length >= 2) ? customBlock.faqs : masterBlock.faqs,
+    faqs: (active.faqs && active.faqs.length >= 2) ? active.faqs : (fallback.faqs || masterBlock.faqs),
   };
 }
 
@@ -601,7 +380,7 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
         
         <header className="text-center max-w-3xl mx-auto mb-10 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 text-xs font-bold uppercase tracking-wider">
-            <span>📖 How-To Guide</span>
+            <span>{HOW_TO_BADGES[currentLanguage] || HOW_TO_BADGES.en}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
             {content.heading}
@@ -708,7 +487,7 @@ export function SeoContentSection({ platform, currentLanguage = 'en' }: SeoConte
             {content.faqTitle}
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-            Answers to common questions about downloads, quality, and platform safety.
+            {FAQ_SUBTITLES[currentLanguage] || FAQ_SUBTITLES.en}
           </p>
         </header>
 
