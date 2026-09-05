@@ -31,6 +31,7 @@ import { ContactUsPage } from './components/ContactUsPage';
 import { FaqPage } from './components/FaqPage';
 import { useVideoInfo } from './hooks/useVideoInfo';
 import { useDownload } from './hooks/useDownload';
+import { LOCALIZED_TITLES } from './data/localizedTitles';
 import './App.css';
 
 type Platform = 'all' | 'tiktok' | 'instagram' | 'facebook' | 'mp3' | 'tiktok-mp3' | 'widget';
@@ -401,6 +402,27 @@ function App() {
     let description = PLATFORMS[currentPlatform].description;
     let path = PLATFORMS[currentPlatform].path;
     let label = PLATFORMS[currentPlatform].label;
+
+    // Apply unique localized title and description for international users & crawlers
+    if (currentLanguage !== 'en' && LOCALIZED_TITLES[currentLanguage]) {
+      const lMeta = LOCALIZED_TITLES[currentLanguage];
+      if (currentPlatform === 'all' && lMeta.home) {
+        title = lMeta.home.title;
+        description = lMeta.home.desc;
+      } else if (currentPlatform === 'tiktok' && lMeta.tiktok) {
+        title = lMeta.tiktok.title;
+        description = lMeta.tiktok.desc;
+      } else if (currentPlatform === 'instagram' && lMeta.instagram) {
+        title = lMeta.instagram.title;
+        description = lMeta.instagram.desc;
+      } else if (currentPlatform === 'facebook' && lMeta.facebook) {
+        title = lMeta.facebook.title;
+        description = lMeta.facebook.desc;
+      } else if (currentPlatform === 'mp3' && lMeta.mp3) {
+        title = lMeta.mp3.title;
+        description = lMeta.mp3.desc;
+      }
+    }
 
     if (isAboutUsPage) {
       title = 'About Us — Mission & Technical Standards | SnapLoad';
